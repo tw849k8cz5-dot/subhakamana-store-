@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subhakamana Store Management System</title>
+  <style>
+    :root {
+      --navy: #081426;
+      --blue: #1f5eff;
+      --blue-soft: #eaf0ff;
+      --gold: #c8a34a;
+      --green: #12a169;
+      --amber: #d97706;
+      --red: #cf2f2f;
+      --ink: #111827;
+      --muted: #667085;
+      --line: #e5e7eb;
+      --panel: #ffffff;
+      --page: #f6f8fb;
+      --shadow: 0 18px 48px rgba(8, 20, 38, 0.09);
+    }
+
+    [data-theme="dark"] {
+      --ink: #f8fafc;
+      --muted: #b7c0ce;
+      --line: #273246;
+      --panel: #111a2b;
+      --page: #07101f;
+      --blue-soft: #101b31;
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--gold) 70%, white);
+      outline-offset: 3px;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 292px 1fr;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background: var(--navy);
+      color: white;
+      padding: 24px 18px;
+      overflow-y: auto;
+    }
+
+    .brand {
+      padding: 4px 8px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 16px;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .brand span {
+      display: block;
+      color: #b8c7dd;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-top: 8px;
+    }
+
+    .store-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(200, 163, 74, 0.16);
+      color: #f6d781;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 12px;
+    }
+
+    .nav-group {
+      color: #8ea3c0;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin: 18px 8px 8px;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: #e7edf7;
+      text-decoration: none;
+      padding: 10px 11px;
+      border-radius: 8px;
+      min-height: 42px;
+      font-size: 14px;
+    }
+
+    .nav a.active, .nav a:hover {
+      background: rgba(31, 94, 255, 0.18);
+      color: white;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 22px 28px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 5px;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 19px;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip, select, input {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: 8px;
+      min-height: 40px;
+      padding: 9px 11px;
+    }
+
+    button, .button-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 13px;
+      background: var(--blue);
+      color: white;
+      text-decoration: none;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    button:hover, .button-link:hover {
+      background: #164bd1;
+    }
+
+    button.secondary, .button-link.secondary {
+      background: var(--panel);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    button.secondary:hover, .button-link.secondary:hover {
+      background: var(--blue-soft);
+    }
+
+    .page {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .page.active { display: block; }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .two-col { grid-template-columns: repeat(2, minmax(260px, 1fr)); }
+    .three-col { grid-template-columns: repeat(3, minmax(190px, 1fr)); }
+    .four-col { grid-template-columns: repeat(4, minmax(150px, 1fr)); }
+    .six-col { grid-template-columns: repeat(6, minmax(130px, 1fr)); }
+
+    .panel, .card, .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel, .card { padding: 17px; }
+
+    .card span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 25px;
+    }
+
+    .hero-panel {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel h2 {
+      font-size: 30px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .hero-actions, .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .system-map {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .map-node {
+      display: block;
+      min-height: 86px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: color-mix(in srgb, var(--blue-soft) 70%, var(--panel));
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .map-node:hover {
+      border-color: color-mix(in srgb, var(--blue) 42%, var(--line));
+      background: color-mix(in srgb, var(--blue-soft) 88%, var(--panel));
+    }
+
+    .map-node strong {
+      display: block;
+      color: var(--blue);
+      margin-bottom: 5px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .ok { color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); }
+    .warn { color: var(--amber); background: color-mix(in srgb, var(--amber) 14%, transparent); }
+    .blue { color: var(--blue); background: color-mix(in srgb, var(--blue) 12%, transparent); }
+    .gold { color: #8a6b10; background: color-mix(in srgb, var(--gold) 22%, transparent); }
+    .bad { color: var(--red); background: color-mix(in srgb, var(--red) 12%, transparent); }
+
+    .module-list {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(170px, 1fr));
+      gap: 12px;
+    }
+
+    .module {
+      display: block;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 124px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .module:hover {
+      border-color: color-mix(in srgb, var(--blue) 42%, var(--line));
+      background: color-mix(in srgb, var(--blue-soft) 62%, var(--panel));
+    }
+
+    .module strong {
+      display: block;
+      color: var(--blue);
+      margin-bottom: 7px;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 128px 1fr 54px;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .bar-track {
+      height: 10px;
+      background: var(--blue-soft);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--gold));
+      border-radius: inherit;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      background: color-mix(in srgb, var(--blue-soft) 75%, transparent);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .roadmap {
+      display: grid;
+      gap: 12px;
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .phase strong {
+      color: var(--blue);
+    }
+
+    [hidden] { display: none !important; }
+
+    @media (max-width: 1180px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .six-col, .module-list { grid-template-columns: repeat(3, minmax(150px, 1fr)); }
+      .hero-panel { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .main { padding: 16px; }
+      .topbar, .top-actions { display: grid; justify-content: stretch; }
+      .top-actions > * { width: 100%; }
+      .two-col, .three-col, .four-col, .six-col, .module-list, .system-map, .nav {
+        grid-template-columns: 1fr;
+      }
+      .phase { grid-template-columns: 1fr; }
+      .table-wrap { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Subhakamana Store</strong>
+        <span>Simple store management system for sales, stock, products, customers, delivery, payments, and reports.</span>
+        <span class="store-pill">For Subhakamana Store only</span>
+      </div>
+      <nav class="nav" aria-label="Platform navigation">
+        <div class="nav-group">Store</div>
+        <a class="active" href="#overview" data-page="overview">Overview <span>Home</span></a>
+        <a href="#modules" data-page="modules">Daily Work <span>Tasks</span></a>
+        <a href="#architecture" data-page="architecture">How It Works <span>Simple</span></a>
+        <a href="#ai" data-page="ai">Store Helper <span>AI</span></a>
+        <div class="nav-group">Management</div>
+        <a href="#security" data-page="security">Safety <span>Access</span></a>
+        <a href="#payments" data-page="payments">Payments <span>Nepal</span></a>
+        <a href="#roadmap" data-page="roadmap">Setup Plan <span>Steps</span></a>
+        <a href="#ssms" data-page="ssms">Ownership <span>Store</span></a>
+        <a href="#resources" data-page="resources">Resources <span>Files</span></a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <h1 id="pageTitle">Overview</h1>
+          <p class="subtle" id="pageDescription">One simple system for Subhakamana Store daily work.</p>
+        </div>
+        <div class="top-actions">
+          <span class="chip">Store: Subhakamana Store</span>
+          <select id="storeAreaSelect" aria-label="Store area selector">
+            <option>Main Store</option>
+            <option>Online Store</option>
+            <option>POS Counter</option>
+          </select>
+          <button type="button" class="secondary" id="themeToggle">Dark Mode</button>
+        </div>
+      </section>
+
+      <section class="page active" id="overviewPage" data-title="Overview" data-description="One simple system for Subhakamana Store daily work.">
+        <div class="hero-panel">
+          <div>
+            <span class="badge gold">Subhakamana Store Management System</span>
+            <h2>One place to run the store.</h2>
+            <p class="subtle">This system helps Subhakamana Store handle billing, stock, products, customers, online orders, delivery, payments, staff work, and reports from one dashboard.</p>
+            <div class="hero-actions">
+              <a class="button-link" href="#modules" data-launch="modules">View Daily Work</a>
+              <a class="button-link secondary" href="#architecture" data-launch="architecture">How It Works</a>
+              <a class="button-link secondary" href="subhakamana-store-final-erp-platform.html">Open Store System</a>
+            </div>
+          </div>
+          <div class="system-map" aria-label="System map">
+            <a class="map-node" href="#modules"><strong>Billing</strong><p class="subtle">Create bills, take payments, print receipts, and update stock.</p></a>
+            <a class="map-node" href="#modules"><strong>Stock</strong><p class="subtle">Know what is available, low, sold out, or needs reorder.</p></a>
+            <a class="map-node" href="#modules"><strong>Online Orders</strong><p class="subtle">Manage website orders, packing, delivery, and tracking.</p></a>
+            <a class="map-node" href="#ai"><strong>Store Helper</strong><p class="subtle">Ask simple questions about stock, sales, products, and reports.</p></a>
+          </div>
+        </div>
+
+        <div class="grid six-col" style="margin-top:16px;">
+          <div class="card"><span>Store</span><strong>1</strong></div>
+          <div class="card"><span>Main Areas</span><strong>8</strong></div>
+          <div class="card"><span>Sales</span><strong>Shop + Online</strong></div>
+          <div class="card"><span>Stock</span><strong>Live</strong></div>
+          <div class="card"><span>Use</span><strong>Local</strong></div>
+          <div class="card"><span>System</span><strong>SSMS</strong></div>
+        </div>
+
+        <div class="grid two-col" style="margin-top:16px;">
+          <div class="panel">
+            <h2>Store Readiness</h2>
+            <div class="bar-list" id="readinessBars"></div>
+          </div>
+          <div class="panel">
+            <h2>Simple Rules</h2>
+            <div class="grid two-col">
+              <div><h3>Easy</h3><p class="subtle">Staff should understand the system without technical training.</p></div>
+              <div><h3>Fast</h3><p class="subtle">Common work like billing, stock check, and order handling should take fewer clicks.</p></div>
+              <div><h3><a href="#architecture">Connected</a></h3><p class="subtle">Sales, stock, products, customers, delivery, and reports should use the same information.</p></div>
+              <div><h3><a href="#roadmap">Practical</a></h3><p class="subtle">Build the most useful store features first, then add advanced tools later.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="modulesPage" data-title="Daily Work" data-description="The main tasks staff can do in the store system.">
+        <div class="module-list" id="moduleList"></div>
+      </section>
+
+      <section class="page" id="architecturePage" data-title="How It Works" data-description="A simple explanation of how the store system connects everything.">
+        <div class="grid two-col">
+          <div class="panel">
+            <h2>What The System Connects</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Area</th><th>Simple Meaning</th></tr></thead>
+                <tbody>
+                  <tr><td>Products</td><td>All sari, kurtha, blouse, dupatta, and other item details stay in one catalog.</td></tr>
+                  <tr><td>Stock</td><td>When an item is sold or received, the quantity updates in the system.</td></tr>
+                  <tr><td>POS</td><td>Counter sales reduce stock and create a bill.</td></tr>
+                  <tr><td>Online Orders</td><td>Website orders use the same product and stock information.</td></tr>
+                  <tr><td>Reports</td><td>Sales, stock, payments, and delivery records become simple summaries for owners.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <h2>Important Store Rules</h2>
+            <div class="grid">
+              <div class="map-node"><strong>One Stock Count</strong><p class="subtle">Shop sales and online orders should use the same stock number so items are not oversold.</p></div>
+              <div class="map-node"><strong>Every Change Recorded</strong><p class="subtle">Sales, returns, new stock, damaged goods, and corrections should be saved with a reason.</p></div>
+              <div class="map-node"><strong>Right Person, Right Access</strong><p class="subtle">Owners, admins, inventory staff, and sales staff should only see the work they need.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="aiPage" data-title="Store Helper" data-description="Simple helper answers for stock, sales, products, and business questions.">
+        <div class="grid two-col">
+          <div class="panel">
+            <span class="badge blue">Customer Help</span>
+            <h2>Answer product questions</h2>
+            <p class="subtle">The helper can answer simple questions about size, color, price, matching items, new arrivals, and stock availability using store data.</p>
+            <div class="quick-actions">
+              <button type="button" class="secondary" data-question="Do you have this in Medium?">Medium?</button>
+              <button type="button" class="secondary" data-question="Show me handbags below Rs. 3000.">Below Rs. 3000</button>
+              <button type="button" class="secondary" data-question="What arrived today?">New arrivals</button>
+            </div>
+            <p class="subtle" id="customerAiAnswer" style="margin-top:14px;">Select a sample question to see how the helper should answer.</p>
+          </div>
+          <div class="panel">
+            <span class="badge gold">Owner Help</span>
+            <h2>Answer business questions</h2>
+            <p class="subtle">The owner can ask what to reorder, what is not selling, which items made profit, and how the store is performing.</p>
+            <div class="quick-actions">
+              <button type="button" class="secondary" data-insight="reorder">What should I reorder?</button>
+              <button type="button" class="secondary" data-insight="dead">Dead stock</button>
+              <button type="button" class="secondary" data-insight="profit">Profit summary</button>
+            </div>
+            <p class="subtle" id="businessAiAnswer" style="margin-top:14px;">Select a sample insight to preview business intelligence output.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="securityPage" data-title="Safety" data-description="Simple access and safety rules for the store system.">
+        <div class="grid three-col">
+          <div class="panel"><h2>User Access</h2><p class="subtle">Owners, admins, inventory staff, and sales staff should have separate access levels.</p></div>
+          <div class="panel"><h2>Activity History</h2><p class="subtle">Important actions like stock edits, refunds, discounts, and delivery changes should be recorded.</p></div>
+          <div class="panel"><h2>Backup</h2><p class="subtle">Store data should be backed up so product, sales, and customer records are not lost.</p></div>
+        </div>
+      </section>
+
+      <section class="page" id="paymentsPage" data-title="Payments" data-description="Payment options useful for Subhakamana Store in Nepal.">
+        <div class="grid two-col">
+          <div class="panel">
+            <h2>Supported Payment Methods</h2>
+            <div class="module-list" id="paymentList"></div>
+          </div>
+          <div class="panel">
+            <h2>Payment Checking</h2>
+            <div class="roadmap">
+              <div class="phase"><strong>Manual</strong><p class="subtle">Staff can check bank transfer or QR payment proof and mark the order as paid.</p></div>
+              <div class="phase"><strong>Automatic</strong><p class="subtle">In the future, eSewa, Khalti, Fonepay, and other services can confirm payment automatically.</p></div>
+              <div class="phase"><strong>Report</strong><p class="subtle">Paid, pending, refunded, and cash-on-delivery amounts should appear in reports.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="roadmapPage" data-title="Setup Plan" data-description="Simple steps to make the Subhakamana Store system production-ready.">
+        <div class="roadmap" id="roadmapRows"></div>
+      </section>
+
+      <section class="page" id="ssmsPage" data-title="Ownership" data-description="Subhakamana Store branding and ownership information.">
+        <div class="grid two-col">
+          <div class="panel">
+            <h2>Subhakamana Store Management System</h2>
+            <p class="subtle">This system is made only for Subhakamana Store. It connects shop sales, online orders, stock, customers, payments, delivery, reports, and owner decisions in one place.</p>
+            <div class="quick-actions">
+              <a class="button-link" href="subhakamana-store-final-erp-platform.html">Open Store System</a>
+              <a class="button-link secondary" href="subhakamana-store-erp-user-manual.md">Open User Manual</a>
+              <a class="button-link secondary" href="subhakamana-local-use-guide.md">Local Use Guide</a>
+            </div>
+          </div>
+          <div class="panel">
+            <h2>Proprietary Notice</h2>
+            <p class="subtle">Subhakamana Store Management System, including its design, documents, workflows, and business logic, belongs to Subhakamana Store unless a written agreement says otherwise.</p>
+            <p class="subtle" style="margin-top:12px;">© 2026 Subhakamana Ladies Store. All Rights Reserved.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="resourcesPage" data-title="Resources" data-description="Open every related prototype, manual, report, and launcher from one place.">
+        <div class="grid two-col">
+          <div class="panel">
+            <h2>Subhakamana Planning Files</h2>
+            <div class="module-list">
+              <a class="module" href="subhakamana-store-simple-blueprint.md"><strong>Simple Store Blueprint</strong><p class="subtle">Plain-language plan for the Subhakamana Store system.</p></a>
+              <a class="module" href="subhakamana-store-overview-local-use-guide.md"><strong>Local Use Guide</strong><p class="subtle">How to run this Subhakamana overview locally without a domain.</p></a>
+              <a class="module" href="run-subhakamana-overview-local.command"><strong>Run This Overview</strong><p class="subtle">Launcher for this overview page.</p></a>
+            </div>
+          </div>
+          <div class="panel">
+            <h2>Main Store System Files</h2>
+            <div class="module-list">
+              <a class="module" href="subhakamana-store-final-erp-platform.html"><strong>SSMS Prototype</strong><p class="subtle">Subhakamana Store Management System dashboard, ERP, POS, storefront, and manual page.</p></a>
+              <a class="module" href="subhakamana-store-erp-user-manual.md"><strong>SSMS User Manual</strong><p class="subtle">Operating guide for staff, admins, inventory users, and sales/delivery users.</p></a>
+              <a class="module" href="subhakamana-store-final-erp-ecommerce-report.pdf"><strong>Final Report PDF</strong><p class="subtle">Final handover report for the ERP and e-commerce system.</p></a>
+              <a class="module" href="run-subhakamana-local.command"><strong>Run SSMS Locally</strong><p class="subtle">Launcher for localhost SSMS prototype.</p></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const pages = document.querySelectorAll(".page");
+    const navLinks = document.querySelectorAll(".nav a[data-page]");
+    const pageTitle = document.getElementById("pageTitle");
+    const pageDescription = document.getElementById("pageDescription");
+
+    const modules = [
+      ["Billing / POS", "Create bills, scan products, choose payment method, print receipts, and reduce stock."],
+      ["Stock", "See available, low-stock, and sold-out products in one place."],
+      ["Products", "Add product name, category, size, color, price, SKU, barcode, and photos."],
+      ["Customers", "Save customer phone, address, orders, preferences, wishlist, and loyalty points."],
+      ["Online Store", "Show products online with live stock, cart, checkout, and order tracking."],
+      ["Purchases", "Record supplier bills, new stock arrivals, and purchase history."],
+      ["Delivery", "Prepare orders, assign courier, save tracking number, and update delivery status."],
+      ["Payments", "Track cash, QR, eSewa, Khalti, bank transfer, card, wallet, and COD."],
+      ["Reports", "View sales, stock value, profit, pending payments, and top products."],
+      ["Staff", "Give each staff member the access they need for their daily work."],
+      ["Offers", "Prepare festival offers, birthday offers, WhatsApp messages, and social captions."],
+      ["Store Helper", "Ask simple questions about stock, sales, reorder needs, and products."]
+    ];
+
+    const roadmap = [
+      ["Step 1", "Start With Basics", "Set up products, stock, billing, customers, and simple reports."],
+      ["Step 2", "Add Daily Store Work", "Add purchases, suppliers, delivery, payment checking, staff access, and barcode labels."],
+      ["Step 3", "Add Online Selling", "Add online store, checkout, customer accounts, wishlist, and order tracking."],
+      ["Step 4", "Add Store Helper", "Add simple helper answers for stock, reorder needs, slow products, and owner summaries."],
+      ["Step 5", "Make It Production Ready", "Add login security, backups, permanent database, payment integrations, and a reliable setup."]
+    ];
+
+    const payments = ["Nepal QR", "Bank Transfer", "Fonepay", "eSewa", "Khalti", "IME Pay", "Cash", "Card", "Wallet", "COD", "Manual Verification", "Webhook Verification"];
+
+    function showPage(pageName) {
+      const page = document.getElementById(pageName + "Page") ? pageName : "overview";
+      const section = document.getElementById(page + "Page");
+      pages.forEach((item) => item.classList.toggle("active", item === section));
+      navLinks.forEach((link) => link.classList.toggle("active", link.dataset.page === page));
+      pageTitle.textContent = section.dataset.title;
+      pageDescription.textContent = section.dataset.description;
+      if (location.hash !== "#" + page) history.pushState(null, "", "#" + page);
+    }
+
+    function renderBars() {
+      const rows = [
+        ["Billing", 92],
+        ["Stock Control", 88],
+        ["Online Orders", 78],
+        ["Reports", 81],
+        ["Store Helper", 67]
+      ];
+      document.getElementById("readinessBars").innerHTML = rows.map(([label, value]) => `
+        <div class="bar-row"><span>${label}</span><span class="bar-track"><span class="bar-fill" style="width:${value}%"></span></span><strong>${value}%</strong></div>
+      `).join("");
+    }
+
+    function renderModules() {
+      document.getElementById("moduleList").innerHTML = modules.map(([name, text]) => `<article class="module"><strong>${name}</strong><p class="subtle">${text}</p></article>`).join("");
+      document.getElementById("paymentList").innerHTML = payments.map((item) => `<article class="module"><strong>${item}</strong><p class="subtle">Can be recorded as a payment option for Subhakamana Store orders.</p></article>`).join("");
+      document.getElementById("roadmapRows").innerHTML = roadmap.map(([phase, name, text]) => `<div class="phase"><strong>${phase}<br>${name}</strong><p class="subtle">${text}</p></div>`).join("");
+    }
+
+    document.querySelectorAll(".nav a[data-page]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        showPage(link.dataset.page);
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      const launcher = event.target.closest("[data-launch]");
+      if (launcher) {
+        event.preventDefault();
+        showPage(launcher.dataset.launch);
+        return;
+      }
+
+      const link = event.target.closest("a[href^='#']");
+      if (!link) return;
+      const page = link.getAttribute("href").replace("#", "");
+      if (!document.getElementById(page + "Page")) return;
+      event.preventDefault();
+      showPage(page);
+    });
+
+    document.querySelectorAll("[data-question]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.getElementById("customerAiAnswer").textContent = "Example answer: first check the store stock. If the item, size, or color is available, show it. If it is not recorded, say that staff must confirm it.";
+      });
+    });
+
+    document.querySelectorAll("[data-insight]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const value = button.dataset.insight;
+        const answers = {
+          reorder: "Simple answer: reorder items that sell fast and are now low in stock.",
+          dead: "Simple answer: list products that have been sitting too long and suggest discount or bundle offers.",
+          profit: "Simple answer: compare selling price and cost to show which products made the most profit."
+        };
+        document.getElementById("businessAiAnswer").textContent = answers[value];
+      });
+    });
+
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const dark = document.documentElement.dataset.theme !== "dark";
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+      document.getElementById("themeToggle").textContent = dark ? "Light Mode" : "Dark Mode";
+    });
+
+    renderBars();
+    renderModules();
+    showPage(location.hash.replace("#", "") || "overview");
+  </script>
+</body>
+</html>

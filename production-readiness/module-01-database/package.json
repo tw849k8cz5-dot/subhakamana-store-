@@ -1,0 +1,20 @@
+{
+  "name": "subhakamana-store-module-01-database",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Production PostgreSQL and Prisma database module for Subhakamana Store Management System.",
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "prisma studio",
+    "verify": "node scripts/verify-database-module.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "prisma": "^5.22.0"
+  },
+  "devDependencies": {}
+}
