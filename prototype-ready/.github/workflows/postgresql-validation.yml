@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - prototype-ready-package-2026-07-17
   pull_request:
   workflow_dispatch:
 
@@ -87,6 +88,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: pnpm
+          cache-dependency-path: |
+            production-readiness/module-01-database/pnpm-lock.yaml
+            production-readiness/module-02-api-foundation/pnpm-lock.yaml
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -136,9 +141,17 @@ jobs:
         working-directory: production-readiness/module-01-database
         run: pnpm install --frozen-lockfile
 
+      - name: Module 1 dependency vulnerability check
+        working-directory: production-readiness/module-01-database
+        run: pnpm audit --audit-level high
+
       - name: Generate Prisma Client
         working-directory: production-readiness/module-01-database
         run: pnpm db:generate
+
+      - name: Validate Prisma schema
+        working-directory: production-readiness/module-01-database
+        run: pnpm exec prisma validate
 
       - name: Apply migrations to empty development database
         working-directory: production-readiness/module-01-database
@@ -175,6 +188,10 @@ jobs:
       - name: Install Module 2 dependencies
         working-directory: production-readiness/module-02-api-foundation
         run: pnpm install --frozen-lockfile
+
+      - name: Module 2 dependency vulnerability check
+        working-directory: production-readiness/module-02-api-foundation
+        run: pnpm audit --audit-level high
 
       - name: Generate Prisma Client for Module 2 test runtime
         working-directory: production-readiness/module-02-api-foundation

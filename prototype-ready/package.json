@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "validate:static": "node scripts/validate-static.mjs",
     "test": "playwright test",
     "test:chromium": "playwright test --project=chromium --reporter=html",
     "show-report": "playwright show-report"

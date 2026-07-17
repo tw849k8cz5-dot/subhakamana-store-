@@ -187,6 +187,7 @@ production-readiness/16-postgresql-validation-environment-report.md
 production-readiness/17-postgresql-ci-sprint-status.md
 production-readiness/18-remaining-production-work-and-validation-status.md
 production-readiness/19-pos-cashier-hardening-implementation-status.md
+production-readiness/20-master-project-completion-initial-audit-2026-07-17.md
 production-readiness/README.md
 production-readiness/module-01-database/.env.example
 production-readiness/module-01-database/README.md
@@ -256,6 +257,7 @@ reports/subhakamana-store-technical-report.md
 reports/subhakamana-system-manager-check-report.md
 run-subhakamana-local.command
 run-subhakamana-overview-local.command
+scripts/validate-static.mjs
 subhakamana-store-ecommerce.html
 subhakamana-store-final-erp-platform.html
 subhakamana-store-physical-pos.html

@@ -2,6 +2,9 @@ name: Playwright QA
 
 on:
   push:
+    branches:
+      - main
+      - prototype-ready-package-2026-07-17
   pull_request:
   workflow_dispatch:
 
@@ -21,6 +24,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: pnpm
+          cache-dependency-path: |
+            package.json
+            outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/package.json
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -29,6 +36,12 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Static JavaScript validation
+        run: pnpm validate:static
+
+      - name: Dependency vulnerability check
+        run: pnpm audit --audit-level high
 
       - name: Install Chromium browser
         run: pnpm exec playwright install chromium
@@ -43,4 +56,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           if-no-files-found: ignore
-

@@ -68,6 +68,9 @@ It does not remove or redesign the current UI. It defines how to convert the cur
 - `19-pos-cashier-hardening-implementation-status.md`
   POS and cashier hardening status for secure shifts, scanning, discounts, split payments, receipts, parked sales, voids, payment corrections, and returns.
 
+- `20-master-project-completion-initial-audit-2026-07-17.md`
+  Master completion prompt initial audit covering repository state, implemented backend foundations, prototype-only areas, P0 blockers, CI changes, and next production phase.
+
 - `module-01-database/`
   Runnable Prisma/PostgreSQL database module with schema, seed script, environment example, and verification script.
 

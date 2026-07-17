@@ -47,11 +47,35 @@ It does not remove or redesign the current UI. It defines how to convert the cur
 - `12-erp-product-inventory-api-migration-report.md`
   Report for the first ERP localStorage-to-Backend API migration: Product List, Add Product, Inventory View, and Receive Stock.
 
+- `13-offline-backend-hardening-report.md`
+  Offline backend hardening report for authentication, sessions, RBAC, and API safety.
+
+- `14-product-inventory-repository-prep-report.md`
+  Product and Inventory repository preparation report.
+
+- `15-postgresql-integration-phase-report.md`
+  PostgreSQL integration phase report covering repository wiring and live database test expectations.
+
+- `16-postgresql-validation-environment-report.md`
+  PostgreSQL validation environment report.
+
+- `17-postgresql-ci-sprint-status.md`
+  Current PostgreSQL CI sprint status and required GitHub Actions validation.
+
+- `18-remaining-production-work-and-validation-status.md`
+  Current remaining work, test evidence, blocked sandbox tests, and next production gates.
+
+- `19-pos-cashier-hardening-implementation-status.md`
+  POS and cashier hardening status for secure shifts, scanning, discounts, split payments, receipts, parked sales, voids, payment corrections, and returns.
+
+- `20-master-project-completion-initial-audit-2026-07-17.md`
+  Master completion prompt initial audit covering repository state, implemented backend foundations, prototype-only areas, P0 blockers, CI changes, and next production phase.
+
 - `module-01-database/`
   Runnable Prisma/PostgreSQL database module with schema, seed script, environment example, and verification script.
 
 - `module-02-api-foundation/`
-  Dependency-free backend API foundation with health endpoints, RBAC rules, idempotency validation, inventory safety rules, and tests.
+  Backend API foundation with authentication, session storage, RBAC rules, Product API, Inventory API, Prisma repositories, idempotency validation, inventory safety rules, and tests.
 
 ## PostgreSQL CI Validation
 
@@ -67,16 +91,13 @@ These secrets are for CI only. They must not point to or reuse production databa
 
 ## Recommended Next Build Step
 
-Module 1 is now started with the production database package. Continue production implementation in this order:
+Module 1 and Module 2 foundations are now included in this package. Continue production implementation in this order:
 
-1. Review `08-full-system-production-audit.md`
-2. Validate and migrate the database in PostgreSQL
-3. Continue Module 2 authentication and backend API implementation
-4. Products
-5. Inventory
-6. Orders and checkout
-7. Delivery by bill number
-8. POS
-9. Payments
-10. Reports
-11. Notifications and backups
+1. Push the latest package to GitHub.
+2. Run PostgreSQL Validation in GitHub Actions.
+3. Run Playwright QA in GitHub Actions or on the user Mac.
+4. Confirm strict frontend API mode against the backend server.
+5. Implement POS checkout APIs.
+6. Implement website checkout and online order APIs.
+7. Implement payment verification APIs.
+8. Implement returns, exchanges, refunds, reports, audit logs, backups, and monitoring.
