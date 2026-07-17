@@ -135,6 +135,8 @@ jobs:
             echo "TEST_DB=${TEST_DB}"
             echo "DATABASE_URL=postgresql://${CI_POSTGRES_USER}:${CI_POSTGRES_PASSWORD}@${CI_POSTGRES_HOST}:${CI_POSTGRES_PORT}/${DEV_DB}?schema=public"
             echo "TEST_DATABASE_URL=postgresql://${CI_POSTGRES_USER}:${CI_POSTGRES_PASSWORD}@${CI_POSTGRES_HOST}:${CI_POSTGRES_PORT}/${TEST_DB}?schema=public"
+            echo "PSQL_DATABASE_URL=postgresql://${CI_POSTGRES_USER}:${CI_POSTGRES_PASSWORD}@${CI_POSTGRES_HOST}:${CI_POSTGRES_PORT}/${DEV_DB}"
+            echo "PSQL_TEST_DATABASE_URL=postgresql://${CI_POSTGRES_USER}:${CI_POSTGRES_PASSWORD}@${CI_POSTGRES_HOST}:${CI_POSTGRES_PORT}/${TEST_DB}"
           } >> "$GITHUB_ENV"
 
       - name: Install Module 1 dependencies
@@ -175,10 +177,10 @@ jobs:
 
           export PGPASSWORD="${CI_POSTGRES_PASSWORD}"
 
-          ROLE_COUNT="$(psql "$DATABASE_URL" -Atc "select count(*) from \"Role\" where name = 'Owner';")"
-          PERMISSION_COUNT="$(psql "$DATABASE_URL" -Atc "select count(*) from \"Permission\";")"
-          MAPPING_COUNT="$(psql "$DATABASE_URL" -Atc "select count(*) from \"RolePermission\" rp join \"Role\" r on r.id = rp.\"roleId\" where r.name = 'Owner';")"
-          ADMIN_COUNT="$(psql "$DATABASE_URL" -Atc "select count(*) from \"User\" where email = '${SEED_ADMIN_EMAIL}' and \"passwordHash\" is not null;")"
+          ROLE_COUNT="$(psql "$PSQL_DATABASE_URL" -Atc "select count(*) from \"Role\" where name = 'Owner';")"
+          PERMISSION_COUNT="$(psql "$PSQL_DATABASE_URL" -Atc "select count(*) from \"Permission\";")"
+          MAPPING_COUNT="$(psql "$PSQL_DATABASE_URL" -Atc "select count(*) from \"RolePermission\" rp join \"Role\" r on r.id = rp.\"roleId\" where r.name = 'Owner';")"
+          ADMIN_COUNT="$(psql "$PSQL_DATABASE_URL" -Atc "select count(*) from \"User\" where email = '${SEED_ADMIN_EMAIL}' and \"passwordHash\" is not null;")"
 
           test "$ROLE_COUNT" = "1"
           test "$PERMISSION_COUNT" -ge "8"
