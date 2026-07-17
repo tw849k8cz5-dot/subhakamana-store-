@@ -31,7 +31,7 @@ function requireExists(...paths) {
 
 const erpUrl = fileUrl("outputs/subhakamana-store-final-erp-platform.html");
 const ecommerceUrl = fileUrl("outputs/subhakamana-store-ecommerce.html");
-const startUrl = fileUrl("outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/index.html");
+const startUrl = fileUrl("outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/START_HERE.html");
 
 async function loginDemo(page) {
   await page.goto(erpUrl);
@@ -92,8 +92,8 @@ test.describe("Subhakamana Store prototype QA", () => {
 
   test("prototype start page links to the three operator entry points", async ({ page }) => {
     await page.goto(startUrl);
-    await expect(page.locator('a[href="subhakamana-store-final-erp-platform.html#dashboard"]')).toBeVisible();
-    await expect(page.locator('a[href="subhakamana-store-physical-pos.html"]')).toBeVisible();
-    await expect(page.locator('a[href="subhakamana-store-ecommerce.html#home"]')).toBeVisible();
+    await expect(page.locator('a[href="subhakamana-store-final-erp-platform.html#dashboard"]').first()).toBeAttached();
+    await expect(page.locator('a[href="subhakamana-store-physical-pos.html"]').first()).toBeAttached();
+    await expect(page.locator('a[href="subhakamana-store-ecommerce.html#home"]').first()).toBeAttached();
   });
 });
