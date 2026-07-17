@@ -1,0 +1,53 @@
+flowchart LR
+  Admin([Admin])
+  Customer([Customer])
+
+  subgraph System["Subhakamana Store Management System"]
+    AdminLogin(("Admin Login"))
+    ManageProducts(("Manage Products"))
+    ManageCategories(("Manage Categories"))
+    InventoryDashboard(("Manage Inventory Dashboard"))
+    ManageOrders(("Manage Orders"))
+    ViewCustomerDetails(("View Customer Details"))
+    LinkWebsiteInventory(("Link Website with Inventory Dashboard"))
+    SendOrderNotifications(("Send Order Notifications"))
+    ViewReports(("View Reports"))
+
+    RegisterLogin(("Register/Login"))
+    BrowseProducts(("Browse Products"))
+    SearchProducts(("Search Products"))
+    AddItemsCart(("Add Items to Cart"))
+    PlaceOrder(("Place Order"))
+    TrackOrder(("Track Order"))
+    ReceiveOrderNotifications(("Receive Order Notifications"))
+  end
+
+  Admin --- AdminLogin
+  Admin --- ManageProducts
+  Admin --- ManageCategories
+  Admin --- InventoryDashboard
+  Admin --- ManageOrders
+  Admin --- ViewCustomerDetails
+  Admin --- LinkWebsiteInventory
+  Admin --- SendOrderNotifications
+  Admin --- ViewReports
+
+  Customer --- RegisterLogin
+  Customer --- BrowseProducts
+  Customer --- SearchProducts
+  Customer --- AddItemsCart
+  Customer --- PlaceOrder
+  Customer --- TrackOrder
+  Customer --- ReceiveOrderNotifications
+
+  ManageProducts -. "<<include>>" .-> AdminLogin
+  ManageCategories -. "<<include>>" .-> AdminLogin
+  InventoryDashboard -. "<<include>>" .-> AdminLogin
+  ManageOrders -. "<<include>>" .-> AdminLogin
+  ViewCustomerDetails -. "<<include>>" .-> AdminLogin
+  LinkWebsiteInventory -. "<<include>>" .-> AdminLogin
+  SendOrderNotifications -. "<<include>>" .-> AdminLogin
+  ViewReports -. "<<include>>" .-> AdminLogin
+
+  PlaceOrder -. "<<include>>" .-> ReceiveOrderNotifications
+  ManageOrders -. "<<include>>" .-> SendOrderNotifications

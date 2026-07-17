@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title desc">
+  <title id="title">UML Use Case Diagram - Subhakamana Store Management System</title>
+  <desc id="desc">Use case diagram for an online clothing store inventory management system with Admin and Customer actors.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .title { font: 700 36px Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #64748b; }
+      .boundary { fill: #ffffff; stroke: #c62828; stroke-width: 3; rx: 22; filter: url(#shadow); }
+      .boundary-title { font: 700 22px Arial, sans-serif; fill: #c62828; }
+      .actor-label { font: 700 20px Arial, sans-serif; fill: #172033; text-anchor: middle; }
+      .actor-line { stroke: #172033; stroke-width: 4; stroke-linecap: round; fill: none; }
+      .usecase { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; filter: url(#shadow); }
+      .usecase-admin { stroke: #c62828; }
+      .usecase-customer { stroke: #1f5eff; }
+      .usecase-shared { stroke: #c59b35; }
+      .uc-text { font: 700 15px Arial, sans-serif; fill: #172033; text-anchor: middle; dominant-baseline: middle; }
+      .assoc { stroke: #475569; stroke-width: 2.2; fill: none; }
+      .include { stroke: #334155; stroke-width: 2; stroke-dasharray: 8 7; fill: none; marker-end: url(#arrow); }
+      .include-label { font: 700 13px Arial, sans-serif; fill: #334155; }
+      .legend-box { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; rx: 12; }
+      .legend-text { font: 600 14px Arial, sans-serif; fill: #334155; }
+      .note { font: 400 14px Arial, sans-serif; fill: #64748b; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1600" height="1100"/>
+
+  <text x="800" y="58" class="title" text-anchor="middle">Subhakamana Store Management System</text>
+  <text x="800" y="88" class="subtitle" text-anchor="middle">Professional UML Use Case Diagram for Online Clothing Store Inventory Management</text>
+
+  <rect x="310" y="130" width="980" height="850" class="boundary"/>
+  <text x="800" y="168" class="boundary-title" text-anchor="middle">System Boundary</text>
+
+  <!-- Actors -->
+  <g id="admin-actor" transform="translate(150,310)">
+    <circle cx="0" cy="0" r="26" class="actor-line"/>
+    <path d="M0 28 L0 112 M-54 66 L54 66 M0 112 L-42 170 M0 112 L42 170" class="actor-line"/>
+    <text x="0" y="210" class="actor-label">Admin</text>
+  </g>
+
+  <g id="customer-actor" transform="translate(1450,420)">
+    <circle cx="0" cy="0" r="26" class="actor-line"/>
+    <path d="M0 28 L0 112 M-54 66 L54 66 M0 112 L-42 170 M0 112 L42 170" class="actor-line"/>
+    <text x="0" y="210" class="actor-label">Customer</text>
+  </g>
+
+  <!-- Admin use cases -->
+  <ellipse cx="530" cy="245" rx="125" ry="38" class="usecase usecase-admin"/>
+  <text x="530" y="245" class="uc-text">Admin Login</text>
+
+  <ellipse cx="565" cy="350" rx="135" ry="38" class="usecase usecase-admin"/>
+  <text x="565" y="350" class="uc-text">Manage Products</text>
+
+  <ellipse cx="875" cy="350" rx="145" ry="38" class="usecase usecase-admin"/>
+  <text x="875" y="350" class="uc-text">Manage Categories</text>
+
+  <ellipse cx="560" cy="455" rx="170" ry="42" class="usecase usecase-admin"/>
+  <text x="560" y="455" class="uc-text">Manage Inventory Dashboard</text>
+
+  <ellipse cx="880" cy="455" rx="125" ry="38" class="usecase usecase-admin"/>
+  <text x="880" y="455" class="uc-text">Manage Orders</text>
+
+  <ellipse cx="560" cy="560" rx="150" ry="38" class="usecase usecase-admin"/>
+  <text x="560" y="560" class="uc-text">View Customer Details</text>
+
+  <ellipse cx="900" cy="560" rx="190" ry="42" class="usecase usecase-admin"/>
+  <text x="900" y="560" class="uc-text">Link Website with Inventory Dashboard</text>
+
+  <ellipse cx="560" cy="665" rx="150" ry="38" class="usecase usecase-admin"/>
+  <text x="560" y="665" class="uc-text">Send Order Notifications</text>
+
+  <ellipse cx="885" cy="665" rx="115" ry="38" class="usecase usecase-admin"/>
+  <text x="885" y="665" class="uc-text">View Reports</text>
+
+  <!-- Customer use cases -->
+  <ellipse cx="1065" cy="245" rx="125" ry="38" class="usecase usecase-customer"/>
+  <text x="1065" y="245" class="uc-text">Register/Login</text>
+
+  <ellipse cx="1085" cy="350" rx="125" ry="38" class="usecase usecase-customer"/>
+  <text x="1085" y="350" class="uc-text">Browse Products</text>
+
+  <ellipse cx="1090" cy="455" rx="125" ry="38" class="usecase usecase-customer"/>
+  <text x="1090" y="455" class="uc-text">Search Products</text>
+
+  <ellipse cx="1100" cy="560" rx="130" ry="38" class="usecase usecase-customer"/>
+  <text x="1100" y="560" class="uc-text">Add Items to Cart</text>
+
+  <ellipse cx="1085" cy="665" rx="115" ry="38" class="usecase usecase-customer"/>
+  <text x="1085" y="665" class="uc-text">Place Order</text>
+
+  <ellipse cx="1060" cy="770" rx="105" ry="38" class="usecase usecase-customer"/>
+  <text x="1060" y="770" class="uc-text">Track Order</text>
+
+  <ellipse cx="790" cy="820" rx="165" ry="40" class="usecase usecase-shared"/>
+  <text x="790" y="820" class="uc-text">Receive Order Notifications</text>
+
+  <!-- Actor associations -->
+  <path d="M205 375 C285 330 360 285 430 250" class="assoc"/>
+  <path d="M205 390 C310 370 410 360 430 355" class="assoc"/>
+  <path d="M205 405 C310 425 405 445 400 455" class="assoc"/>
+  <path d="M205 420 C320 485 425 535 425 560" class="assoc"/>
+  <path d="M205 435 C310 570 415 650 415 665" class="assoc"/>
+  <path d="M205 395 C470 360 720 350 730 350" class="assoc"/>
+  <path d="M205 425 C485 455 750 455 755 455" class="assoc"/>
+  <path d="M205 455 C500 560 705 560 710 560" class="assoc"/>
+  <path d="M205 470 C510 660 745 665 770 665" class="assoc"/>
+
+  <path d="M1395 485 C1315 385 1220 280 1180 250" class="assoc"/>
+  <path d="M1395 500 C1280 425 1225 370 1205 350" class="assoc"/>
+  <path d="M1395 515 C1280 480 1230 462 1215 455" class="assoc"/>
+  <path d="M1395 535 C1270 552 1235 558 1230 560" class="assoc"/>
+  <path d="M1395 555 C1280 610 1215 650 1200 665" class="assoc"/>
+  <path d="M1395 580 C1285 700 1190 760 1165 770" class="assoc"/>
+  <path d="M1395 595 C1230 740 1030 810 955 820" class="assoc"/>
+
+  <!-- Include relationships -->
+  <path d="M470 325 C462 300 478 275 500 265" class="include"/>
+  <text x="438" y="300" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M780 330 C670 300 610 270 565 255" class="include"/>
+  <text x="650" y="302" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M500 420 C480 360 492 295 518 282" class="include"/>
+  <text x="410" y="360" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M835 420 C740 345 640 285 560 260" class="include"/>
+  <text x="705" y="378" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M510 525 C478 430 492 310 520 282" class="include"/>
+  <text x="405" y="495" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M835 525 C740 420 640 315 555 270" class="include"/>
+  <text x="710" y="505" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M520 630 C470 520 485 330 520 282" class="include"/>
+  <text x="395" y="625" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M840 630 C735 510 635 330 555 272" class="include"/>
+  <text x="708" y="625" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M975 660 C875 680 742 675 710 668" class="include"/>
+  <text x="800" y="650" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M1025 690 C955 745 900 785 855 810" class="include"/>
+  <text x="910" y="745" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+  <!-- Legend -->
+  <rect x="330" y="900" width="405" height="62" class="legend-box"/>
+  <line x1="350" y1="922" x2="430" y2="922" class="assoc"/>
+  <text x="445" y="927" class="legend-text">Association</text>
+  <line x1="350" y1="945" x2="430" y2="945" class="include"/>
+  <text x="445" y="950" class="legend-text">Included use case / required use case</text>
+
+  <text x="1268" y="1034" class="note" text-anchor="end">Prepared for Subhakamana Store Management System</text>
+</svg>
