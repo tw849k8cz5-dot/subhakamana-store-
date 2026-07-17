@@ -9,6 +9,7 @@ GITHUB_SYSTEM_REPORT.md
 OPEN_PROTOTYPE.command
 PLAYWRIGHT_QA_GUIDE.md
 README.md
+RUN_BACKEND_API_LOCAL.command
 RUN_BACKEND_OFFLINE_TESTS.command
 RUN_PLAYWRIGHT_QA.command
 RUN_POSTGRESQL_VALIDATION_LOCAL.command
@@ -189,6 +190,7 @@ production-readiness/17-postgresql-ci-sprint-status.md
 production-readiness/18-remaining-production-work-and-validation-status.md
 production-readiness/19-pos-cashier-hardening-implementation-status.md
 production-readiness/20-master-project-completion-initial-audit-2026-07-17.md
+production-readiness/21-local-validation-status-2026-07-17.md
 production-readiness/README.md
 production-readiness/module-01-database/.env.example
 production-readiness/module-01-database/README.md

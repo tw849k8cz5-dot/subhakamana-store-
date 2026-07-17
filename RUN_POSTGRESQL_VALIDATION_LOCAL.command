@@ -45,11 +45,10 @@ cd "$API_DIR"
 pnpm install --frozen-lockfile
 
 echo "Generating Prisma Client for Module 2 runtime..."
-../module-01-database/node_modules/.bin/prisma generate --schema ../module-01-database/prisma/schema.prisma
+pnpm exec prisma generate --schema ../module-01-database/prisma/schema.prisma
 
 echo "Running gated PostgreSQL integration test..."
 node --test test/postgres-integration.test.js
 
 echo "Running all Module 2 tests..."
 pnpm verify
-
