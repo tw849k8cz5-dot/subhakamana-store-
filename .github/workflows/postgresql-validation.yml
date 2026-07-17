@@ -197,7 +197,7 @@ jobs:
 
       - name: Generate Prisma Client for Module 2 test runtime
         working-directory: production-readiness/module-02-api-foundation
-        run: ../module-01-database/node_modules/.bin/prisma generate --schema ../module-01-database/prisma/schema.prisma
+        run: pnpm exec prisma generate --schema ../module-01-database/prisma/schema.prisma
 
       - name: Run gated PostgreSQL integration test
         working-directory: production-readiness/module-02-api-foundation
