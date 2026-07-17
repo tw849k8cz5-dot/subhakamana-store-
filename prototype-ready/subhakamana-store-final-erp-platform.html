@@ -665,6 +665,101 @@
       border-bottom: 0;
     }
 
+    .nepali-calendar-panel {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .calendar-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .calendar-date-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--primary) 11%, var(--panel)), color-mix(in srgb, var(--accent) 12%, var(--panel)));
+      padding: 14px;
+      min-width: min(260px, 100%);
+    }
+
+    .calendar-date-card strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: 28px;
+      line-height: var(--leading-tight);
+      margin-top: 4px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(34px, 1fr));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--panel);
+    }
+
+    .calendar-cell {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .calendar-cell:nth-child(7n) {
+      border-right: 0;
+    }
+
+    .calendar-cell.day-name {
+      min-height: 32px;
+      background: color-mix(in srgb, var(--accent) 12%, var(--panel));
+      color: var(--ink);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+
+    .calendar-cell.is-today {
+      background: var(--primary);
+      color: white;
+      box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 72%, white);
+    }
+
+    .calendar-cell.is-empty {
+      background: color-mix(in srgb, var(--page) 60%, var(--panel));
+    }
+
+    .calendar-reminders {
+      display: grid;
+      gap: 8px;
+    }
+
+    .calendar-reminder {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--panel) 94%, var(--page));
+    }
+
+    .calendar-reminder span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .calm-details {
       margin-top: 16px;
       border: 1px solid var(--line);
@@ -1768,8 +1863,15 @@
     <div class="auth-card">
       <img class="auth-logo" src="assets/brand/subhakamana-store-logo.svg" alt="Subhakamana Store logo" />
       <h1>Subhakamana Store Login</h1>
-      <p class="subtle">Choose who is using the store system. This demo works locally on this computer.</p>
+      <p class="subtle">Choose demo mode for local presentation or API mode for backend-backed product and inventory work.</p>
       <form id="loginForm">
+        <label>Data Mode
+          <select id="loginDataMode">
+            <option value="demo">Demo Mode - local prototype data</option>
+            <option value="api">API Mode - backend required</option>
+          </select>
+        </label>
+        <label>Backend API URL<input id="loginApiBase" type="url" autocomplete="url" value="http://localhost:4000/api/v1" /></label>
         <label>Role
           <select id="loginRole">
             <option value="super">Owner</option>
@@ -1778,9 +1880,11 @@
             <option value="sales">Cashier</option>
           </select>
         </label>
+        <label class="api-login-field">Email<input id="loginEmail" type="email" autocomplete="username" placeholder="admin@subhakamana.store" /></label>
+        <label class="api-login-field">Password<input id="loginPassword" type="password" autocomplete="current-password" placeholder="Backend password" /></label>
         <label>Demo PIN<input id="loginPin" type="password" inputmode="numeric" autocomplete="off" placeholder="Enter role PIN" required /></label>
         <button type="submit">Open Store System</button>
-        <p class="notice" id="loginNotice">Demo PINs: Owner 0000, Manager 1111, Inventory Staff 2222, Cashier 3333.</p>
+        <p class="notice" id="loginNotice">Demo PINs: Owner 0000, Manager 1111, Inventory Staff 2222, Cashier 3333. In API mode, backend login is required and product/inventory data will not fall back to localStorage.</p>
       </form>
     </div>
   </section>
@@ -1876,6 +1980,7 @@
           </details>
         </div>
       </section>
+      <p class="notice" id="apiModeNotice" hidden>Demo mode active. Product and inventory data may use local browser storage.</p>
 
       <section class="page active" id="dashboardPage" data-title="Dashboard" data-description="What happened today, what needs attention, and what to do next.">
         <div class="focus-hero">
@@ -1894,6 +1999,30 @@
         <div class="plain-guide">
           <strong>Simple daily routine for Subhakamana Store</strong>
           <p>Start with Needs Attention, check low stock, open Billing Counter for walk-in sales, prepare Customer Orders for online sales, and use Shop Reports before closing the day.</p>
+        </div>
+
+        <div class="panel nepali-calendar-panel" aria-label="Nepali calendar">
+          <div class="calendar-head">
+            <div>
+              <h2>Nepali Calendar</h2>
+              <p class="subtle">Bikram Sambat calendar for store planning, festival stock, payments, and delivery follow-up.</p>
+            </div>
+            <div class="calendar-date-card">
+              <span class="subtle">Today</span>
+              <strong id="nepaliToday">Loading...</strong>
+              <span class="subtle" id="englishToday">Loading...</span>
+            </div>
+          </div>
+          <div class="grid two-col">
+            <div>
+              <div class="calendar-grid" id="nepaliCalendarGrid" aria-label="Nepali month calendar"></div>
+              <p class="subtle" style="margin-top:8px;">Prototype BS conversion is approximate and can be replaced with a verified Nepali calendar API in production.</p>
+            </div>
+            <div>
+              <h3 style="margin-top:0;">Store Reminders</h3>
+              <div class="calendar-reminders" id="nepaliCalendarReminders"></div>
+            </div>
+          </div>
         </div>
 
         <div class="grid four-col">
@@ -2924,12 +3053,34 @@
 
     const DB_KEY = "subhakamanaStoreErpLocalDbV1";
     const SESSION_KEY = "subhakamanaStoreErpSessionV1";
+    const DATA_MODE_KEY = "subhakamanaStoreDataMode";
+    const API_BASE_KEY = "subhakamanaStoreBackendApiBase";
+    const DEFAULT_API_BASE = "http://localhost:4000/api/v1";
     const DATA_SCHEMA_VERSION = 5;
     const paymentStatusVocabulary = ["CREATED", "PENDING", "AWAITING_PAYMENT", "VERIFYING", "VERIFIED", "PAID", "FAILED", "EXPIRED", "CANCELLED", "REFUNDED", "REQUIRES_REVIEW"];
     const posModePages = ["pos", "orders", "payments"];
 
     function currentSystemMode() {
       return new URLSearchParams(location.search).get("mode") === "pos" ? "pos" : "erp";
+    }
+
+    function currentDataMode() {
+      const queryMode = new URLSearchParams(location.search).get("data");
+      if (queryMode === "api" || queryMode === "demo") return queryMode;
+      return localStorage.getItem(DATA_MODE_KEY) === "api" ? "api" : "demo";
+    }
+
+    function isApiMode() {
+      return currentDataMode() === "api";
+    }
+
+    function setApiNotice(message, type = "info") {
+      const notice = document.getElementById("apiModeNotice");
+      if (!notice) return;
+      notice.hidden = false;
+      notice.textContent = message;
+      notice.style.borderColor = type === "error" ? "var(--danger)" : "var(--line)";
+      notice.style.color = type === "error" ? "var(--danger)" : "var(--muted)";
     }
 
     function initialPageForMode() {
@@ -2987,6 +3138,16 @@
       admin: "Manager",
       inventory: "Inventory Staff",
       sales: "Cashier"
+    };
+
+    const backendRoleMap = {
+      OWNER: "super",
+      ADMIN: "admin",
+      MANAGER: "admin",
+      INVENTORY: "inventory",
+      INVENTORY_STAFF: "inventory",
+      CASHIER: "sales",
+      SALES: "sales"
     };
 
     function currentRoleLabel() {
@@ -3091,6 +3252,93 @@
       });
       const snapshot = { dataSchemaVersion: DATA_SCHEMA_VERSION, products, customers, suppliers, orders, shipments, cart, paymentRecords, auditLog, stockMovements, returns, stockCounts, cashierShifts, quickStockEntries, ncmSettings, ncmApiLogs, ncmWebhookLogs };
       localStorage.setItem(DB_KEY, JSON.stringify(snapshot));
+    }
+
+    function backendApiBase() {
+      return localStorage.getItem(API_BASE_KEY) || DEFAULT_API_BASE;
+    }
+
+    function setBackendApiBase(value) {
+      const clean = String(value || DEFAULT_API_BASE).replace(/\/$/, "");
+      localStorage.setItem(API_BASE_KEY, clean);
+      return clean;
+    }
+
+    async function backendRequest(path, options = {}) {
+      let response;
+      try {
+        response = await fetch(`${backendApiBase()}${path}`, {
+          headers: { "content-type": "application/json", ...(options.headers || {}) },
+          credentials: "include",
+          ...options
+        });
+      } catch (error) {
+        throw new Error(`Backend API unavailable at ${backendApiBase()}. ${error.message}`);
+      }
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || payload.ok === false) {
+        throw new Error(payload?.error?.message || payload?.message || `Backend request failed: ${path}`);
+      }
+      return payload.data;
+    }
+
+    async function loginToBackend(email, password) {
+      const data = await backendRequest("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password })
+      });
+      return data.user;
+    }
+
+    async function restoreBackendSession() {
+      const data = await backendRequest("/auth/me");
+      return data.user;
+    }
+
+    function upsertApiProduct(product) {
+      const normalized = ensureProductInventory({ ...product });
+      ensureProductPhotoUse(normalized);
+      const index = products.findIndex((item) => item.sku === normalized.sku || item.barcode === normalized.barcode || item.id === normalized.id);
+      if (index >= 0) products[index] = { ...products[index], ...normalized };
+      else products.push(normalized);
+      return normalized;
+    }
+
+    async function syncCatalogFromBackend() {
+      try {
+        const [{ products: backendProducts }, { inventory }] = await Promise.all([
+          backendRequest("/products"),
+          backendRequest("/inventory")
+        ]);
+        replaceArray(products, []);
+        if (Array.isArray(backendProducts)) backendProducts.forEach(upsertApiProduct);
+        if (Array.isArray(inventory)) inventory.forEach(upsertApiProduct);
+        if (isApiMode()) {
+          setApiNotice(`API mode active. Product List, Add Product, Inventory View, and Receive Stock are using ${backendApiBase()}.`, "info");
+        }
+        renderEverything();
+        return true;
+      } catch (error) {
+        if (isApiMode()) {
+          setApiNotice(`API mode blocked: ${error.message}`, "error");
+          alert(`API mode blocked. Product and inventory data were not loaded from localStorage.\n\n${error.message}`);
+          return false;
+        }
+        addAudit("Backend Fallback", `Backend API unavailable. Local demo data used. ${error.message}`);
+        return false;
+      }
+    }
+
+    async function createProductThroughBackend(product) {
+      const data = await backendRequest("/products", { method: "POST", body: JSON.stringify(product) });
+      return data.product;
+    }
+
+    async function receiveStockThroughBackend({ sku, quantity, cost, reference, supplier }) {
+      return backendRequest("/inventory/receive-stock", {
+        method: "POST",
+        body: JSON.stringify({ sku, quantity, cost, reference, supplier })
+      });
     }
 
     function addAudit(action, details) {
@@ -3664,6 +3912,7 @@
       ].filter(Boolean);
       document.getElementById("lowStockList").innerHTML = attentionItems.join("") || "<p class='subtle'>No urgent alerts. You're all caught up.</p>";
       document.getElementById("recentOrders").innerHTML = orders.slice(-5).reverse().map((o) => `<div class="activity-item"><strong>${o.id} - ${money(o.total)}</strong><span class="subtle">${o.customer} - ${o.status} - ${o.channel}</span></div>`).join("") || "<p class='subtle'>No recent order activity yet.</p>";
+      renderNepaliCalendar(lowStockProducts, pendingOrders, paymentReviewCount);
 
       renderInventory();
       document.getElementById("posProductRows").innerHTML = products.map((p) => `<tr><td><div class="inventory-product-cell">${productThumb(p, "small")}<div><strong>${p.name}</strong><br>${sourceBadge(p)}</div></div></td><td>${p.barcode}<br><span class="subtle">${p.sku}</span></td><td>${availableStock(p)}</td><td><button class="secondary" onclick="scanToCart('${p.sku}')" ${availableStock(p) <= 0 ? "disabled" : ""}>Add</button></td></tr>`).join("");
@@ -3847,6 +4096,79 @@
 
     function renderShipments() {
       document.getElementById("shipmentRows").innerHTML = shipments.map((s, index) => `<tr><td>${s.tracking}</td><td>${s.billNumber || s.order}</td><td><span class="stacked-text">${s.courier}</span></td><td>${s.city}</td><td><span class="badge ${badgeClass(packageStatus(s))}">${packageStatus(s)}</span></td><td><span class="badge ${badgeClass(ncmShipmentStatus(s))}">${ncmShipmentStatus(s)}</span><br><span class="subtle stacked-text">${s.ncmRequestId || "No NCM request"}</span></td><td><button class="secondary compact-action" type="button" data-shipment-detail="${index}">Details</button></td></tr>`).join("");
+    }
+
+    const nepaliCalendarConfig = {
+      anchorAd: "2026-07-17",
+      anchorBs: { year: 2083, month: 4, day: 1 },
+      months: ["Baisakh", "Jestha", "Ashadh", "Shrawan", "Bhadra", "Ashwin", "Kartik", "Mangsir", "Poush", "Magh", "Falgun", "Chaitra"],
+      weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      monthLengths: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+    };
+
+    function daysBetweenDates(startDate, endDate) {
+      const oneDay = 24 * 60 * 60 * 1000;
+      const start = new Date(`${startDate}T00:00:00`);
+      const end = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+      return Math.round((end - start) / oneDay);
+    }
+
+    function approximateNepaliDate(date = new Date()) {
+      const config = nepaliCalendarConfig;
+      let year = config.anchorBs.year;
+      let month = config.anchorBs.month;
+      let day = config.anchorBs.day + daysBetweenDates(config.anchorAd, date);
+      while (day > config.monthLengths[month - 1]) {
+        day -= config.monthLengths[month - 1];
+        month += 1;
+        if (month > 12) {
+          month = 1;
+          year += 1;
+        }
+      }
+      while (day < 1) {
+        month -= 1;
+        if (month < 1) {
+          month = 12;
+          year -= 1;
+        }
+        day += config.monthLengths[month - 1];
+      }
+      return { year, month, day, monthName: config.months[month - 1] };
+    }
+
+    function renderNepaliCalendar(lowStockProducts = [], pendingOrders = 0, paymentReviewCount = 0) {
+      const today = new Date();
+      const bs = approximateNepaliDate(today);
+      const grid = document.getElementById("nepaliCalendarGrid");
+      const todayLabel = document.getElementById("nepaliToday");
+      const englishLabel = document.getElementById("englishToday");
+      const reminders = document.getElementById("nepaliCalendarReminders");
+      if (!grid || !todayLabel || !englishLabel || !reminders) return;
+
+      todayLabel.textContent = `${bs.day} ${bs.monthName} ${bs.year} BS`;
+      englishLabel.textContent = today.toLocaleDateString("en-NP", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+
+      const daysInMonth = nepaliCalendarConfig.monthLengths[bs.month - 1];
+      const firstDayOffset = (today.getDay() - ((bs.day - 1) % 7) + 7) % 7;
+      const cells = [
+        ...nepaliCalendarConfig.weekdays.map((dayName) => `<div class="calendar-cell day-name">${dayName}</div>`),
+        ...Array.from({ length: firstDayOffset }, () => `<div class="calendar-cell is-empty" aria-hidden="true"></div>`),
+        ...Array.from({ length: daysInMonth }, (_, index) => {
+          const dayNumber = index + 1;
+          return `<div class="calendar-cell ${dayNumber === bs.day ? "is-today" : ""}">${dayNumber}</div>`;
+        })
+      ];
+      grid.innerHTML = cells.join("");
+
+      const reminderRows = [
+        { title: "Festival stock review", value: bs.monthName === "Ashwin" || bs.monthName === "Kartik" ? "High priority" : "Plan ahead" },
+        { title: "Low stock items", value: `${lowStockProducts.length} item${lowStockProducts.length === 1 ? "" : "s"}` },
+        { title: "Orders to process", value: `${pendingOrders} pending` },
+        { title: "Payments to verify", value: `${paymentReviewCount} review` },
+        { title: "Month-end count", value: bs.day >= 27 ? "Prepare stocktake" : `${Math.max(0, 27 - bs.day)} days left` }
+      ];
+      reminders.innerHTML = reminderRows.map((item) => `<div class="calendar-reminder"><strong>${item.title}</strong><span>${item.value}</span></div>`).join("");
     }
 
     function renderStorefront() {
@@ -4311,7 +4633,7 @@
       renderInventory();
     });
 
-    document.getElementById("productForm").addEventListener("submit", (event) => {
+    document.getElementById("productForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!event.currentTarget.reportValidity()) return;
       const action = event.submitter?.value === "draft" ? "Draft" : "Published";
@@ -4322,11 +4644,11 @@
       const sku = document.getElementById("newProductSku").value.trim() || document.getElementById("newProductVariantSku").value.trim() || generatedSku;
       const barcode = document.getElementById("newProductBarcode").value.trim() || String(890100000 + products.length + 1);
       const stock = Number(document.getElementById("newProductVariantStock").value || document.getElementById("newProductStock").value);
-      if (products.some((product) => product.sku.toLowerCase() === sku.toLowerCase())) {
+      if (!isApiMode() && products.some((product) => product.sku.toLowerCase() === sku.toLowerCase())) {
         alert(`SKU already exists: ${sku}`);
         return;
       }
-      if (products.some((product) => product.barcode === barcode)) {
+      if (!isApiMode() && products.some((product) => product.barcode === barcode)) {
         alert(`Barcode already exists: ${barcode}`);
         return;
       }
@@ -4363,6 +4685,24 @@
         images: selectedProductPhotos,
         mainImage: selectedProductPhotos[0]?.src || ""
       };
+      if (isApiMode()) {
+        try {
+          const backendProduct = await createProductThroughBackend({
+            ...createdProduct,
+            showOnWebsite: createdProduct.showOnWebsite,
+            isNewArrival: createdProduct.newArrival,
+            isFeatured: createdProduct.featured
+          });
+          upsertApiProduct(backendProduct);
+          setApiNotice(`API product created: ${backendProduct.sku || sku}. Local fallback was not used.`, "info");
+          renderEverything();
+          showPage("inventory");
+        } catch (error) {
+          setApiNotice(`API Add Product failed: ${error.message}`, "error");
+          alert(`Product was not saved locally because API mode is strict.\n\n${error.message}`);
+        }
+        return;
+      }
       products.push(createdProduct);
       document.getElementById("labelName").textContent = name;
       document.getElementById("labelMeta").textContent = `SKU: ${sku} | Barcode ${barcode} | Size ${size} | Color ${color} | ${action}`;
@@ -4429,19 +4769,33 @@
     document.getElementById("applyPosMemberDiscount").addEventListener("click", applyPosMemberDiscount);
     document.getElementById("clearPosMemberDiscount").addEventListener("click", clearPosMemberDiscount);
 
-    document.getElementById("receiveStockForm").addEventListener("submit", (event) => {
+    document.getElementById("receiveStockForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!event.currentTarget.reportValidity()) return;
       const product = products.find((p) => p.sku === document.getElementById("receiveProduct").value);
       const qty = Number(document.getElementById("receiveQty").value);
       const cost = Number(document.getElementById("receiveCost").value);
       const reference = document.getElementById("receiveReference").value.trim();
+      const supplier = document.getElementById("receiveSupplier").value;
       if (!product || qty <= 0 || cost < 0 || !reference) return;
+      if (isApiMode()) {
+        try {
+          const result = await receiveStockThroughBackend({ sku: product.sku, quantity: qty, cost, reference, supplier });
+          if (result?.product) upsertApiProduct(result.product);
+          setApiNotice(`API stock received for ${product.sku}. Local fallback was not used.`, "info");
+          await syncCatalogFromBackend();
+          showPage("inventory");
+        } catch (error) {
+          setApiNotice(`API Receive Stock failed: ${error.message}`, "error");
+          alert(`Stock was not received locally because API mode is strict.\n\n${error.message}`);
+        }
+        return;
+      }
       ensureProductInventory(product);
       product.onHand += qty;
       product.stock = product.onHand;
       product.cost = cost;
-      addStockMovement(product, qty, "Purchase Received", `${qty} received from ${document.getElementById("receiveSupplier").value}.`, reference);
+      addStockMovement(product, qty, "Purchase Received", `${qty} received from ${supplier}.`, reference);
       addAudit("Purchase Received", `${reference}: ${qty} units received for ${product.name}.`);
       saveDatabase();
       renderEverything();
@@ -4757,9 +5111,40 @@
     document.getElementById("exportReport").addEventListener("click", exportCsv);
     window.addEventListener("hashchange", () => showPage(initialPageForMode()));
 
-    document.getElementById("loginForm").addEventListener("submit", (event) => {
+    document.getElementById("loginDataMode").addEventListener("change", (event) => {
+      const mode = event.target.value;
+      document.getElementById("loginPin").required = mode !== "api";
+      document.getElementById("loginEmail").required = mode === "api";
+      document.getElementById("loginPassword").required = mode === "api";
+      document.getElementById("loginNotice").textContent = mode === "api"
+        ? "API mode selected. Backend login is required and product/inventory actions will never fall back to localStorage."
+        : "Demo PINs: Owner 0000, Manager 1111, Inventory Staff 2222, Cashier 3333.";
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       const role = document.getElementById("loginRole").value;
+      const dataMode = document.getElementById("loginDataMode").value;
+      localStorage.setItem(DATA_MODE_KEY, dataMode);
+      setBackendApiBase(document.getElementById("loginApiBase").value);
+      if (dataMode === "api") {
+        try {
+          const email = document.getElementById("loginEmail").value.trim();
+          const password = document.getElementById("loginPassword").value;
+          const user = await loginToBackend(email, password);
+          const backendRole = String(user.role || "").toUpperCase();
+          const restoredRole = backendRoleMap[backendRole] || role;
+          document.getElementById("roleSelect").value = restoredRole;
+          localStorage.setItem(SESSION_KEY, JSON.stringify({ role: restoredRole, dataMode: "api", email: user.email }));
+          const synced = await syncCatalogFromBackend();
+          if (!synced) return;
+          setApiNotice(`API login active as ${user.email}. Product and inventory workflows are backend-backed.`, "info");
+          openAppForRole(restoredRole);
+        } catch (error) {
+          document.getElementById("loginNotice").textContent = `API login failed: ${error.message}`;
+        }
+        return;
+      }
       const pin = document.getElementById("loginPin").value;
       if (rolePins[role] !== pin) {
         document.getElementById("loginNotice").textContent = "Incorrect demo PIN for selected role.";
@@ -4771,8 +5156,16 @@
       openAppForRole(role);
     });
 
-    document.getElementById("logoutButton").addEventListener("click", () => {
-      addAudit("Logout", `${currentRoleLabel()} exited the local store system.`);
+    document.getElementById("logoutButton").addEventListener("click", async () => {
+      if (isApiMode()) {
+        try {
+          await backendRequest("/auth/logout", { method: "POST" });
+        } catch (error) {
+          setApiNotice(`API logout warning: ${error.message}`, "error");
+        }
+      } else {
+        addAudit("Logout", `${currentRoleLabel()} exited the local store system.`);
+      }
       localStorage.removeItem(SESSION_KEY);
       document.getElementById("appShell").hidden = true;
       document.getElementById("authScreen").hidden = false;
@@ -4785,6 +5178,9 @@
       location.reload();
     });
 
+    document.getElementById("loginDataMode").value = currentDataMode();
+    document.getElementById("loginApiBase").value = backendApiBase();
+    document.getElementById("loginDataMode").dispatchEvent(new Event("change"));
     loadDatabase();
     document.body.dataset.systemMode = currentSystemMode();
     if (currentSystemMode() === "pos") {
@@ -4793,7 +5189,19 @@
     }
     const session = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
     if (session?.role && roleLabels[session.role]) {
-      openAppForRole(session.role);
+      if (isApiMode()) {
+        restoreBackendSession()
+          .then(async () => {
+            const synced = await syncCatalogFromBackend();
+            if (synced) openAppForRole(session.role);
+          })
+          .catch((error) => {
+            localStorage.removeItem(SESSION_KEY);
+            document.getElementById("loginNotice").textContent = `API session restore failed: ${error.message}`;
+          });
+      } else {
+        openAppForRole(session.role);
+      }
     }
   </script>
 </body>

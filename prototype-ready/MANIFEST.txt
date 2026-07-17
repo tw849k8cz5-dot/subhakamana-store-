@@ -183,6 +183,8 @@ outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-qa-test
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-section-functionality-check-report.md
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-store-final-erp-ecommerce-report.md
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-store-final-erp-ecommerce-report.pdf
+outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-store-management-system-project-report-2026-07-17.md
+outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-store-management-system-project-report-2026-07-17.pdf
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-store-overall-system-report.pdf
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-store-production-progress-report.md
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/reports/subhakamana-store-production-progress-report.pdf
@@ -194,4 +196,5 @@ outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/run-subhakamana-overview-lo
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/subhakamana-store-ecommerce.html
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/subhakamana-store-final-erp-platform.html
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/subhakamana-store-physical-pos.html
+outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/subhakamana-store-privacy-policy.html
 outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/subhakamana-store-simple-overview.html
