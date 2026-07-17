@@ -9,12 +9,16 @@ const projectRoot = path.resolve(root, "..");
 function fileUrl(relativePath) {
   const primary = path.join(projectRoot, relativePath);
   if (relativePath.startsWith("outputs/")) {
-    const packaged = path.join(projectRoot, relativePath.replace("outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/", "").replace("outputs/", ""));
-    try {
-      return pathToFileURL(requireExists(primary, packaged)).toString();
-    } catch {
-      return pathToFileURL(primary).toString();
-    }
+    const packageRelative = relativePath
+      .replace("outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/", "")
+      .replace("outputs/", "");
+    const candidates = [
+      primary,
+      path.join(projectRoot, packageRelative),
+      path.join(projectRoot, "prototype-ready", packageRelative),
+      path.join(projectRoot, "outputs", "SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17", packageRelative)
+    ];
+    return pathToFileURL(requireExists(...candidates)).toString();
   }
   return pathToFileURL(primary).toString();
 }
