@@ -1,19 +1,40 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 const permissions = [
   ["auth.login", "auth", "login", "Sign in to the system"],
-  ["products.manage", "products", "manage", "Create and edit products"],
-  ["inventory.manage", "inventory", "manage", "Adjust and receive stock"],
+  ["products.write", "products", "write", "Create and edit products"],
+  ["inventory.read", "inventory", "read", "View product stock and availability"],
+  ["inventory.receive", "inventory", "receive", "Receive supplier stock"],
+  ["inventory.adjust", "inventory", "adjust", "Adjust and correct inventory"],
+  ["pos.sale.create", "pos", "sale.create", "Create physical store sales"],
+  ["pos.discount.apply", "pos", "discount.apply", "Apply approved discounts"],
   ["orders.manage", "orders", "manage", "Manage store and online orders"],
   ["delivery.manage", "delivery", "manage", "Manage delivery by bill number"],
-  ["payments.manage", "payments", "manage", "Verify payments and refunds"],
-  ["reports.view", "reports", "view", "View reports and exports"],
+  ["payments.verify", "payments", "verify", "Verify payments and refunds"],
+  ["returns.create", "returns", "create", "Create return or exchange records"],
+  ["returns.approve", "returns", "approve", "Approve returns, exchanges, and refunds"],
+  ["reports.read", "reports", "read", "View reports and exports"],
+  ["users.manage", "users", "manage", "Manage staff users and access"],
   ["settings.manage", "settings", "manage", "Manage store settings"]
 ];
 
+async function seedAdminPasswordHash() {
+  if (process.env.SEED_ADMIN_PASSWORD_HASH) return process.env.SEED_ADMIN_PASSWORD_HASH;
+  const password = process.env.SEED_ADMIN_PASSWORD;
+  if (!password || password.length < 8) {
+    throw new Error("Set SEED_ADMIN_PASSWORD_HASH or a SEED_ADMIN_PASSWORD with at least 8 characters before running the seed.");
+  }
+  if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+    throw new Error("SEED_ADMIN_PASSWORD must include letters and numbers.");
+  }
+  return bcrypt.hash(password, 12);
+}
+
 async function main() {
+  const passwordHash = await seedAdminPasswordHash();
   const ownerRole = await prisma.role.upsert({
     where: { name: "Owner" },
     update: {},
@@ -41,7 +62,7 @@ async function main() {
       roleId: ownerRole.id,
       fullName: process.env.SEED_ADMIN_NAME ?? "Subhakamana Store Admin",
       email: process.env.SEED_ADMIN_EMAIL ?? "admin@subhakamanastore.local",
-      passwordHash: process.env.SEED_ADMIN_PASSWORD_HASH ?? "replace_with_argon2_hash_from_auth_module"
+      passwordHash
     }
   });
 

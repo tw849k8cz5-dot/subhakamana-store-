@@ -49,8 +49,15 @@
 
     * { box-sizing: border-box; }
 
+    html {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       margin: 0;
+      max-width: 100%;
+      overflow-x: hidden;
       background:
         radial-gradient(circle at 9% 2%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 24%),
         radial-gradient(circle at 94% 0%, color-mix(in srgb, var(--violet) 12%, transparent), transparent 28%),
@@ -69,12 +76,16 @@
     }
 
     .app {
+      width: 100%;
+      max-width: 100vw;
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+      overflow-x: hidden;
     }
 
     .sidebar {
+      min-width: 0;
       position: sticky;
       top: 0;
       height: 100vh;
@@ -207,8 +218,11 @@
     }
 
     .main {
+      width: 100%;
+      max-width: 100%;
       min-width: 0;
       padding: 22px 28px 36px;
+      overflow-x: hidden;
     }
 
     .topbar {
@@ -222,6 +236,7 @@
       padding: 16px 18px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(18px);
+      min-width: 0;
     }
 
     .topbar-utility {
@@ -296,6 +311,7 @@
       border-radius: var(--radius);
       background: var(--panel);
       box-shadow: var(--shadow-soft);
+      max-width: calc(100vw - 32px);
     }
 
     .user-menu-panel .button-link,
@@ -403,6 +419,8 @@
     .page {
       display: none;
       margin-top: 18px;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
     .page.active { display: block; }
@@ -416,11 +434,34 @@
       min-width: 0;
     }
 
+    .topbar > *,
+    .topbar-utility > *,
+    .toolbar > *,
+    .form-row > *,
+    .variant-row > *,
+    .two-col > *,
+    .three-col > *,
+    .four-col > *,
+    .return-workspace > *,
+    .platform-gateway > *,
+    .storefront > *,
+    .storefront-tools > *,
+    .architecture-flow > *,
+    .architecture-tier > *,
+    .service-list > *,
+    .channel-grid > *,
+    .workflow-chain > * {
+      min-width: 0;
+      max-width: 100%;
+    }
+
     .kpis {
       grid-template-columns: repeat(6, minmax(140px, 1fr));
     }
 
     .card, .panel, .table-wrap {
+      min-width: 0;
+      max-width: 100%;
       background: color-mix(in srgb, var(--panel) 94%, transparent);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -430,7 +471,8 @@
 
     .table-wrap {
       max-width: 100%;
-      overflow-x: auto;
+      overflow-x: hidden;
+      overflow-y: visible;
     }
 
     .detail-backdrop {
@@ -480,7 +522,8 @@
     }
 
     .drawer-body {
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
       display: grid;
       gap: 12px;
     }
@@ -525,11 +568,11 @@
     }
 
     .two-col {
-      grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .return-workspace {
-      grid-template-columns: minmax(360px, 0.95fr) minmax(420px, 1.05fr);
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
       align-items: start;
     }
 
@@ -546,15 +589,15 @@
     }
 
     .three-col {
-      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .four-col {
-      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .platform-gateway {
-      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       margin-bottom: 16px;
     }
 
@@ -875,7 +918,7 @@
 
     .architecture-flow {
       display: grid;
-      grid-template-columns: minmax(180px, 1fr) 42px minmax(210px, 1.2fr) 42px minmax(210px, 1.2fr);
+      grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1.2fr) 42px minmax(0, 1.2fr);
       align-items: center;
       gap: 10px;
       margin-top: 14px;
@@ -984,7 +1027,7 @@
 
     .toolbar {
       display: grid;
-      grid-template-columns: 1fr 170px 150px auto;
+      grid-template-columns: minmax(0, 1fr) minmax(120px, 170px) minmax(120px, 150px) auto;
       gap: 10px;
       margin-bottom: 14px;
     }
@@ -993,36 +1036,39 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 14px;
+      table-layout: fixed;
     }
 
     .table-wrap table {
-      min-width: 640px;
+      min-width: 0;
     }
 
     .table-wrap table:has(thead th:nth-child(6)) {
-      min-width: 760px;
+      min-width: 0;
     }
 
     .table-wrap table:has(thead th:nth-child(7)) {
-      min-width: 900px;
+      min-width: 0;
     }
 
     .table-wrap table:has(thead th:nth-child(8)) {
-      min-width: 1040px;
+      min-width: 0;
     }
 
     .table-wrap td:last-child button,
     .table-wrap td:last-child .button-link {
-      white-space: nowrap;
+      width: 100%;
+      white-space: normal;
     }
 
     .shipment-table {
-      min-width: 880px;
+      min-width: 0;
     }
 
     .shipment-table th,
     .shipment-table td {
-      word-break: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
     }
 
     .shipment-table th:nth-child(1),
@@ -1031,26 +1077,31 @@
     .shipment-table td:nth-child(2),
     .shipment-table th:nth-child(7),
     .shipment-table td:nth-child(7) {
-      white-space: nowrap;
-      width: 1%;
+      white-space: normal;
+      width: auto;
     }
 
     .shipment-table .stacked-text {
       display: inline-block;
-      min-width: 92px;
+      min-width: 0;
+      max-width: 100%;
     }
 
     .shipment-table .compact-action {
-      white-space: nowrap;
-      min-width: 82px;
+      white-space: normal;
+      min-width: 0;
       padding-inline: 12px;
     }
 
     th, td {
       text-align: left;
-      padding: 13px 14px;
+      padding: 12px 10px;
       border-bottom: 1px solid var(--line);
       vertical-align: top;
+      min-width: 0;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     th {
@@ -1070,7 +1121,8 @@
       border-radius: 999px;
       font-size: 12px;
       font-weight: 800;
-      white-space: nowrap;
+      white-space: normal;
+      text-align: center;
     }
 
     .ok { color: var(--success); background: color-mix(in srgb, var(--success) 13%, transparent); }
@@ -1086,7 +1138,7 @@
 
     .bar-row {
       display: grid;
-      grid-template-columns: 100px 1fr 70px;
+      grid-template-columns: minmax(0, 100px) minmax(0, 1fr) minmax(44px, 70px);
       align-items: center;
       gap: 10px;
       font-size: 13px;
@@ -1224,7 +1276,7 @@
 
     .variant-row {
       display: grid;
-      grid-template-columns: 0.8fr 0.9fr 1.4fr 0.8fr auto;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.9fr) minmax(0, 1.4fr) minmax(0, 0.8fr) auto;
       gap: 10px;
       align-items: end;
     }
@@ -1299,7 +1351,8 @@
       grid-template-columns: repeat(6, minmax(96px, 1fr));
       gap: 10px;
       max-height: 460px;
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
       padding: 10px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -1500,14 +1553,14 @@
     }
 
     .package-status {
-      min-width: 190px;
+      min-width: 0;
     }
 
     .package-timeline {
       display: grid;
       gap: 5px;
       margin-top: 8px;
-      min-width: 210px;
+      min-width: 0;
     }
 
     .package-step {
@@ -1545,6 +1598,19 @@
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 12px;
+    }
+
+    .receipt-preview {
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      max-height: 280px;
+      overflow-y: auto;
+      background: color-mix(in srgb, var(--secondary) 78%, var(--panel));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
     }
 
     .auth-screen {
@@ -1698,7 +1764,7 @@
 
     .storefront {
       display: grid;
-      grid-template-columns: repeat(3, minmax(210px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 16px;
     }
 
@@ -1710,7 +1776,7 @@
 
     .storefront-tools {
       align-items: end;
-      grid-template-columns: 1fr 160px 160px;
+      grid-template-columns: minmax(0, 1fr) minmax(120px, 160px) minmax(120px, 160px);
       margin-top: 14px;
     }
 
@@ -1742,7 +1808,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      min-width: 220px;
+      min-width: 0;
     }
 
     .inventory-thumb {
@@ -1836,7 +1902,7 @@
       .main { padding: 16px; }
       .topbar, .top-actions { display: grid; justify-content: stretch; }
       .top-actions > * { width: 100%; }
-      .kpis, .two-col, .three-col, .four-col, .toolbar, .form-row, .form-row.three, .form-row.four, .variant-row, .storefront, .nav, .platform-gateway, .storefront-tools {
+      .kpis, .two-col, .three-col, .four-col, .toolbar, .form-row, .form-row.three, .form-row.four, .variant-row, .storefront, .nav, .platform-gateway, .storefront-tools, .return-workspace {
         grid-template-columns: 1fr;
       }
       .access-row { grid-template-columns: 1fr; }
@@ -1848,7 +1914,7 @@
       .product-entry-actions { justify-content: stretch; }
       .product-entry-actions button { width: 100%; }
       .image-strip, .demo-image-gallery { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
-    .table-wrap { overflow-x: auto; }
+      .table-wrap { overflow-x: hidden; }
 
       .focus-hero, .topbar-utility { display: grid; justify-content: stretch; }
       .global-search { min-width: 0; width: 100%; }
@@ -2308,6 +2374,7 @@
         <div class="grid two-col">
           <div class="panel">
             <h2>Scan or Search</h2>
+            <p class="notice" id="posShiftNotice">Open a cashier shift before completing sales. Scanning can still be tested before a shift is open.</p>
             <form class="form" id="posForm">
               <label>Barcode / SKU<input id="posSearch" autocomplete="off" inputmode="text" enterkeyhint="enter" placeholder="Scan barcode or type SKU, e.g. 890100001" /></label>
               <button type="submit">Add to Cart</button>
@@ -2336,13 +2403,40 @@
                 <button class="secondary" type="button" id="clearPosMemberDiscount">Clear Discount</button>
               </div>
               <p class="notice" id="posMemberNotice">Default checkout uses Walk-in Customer. Members, friends, and family can enter a phone number for a prototype discount.</p>
+              <div class="form-row">
+                <label>Bill Discount NPR<input id="posBillDiscount" type="number" min="0" value="0" /></label>
+                <label>Manager Approval PIN<input id="posManagerApproval" type="password" inputmode="numeric" placeholder="Needed for large discount" /></label>
+              </div>
               <label>Payment Method<select id="posPayment"><option>Cash</option><option>Bank QR Payment</option><option>eSewa</option><option>Khalti</option><option>Bank Transfer</option><option>Cash on Delivery</option></select></label>
+              <details class="advanced-panel">
+                <summary>Split Payments</summary>
+                <div class="form-row three" style="padding:0 14px 14px;">
+                  <label>Cash Amount<input id="splitCash" type="number" min="0" value="0" /></label>
+                  <label>Digital Amount<input id="splitDigital" type="number" min="0" value="0" /></label>
+                  <label>Digital Method<select id="splitDigitalMethod"><option>eSewa</option><option>Khalti</option><option>Bank QR Payment</option><option>Bank Transfer</option></select></label>
+                </div>
+              </details>
               <div class="notice" id="posQrPanel">Select Bank QR Payment, eSewa, Khalti, or Bank Transfer to show simulated QR verification status.</div>
               <div class="platform-actions">
                 <button class="secondary" type="button" id="simulatePosPaymentVerified">Simulate Payment Verified</button>
                 <button class="secondary" type="button" id="simulatePosManualOverride">Manual Override</button>
               </div>
-              <button type="button" id="completeSale">Complete Sale</button>
+              <div class="platform-actions">
+                <button type="button" id="completeSale">Complete Sale</button>
+                <button class="secondary" type="button" id="parkSale">Park Sale</button>
+                <button class="secondary" type="button" id="resumeSale">Resume Sale</button>
+                <button class="secondary" type="button" id="voidSale">Void Last Sale</button>
+              </div>
+              <div class="form-row">
+                <label>Reprint Receipt<select id="receiptReprintSelect"></select></label>
+                <label>Correct Payment<select id="paymentCorrectionSelect"></select></label>
+              </div>
+              <div class="platform-actions">
+                <button class="secondary" type="button" id="reprintReceipt">Reprint Receipt</button>
+                <button class="secondary" type="button" id="correctPayment">Correct Wrong Payment</button>
+                <button class="secondary" type="button" id="printLastReceipt">Print Last Receipt</button>
+              </div>
+              <pre class="receipt-preview" id="receiptPreview">No receipt generated yet.</pre>
             </div>
           </div>
         </div>
@@ -3033,9 +3127,13 @@
     let stockCounts = [];
     let cashierShifts = [];
     let quickStockEntries = [];
+    let parkedSales = [];
+    let receipts = [];
+    let processedSaleKeys = [];
     let selectedProductPhotos = [];
     let posMemberOffer = { phone: "", type: "", rate: 0 };
     let posPaymentState = { status: "CREATED", transactionId: "", method: "" };
+    let saleInProgress = false;
     let ncmSettings = {
       environment: "Demo",
       tokenMasked: "•••• a83c",
@@ -3194,6 +3292,9 @@
       if (!Array.isArray(saved.stockCounts)) saved.stockCounts = [];
       if (!Array.isArray(saved.cashierShifts)) saved.cashierShifts = [];
       if (!Array.isArray(saved.quickStockEntries)) saved.quickStockEntries = [];
+      if (!Array.isArray(saved.parkedSales)) saved.parkedSales = [];
+      if (!Array.isArray(saved.receipts)) saved.receipts = [];
+      if (!Array.isArray(saved.processedSaleKeys)) saved.processedSaleKeys = [];
       if (!saved.ncmSettings || typeof saved.ncmSettings !== "object") saved.ncmSettings = { ...ncmSettings };
       if (!Array.isArray(saved.ncmApiLogs)) saved.ncmApiLogs = [];
       if (!Array.isArray(saved.ncmWebhookLogs)) saved.ncmWebhookLogs = [];
@@ -3225,6 +3326,9 @@
         stockCounts = Array.isArray(saved.stockCounts) ? saved.stockCounts : [];
         cashierShifts = Array.isArray(saved.cashierShifts) ? saved.cashierShifts : [];
         quickStockEntries = Array.isArray(saved.quickStockEntries) ? saved.quickStockEntries : [];
+        parkedSales = Array.isArray(saved.parkedSales) ? saved.parkedSales : [];
+        receipts = Array.isArray(saved.receipts) ? saved.receipts : [];
+        processedSaleKeys = Array.isArray(saved.processedSaleKeys) ? saved.processedSaleKeys : [];
         ncmSettings = { ...ncmSettings, ...(saved.ncmSettings || {}) };
         ncmApiLogs = Array.isArray(saved.ncmApiLogs) ? saved.ncmApiLogs : [];
         ncmWebhookLogs = Array.isArray(saved.ncmWebhookLogs) ? saved.ncmWebhookLogs : [];
@@ -3240,6 +3344,9 @@
         stockCounts = [];
         cashierShifts = [];
         quickStockEntries = [];
+        parkedSales = [];
+        receipts = [];
+        processedSaleKeys = [];
         ncmApiLogs = [];
         ncmWebhookLogs = [];
       }
@@ -3250,7 +3357,7 @@
         ensureProductInventory(product);
         ensureProductPhotoUse(product);
       });
-      const snapshot = { dataSchemaVersion: DATA_SCHEMA_VERSION, products, customers, suppliers, orders, shipments, cart, paymentRecords, auditLog, stockMovements, returns, stockCounts, cashierShifts, quickStockEntries, ncmSettings, ncmApiLogs, ncmWebhookLogs };
+      const snapshot = { dataSchemaVersion: DATA_SCHEMA_VERSION, products, customers, suppliers, orders, shipments, cart, paymentRecords, auditLog, stockMovements, returns, stockCounts, cashierShifts, quickStockEntries, parkedSales, receipts, processedSaleKeys, ncmSettings, ncmApiLogs, ncmWebhookLogs };
       localStorage.setItem(DB_KEY, JSON.stringify(snapshot));
     }
 
@@ -3915,7 +4022,7 @@
       renderNepaliCalendar(lowStockProducts, pendingOrders, paymentReviewCount);
 
       renderInventory();
-      document.getElementById("posProductRows").innerHTML = products.map((p) => `<tr><td><div class="inventory-product-cell">${productThumb(p, "small")}<div><strong>${p.name}</strong><br>${sourceBadge(p)}</div></div></td><td>${p.barcode}<br><span class="subtle">${p.sku}</span></td><td>${availableStock(p)}</td><td><button class="secondary" onclick="scanToCart('${p.sku}')" ${availableStock(p) <= 0 ? "disabled" : ""}>Add</button></td></tr>`).join("");
+      document.getElementById("posProductRows").innerHTML = products.map((p) => `<tr><td><div class="inventory-product-cell">${productThumb(p, "small")}<div><strong>${p.name}</strong><br><span class="subtle">${p.variant}</span><br>${sourceBadge(p)}</div></div></td><td>${p.barcode}<br><span class="subtle">${p.sku}</span></td><td>${availableStock(p)}</td><td><button class="secondary" onclick="scanToCart('${p.sku}')" ${availableStock(p) <= 0 ? "disabled" : ""}>Add</button></td></tr>`).join("");
       document.getElementById("orderRows").innerHTML = orders.map((o) => {
         const shipment = shipments.find((s) => s.order === o.id);
         return `<tr><td>${o.id}</td><td>${o.customer}</td><td>${money(o.total)}</td><td><span class="badge ${badgeClass(o.payment)}">${o.payment}</span></td><td><span class="badge ${badgeClass(o.delivery)}">${o.delivery}</span></td><td>${shipment?.tracking || "Not Created"}</td><td><button class="secondary" type="button" data-order-detail="${o.id}">View Details</button></td></tr>`;
@@ -4259,6 +4366,34 @@
       renderEverything();
     }
 
+    function activeShift() {
+      return cashierShifts.find((shift) => shift.status === "Open");
+    }
+
+    function currentRoleKey() {
+      return document.getElementById("roleSelect")?.value || "super";
+    }
+
+    function maxDiscountRate() {
+      const role = currentRoleKey();
+      if (role === "super") return 0.6;
+      if (role === "admin") return 0.25;
+      return 0.1;
+    }
+
+    function managerApprovalOk() {
+      const pin = document.getElementById("posManagerApproval")?.value || "";
+      return pin === rolePins.super || pin === rolePins.admin;
+    }
+
+    function discountApprovalRequired(totalDiscount, subtotal) {
+      return subtotal > 0 && totalDiscount / subtotal > maxDiscountRate();
+    }
+
+    function generateSaleKey() {
+      return `SALE-${Date.now()}-${Math.floor(100000 + Math.random() * 899999)}`;
+    }
+
     function addToCart(sku) {
       const code = String(sku || "").trim();
       const product = products.find((p) => p.sku.toLowerCase() === code.toLowerCase() || p.barcode === code);
@@ -4267,10 +4402,10 @@
       const item = cart.find((line) => line.sku === product.sku);
       if (item && item.qty < availableStock(product)) item.qty += 1;
       else if (item) return { ok: false, message: `${product.name} cannot exceed available stock (${availableStock(product)}).` };
-      else cart.push({ sku: product.sku, name: product.name, price: product.price, qty: 1 });
+      else cart.push({ sku: product.sku, name: product.name, variant: product.variant, barcode: product.barcode, listedPrice: product.price, price: product.price, itemDiscount: 0, qty: 1 });
       renderCart();
       saveDatabase();
-      return { ok: true, message: `${product.name} added from scan/code ${code}.` };
+      return { ok: true, message: `${product.name} (${product.variant}) added from scan/code ${code}. Stock verified: ${availableStock(product)} available.` };
     }
 
     function scanToCart(code) {
@@ -4286,10 +4421,35 @@
     }
 
     function renderCart() {
-      document.getElementById("cartRows").innerHTML = cart.map((item) => `<div class="cart-item"><span>${item.name}<br><span class="subtle">${item.qty} x ${money(item.price)}</span></span><strong>${money(item.qty * item.price)}</strong></div>`).join("") || "<p class='subtle'>Cart is empty.</p>";
-      const subtotal = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
-      const discount = Math.round(subtotal * posMemberOffer.rate);
-      document.getElementById("cartTotal").textContent = discount > 0 ? `${money(Math.max(0, subtotal - discount))} after ${money(discount)} discount` : money(subtotal);
+      const shift = activeShift();
+      const shiftNotice = document.getElementById("posShiftNotice");
+      if (shiftNotice) {
+        shiftNotice.innerHTML = shift
+          ? `<strong>Open Shift:</strong> ${shift.id} (${shift.cashier}, ${shift.register}). Sales can be completed.`
+          : `<strong>No open shift.</strong> Open a cashier shift from Returns / Counts before completing a sale.`;
+      }
+      document.getElementById("cartRows").innerHTML = cart.map((item, index) => {
+        const product = productBySku(item.sku);
+        const lineTotal = Math.max(0, Number(item.price || 0) * Number(item.qty || 0) - Number(item.itemDiscount || 0));
+        return `<div class="cart-item">
+          <span>
+            <strong>${item.name}</strong><br>
+            <span class="subtle">${item.variant || product?.variant || "Variant not set"} | ${item.sku} | Stock ${product ? availableStock(product) : "?"}</span>
+            <div class="form-row three" style="margin-top:8px;">
+              <label>Qty<input type="number" min="1" value="${item.qty}" data-cart-qty="${index}" /></label>
+              <label>Selling Price<input type="number" min="0" value="${item.price}" data-cart-price="${index}" /></label>
+              <label>Item Discount<input type="number" min="0" value="${item.itemDiscount || 0}" data-cart-discount="${index}" /></label>
+            </div>
+          </span>
+          <strong>${money(lineTotal)}</strong>
+        </div>`;
+      }).join("") || "<p class='subtle'>Cart is empty.</p>";
+      const totals = currentPosTotals();
+      document.getElementById("cartTotal").textContent = totals.totalDiscount > 0
+        ? `${money(totals.total)} after ${money(totals.totalDiscount)} discount`
+        : money(totals.total);
+      renderReceiptSelectors();
+      renderPosPaymentPanel();
       saveDatabase();
     }
 
@@ -4298,9 +4458,88 @@
     }
 
     function currentPosTotals() {
-      const subtotal = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
-      const discount = Math.round(subtotal * posMemberOffer.rate);
-      return { subtotal, discount, total: Math.max(0, subtotal - discount) };
+      const subtotal = cart.reduce((sum, item) => sum + Number(item.qty || 0) * Number(item.price || 0), 0);
+      const itemDiscount = cart.reduce((sum, item) => sum + Number(item.itemDiscount || 0), 0);
+      const memberDiscount = Math.round(Math.max(0, subtotal - itemDiscount) * posMemberOffer.rate);
+      const billDiscount = Number(document.getElementById("posBillDiscount")?.value || 0);
+      const totalDiscount = Math.min(subtotal, itemDiscount + memberDiscount + billDiscount);
+      return { subtotal, itemDiscount, memberDiscount, billDiscount, totalDiscount, discount: totalDiscount, total: Math.max(0, subtotal - totalDiscount) };
+    }
+
+    function splitPaymentsForTotal(total, primaryMethod) {
+      const cash = Number(document.getElementById("splitCash")?.value || 0);
+      const digital = Number(document.getElementById("splitDigital")?.value || 0);
+      const digitalMethod = document.getElementById("splitDigitalMethod")?.value || "eSewa";
+      if (cash > 0 || digital > 0) {
+        const sum = cash + digital;
+        if (sum !== total) return { ok: false, message: `Split payment must equal bill total ${money(total)}. Current split is ${money(sum)}.` };
+        return { ok: true, payments: [{ method: "Cash", amount: cash }, { method: digitalMethod, amount: digital }].filter((payment) => payment.amount > 0) };
+      }
+      return { ok: true, payments: [{ method: primaryMethod, amount: total }] };
+    }
+
+    function preflightPosSale(totals) {
+      if (!activeShift()) return { ok: false, message: "Open a cashier shift before completing a sale." };
+      if (!cart.length) return { ok: false, message: "Cart is empty." };
+      if (discountApprovalRequired(totals.totalDiscount, totals.subtotal) && !managerApprovalOk()) {
+        return { ok: false, message: "Manager approval PIN is required for this discount level." };
+      }
+      for (const item of cart) {
+        const product = productBySku(item.sku);
+        if (!product) return { ok: false, message: `Product missing for ${item.sku}.` };
+        if (Number(item.qty || 0) <= 0) return { ok: false, message: `Invalid quantity for ${item.name}.` };
+        if (Number(item.price || 0) < 0 || Number(item.itemDiscount || 0) < 0) return { ok: false, message: `Invalid price or discount for ${item.name}.` };
+        if (Number(item.itemDiscount || 0) > Number(item.qty || 0) * Number(item.price || 0)) return { ok: false, message: `Item discount is larger than line total for ${item.name}.` };
+        if (availableStock(product) < Number(item.qty || 0)) return { ok: false, message: `${item.name} has only ${availableStock(product)} available.` };
+      }
+      return { ok: true };
+    }
+
+    function generateReceipt(order, payments) {
+      const lines = [
+        "SUBHAKAMANA STORE",
+        "Tradition you can wear, quality you can trust.",
+        "--------------------------------",
+        `Bill: ${order.id}`,
+        `Date: ${new Date().toLocaleString()}`,
+        `Cashier: ${currentRoleLabel()}`,
+        `Customer: ${order.customer}`,
+        "--------------------------------",
+        ...order.items.map((item) => `${item.name}\n ${item.variant || ""}\n ${item.qty} x ${money(item.price)} - Disc ${money(item.itemDiscount || 0)} = ${money(Math.max(0, item.qty * item.price - (item.itemDiscount || 0)))}`),
+        "--------------------------------",
+        `Subtotal: ${money(order.subtotal)}`,
+        `Item Discount: ${money(order.itemDiscount || 0)}`,
+        `Member Discount: ${money(order.memberDiscount || 0)}`,
+        `Bill Discount: ${money(order.billDiscount || 0)}`,
+        `TOTAL: ${money(order.total)}`,
+        `Payment: ${payments.map((payment) => `${payment.method} ${money(payment.amount)}`).join(" + ")}`,
+        "--------------------------------",
+        "Exchange/return requires bill.",
+        "Thank you."
+      ];
+      return lines.join("\n");
+    }
+
+    function renderReceiptSelectors() {
+      const receiptSelect = document.getElementById("receiptReprintSelect");
+      const correctionSelect = document.getElementById("paymentCorrectionSelect");
+      if (receiptSelect) receiptSelect.innerHTML = receipts.map((receipt) => `<option value="${receipt.orderId}">${receipt.orderId} - ${money(receipt.total)}</option>`).join("") || "<option value=''>No receipt</option>";
+      if (correctionSelect) correctionSelect.innerHTML = paymentRecords.map((payment, index) => `<option value="${index}">${payment.order} - ${payment.method} - ${money(payment.amount)}</option>`).join("") || "<option value=''>No payment</option>";
+    }
+
+    function printReceiptText(text) {
+      document.getElementById("receiptPreview").textContent = text || "No receipt generated yet.";
+      try {
+        const printWindow = window.open("", "_blank", "width=360,height=640");
+        if (!printWindow) throw new Error("Print window blocked.");
+        printWindow.document.write(`<pre style="font-family:monospace;font-size:12px;white-space:pre-wrap;">${String(text).replace(/[&<>]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[char]))}</pre>`);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+      } catch (error) {
+        addAudit("Printer Failure Recovery", `Receipt print could not open automatically. Receipt remains on screen. ${error.message}`);
+        alert("Printer/window failed. Receipt is kept on screen and can be reprinted.");
+      }
     }
 
     function applyPosMemberDiscount() {
@@ -4315,6 +4554,16 @@
       }
       const rate = type === "Friends & Family" ? 0.1 : type === "Festival Offer" ? 0.07 : 0.05;
       posMemberOffer = { phone, type, rate };
+      const existingCustomer = customers.find((customer) => customer.phone === phone);
+      if (existingCustomer) {
+        document.getElementById("posCustomer").value = existingCustomer.name;
+      } else {
+        const memberName = `${type} ${phone.slice(-4)}`;
+        customers.push({ name: memberName, phone, city: "Local", orders: 0, spend: 0, address: "Added from POS member lookup", source: "Role Assigned" });
+        document.getElementById("posCustomer").innerHTML = `<option>Walk-in Customer</option>` + customers.map((c) => `<option>${c.name}</option>`).join("");
+        document.getElementById("posCustomer").value = memberName;
+        addAudit("Member Added", `${memberName} added from POS phone lookup.`);
+      }
       notice.textContent = `${type} discount applied for ${phone}: ${Math.round(rate * 100)}% off cart subtotal.`;
       renderCart();
     }
@@ -4761,6 +5010,22 @@
       scanToCart(document.getElementById("posSearch").value);
     });
 
+    document.getElementById("cartRows").addEventListener("input", (event) => {
+      const qtyIndex = event.target.dataset.cartQty;
+      const priceIndex = event.target.dataset.cartPrice;
+      const discountIndex = event.target.dataset.cartDiscount;
+      const index = qtyIndex ?? priceIndex ?? discountIndex;
+      if (index == null || !cart[index]) return;
+      if (qtyIndex != null) cart[index].qty = Math.max(1, Number(event.target.value || 1));
+      if (priceIndex != null) cart[index].price = Math.max(0, Number(event.target.value || 0));
+      if (discountIndex != null) cart[index].itemDiscount = Math.max(0, Number(event.target.value || 0));
+      renderCart();
+    });
+
+    ["posBillDiscount", "splitCash", "splitDigital"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", renderCart);
+    });
+
     document.getElementById("focusScanner").addEventListener("click", () => {
       document.getElementById("posSearch").focus();
       document.getElementById("scannerFeedback").textContent = "Scanner field is focused. Scan the product barcode now.";
@@ -4814,6 +5079,19 @@
       const inspection = document.getElementById("returnInspection").value;
       const refundMethod = document.getElementById("returnRefundMethod").value;
       if (!product || qty <= 0) return;
+      const order = orders.find((item) => item.id === orderId);
+      if (order?.items?.length) {
+        const soldQty = order.items.filter((item) => item.sku === product.sku).reduce((sum, item) => sum + Number(item.qty || 0), 0);
+        const alreadyReturned = returns.filter((item) => item.orderId === orderId && item.sku === product.sku).reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+        if (!soldQty) {
+          alert("Selected product was not found on this bill.");
+          return;
+        }
+        if (qty > soldQty - alreadyReturned) {
+          alert(`Partial return limit exceeded. Sold: ${soldQty}, already returned: ${alreadyReturned}.`);
+          return;
+        }
+      }
       ensureProductInventory(product);
       if (replacement) ensureProductInventory(replacement);
       if (status === "Exchanged" && (!replacement || availableStock(replacement) < qty)) {
@@ -5026,33 +5304,227 @@
     });
 
     document.getElementById("completeSale").addEventListener("click", () => {
-      if (!cart.length) return;
+      if (saleInProgress) return;
+      saleInProgress = true;
+      document.getElementById("completeSale").disabled = true;
       const totals = currentPosTotals();
       const total = totals.total;
       const paymentMethod = document.getElementById("posPayment").value;
       const qrMethods = ["Bank QR Payment", "eSewa", "Khalti", "Bank Transfer"];
-      if (qrMethods.includes(paymentMethod) && !["VERIFIED", "REQUIRES_REVIEW"].includes(posPaymentState.status)) {
+      const preflight = preflightPosSale(totals);
+      if (!preflight.ok) {
+        alert(preflight.message);
+        saleInProgress = false;
+        document.getElementById("completeSale").disabled = false;
+        return;
+      }
+      const splitDigitalAmount = Number(document.getElementById("splitDigital")?.value || 0);
+      const splitDigitalMethod = document.getElementById("splitDigitalMethod")?.value || "";
+      const digitalPaymentNeedsVerification = qrMethods.includes(paymentMethod) || (splitDigitalAmount > 0 && qrMethods.includes(splitDigitalMethod));
+      if (digitalPaymentNeedsVerification && !["VERIFIED", "REQUIRES_REVIEW"].includes(posPaymentState.status)) {
         alert("Verify the QR/digital payment first, or record a manual override with a reason.");
+        saleInProgress = false;
+        document.getElementById("completeSale").disabled = false;
+        return;
+      }
+      const split = splitPaymentsForTotal(total, paymentMethod);
+      if (!split.ok) {
+        alert(split.message);
+        saleInProgress = false;
+        document.getElementById("completeSale").disabled = false;
+        return;
+      }
+      const saleKey = generateSaleKey();
+      if (processedSaleKeys.includes(saleKey)) {
+        saleInProgress = false;
+        document.getElementById("completeSale").disabled = false;
         return;
       }
       const orderId = "#POS-" + String(1000 + orders.length);
-      cart.forEach((item) => {
-        const product = products.find((p) => p.sku === item.sku);
-        ensureProductInventory(product);
-        product.onHand = Math.max(0, product.onHand - item.qty);
-        product.stock = product.onHand;
-        addStockMovement(product, -item.qty, "POS Sale", `Sold through ${orderId}.`, orderId);
-      });
-      const paidStatus = paymentMethod === "Cash on Delivery" ? "Pending" : qrMethods.includes(paymentMethod) ? posPaymentState.status : "PAID";
-      orders.push({ id: orderId, channel: "POS", customer: document.getElementById("posCustomer").value, total, subtotal: totals.subtotal, discount: totals.discount, memberPhone: posMemberOffer.phone, memberType: posMemberOffer.type, payment: paymentMethod, paymentStatus: paidStatus, status: "Completed", delivery: "Store Pickup", createdBy: currentRoleLabel() });
-      paymentRecords.unshift({ order: orderId, method: paymentMethod, amount: total, status: paidStatus, transactionId: posPaymentState.transactionId || `POS-${Date.now()}`, user: currentRoleLabel(), time: new Date().toLocaleString() });
-      addAudit("POS Sale Completed", `${orderId} total ${money(total)} paid by ${paymentMethod}. ${totals.discount > 0 ? `${money(totals.discount)} ${posMemberOffer.type} discount applied. ` : ""}Stock reduced.`);
+      const cartSnapshot = cart.map((item) => ({ ...item }));
+      const productSnapshot = products.map((product) => ({ sku: product.sku, onHand: product.onHand, stock: product.stock }));
+      try {
+        cartSnapshot.forEach((item) => {
+          const product = products.find((p) => p.sku === item.sku);
+          ensureProductInventory(product);
+          product.onHand -= item.qty;
+          product.stock = product.onHand;
+          addStockMovement(product, -item.qty, "POS Sale", `Sold through ${orderId}. Idempotency ${saleKey}.`, orderId);
+        });
+        const paidStatus = paymentMethod === "Cash on Delivery" ? "Pending" : digitalPaymentNeedsVerification ? posPaymentState.status : "PAID";
+        const order = {
+          id: orderId,
+          channel: "POS",
+          customer: document.getElementById("posCustomer").value,
+          total,
+          subtotal: totals.subtotal,
+          itemDiscount: totals.itemDiscount,
+          memberDiscount: totals.memberDiscount,
+          billDiscount: totals.billDiscount,
+          discount: totals.totalDiscount,
+          memberPhone: posMemberOffer.phone,
+          memberType: posMemberOffer.type,
+          payment: split.payments.length > 1 ? "Split Payment" : paymentMethod,
+          paymentStatus: paidStatus,
+          status: "Completed",
+          delivery: "Store Pickup",
+          items: cartSnapshot,
+          idempotencyKey: saleKey,
+          shiftId: activeShift()?.id,
+          createdBy: currentRoleLabel()
+        };
+        orders.push(order);
+        const saleCustomer = customers.find((customer) => customer.name === order.customer || customer.phone === order.memberPhone);
+        if (saleCustomer) {
+          saleCustomer.orders = Number(saleCustomer.orders || 0) + 1;
+          saleCustomer.spend = Number(saleCustomer.spend || 0) + total;
+        }
+        split.payments.forEach((payment) => paymentRecords.unshift({ order: orderId, method: payment.method, amount: payment.amount, status: paidStatus, transactionId: posPaymentState.transactionId || `${saleKey}-${payment.method}`, user: currentRoleLabel(), time: new Date().toLocaleString() }));
+        const receiptText = generateReceipt(order, split.payments);
+        receipts.unshift({ orderId, total, text: receiptText, time: new Date().toLocaleString(), status: "Printed" });
+        receipts = receipts.slice(0, 50);
+        processedSaleKeys.unshift(saleKey);
+        processedSaleKeys = processedSaleKeys.slice(0, 100);
+        addAudit("POS Sale Completed", `${orderId} total ${money(total)} paid by ${order.payment}. Discounts: item ${money(totals.itemDiscount)}, member ${money(totals.memberDiscount)}, bill ${money(totals.billDiscount)}. Stock reduced.`);
+        cart = [];
+        posPaymentState = { status: "CREATED", transactionId: "", method: "" };
+        document.getElementById("posBillDiscount").value = "0";
+        document.getElementById("splitCash").value = "0";
+        document.getElementById("splitDigital").value = "0";
+        clearPosMemberDiscount();
+        saveDatabase();
+        renderEverything();
+        printReceiptText(receiptText);
+        showPage("orders");
+      } catch (error) {
+        productSnapshot.forEach((snapshot) => {
+          const product = products.find((item) => item.sku === snapshot.sku);
+          if (product) {
+            product.onHand = snapshot.onHand;
+            product.stock = snapshot.stock;
+          }
+        });
+        addAudit("POS Sale Rolled Back", `${orderId} failed before completion. ${error.message}`);
+        alert(`Sale was not completed. Stock was restored.\n\n${error.message}`);
+      } finally {
+        saleInProgress = false;
+        document.getElementById("completeSale").disabled = false;
+      }
+    });
+
+    document.getElementById("parkSale").addEventListener("click", () => {
+      if (!cart.length) {
+        alert("Cart is empty.");
+        return;
+      }
+      const parked = {
+        id: "PARK-" + String(1000 + parkedSales.length),
+        cart: cart.map((item) => ({ ...item })),
+        customer: document.getElementById("posCustomer").value,
+        memberOffer: { ...posMemberOffer },
+        time: new Date().toLocaleString()
+      };
+      parkedSales.unshift(parked);
       cart = [];
-      posPaymentState = { status: "CREATED", transactionId: "", method: "" };
-      clearPosMemberDiscount();
+      addAudit("Sale Parked", `${parked.id} parked with ${parked.cart.length} item lines.`);
       saveDatabase();
       renderEverything();
-      showPage("orders");
+      alert(`${parked.id} parked. Use Resume Sale to bring it back.`);
+    });
+
+    document.getElementById("resumeSale").addEventListener("click", () => {
+      if (cart.length && !confirm("Current cart has items. Replace it with the latest parked sale?")) return;
+      const parked = parkedSales.shift();
+      if (!parked) {
+        alert("No parked sale to resume.");
+        return;
+      }
+      cart = parked.cart.map((item) => ({ ...item }));
+      posMemberOffer = { ...parked.memberOffer };
+      document.getElementById("posCustomer").value = parked.customer || "Walk-in Customer";
+      if (posMemberOffer.phone) document.getElementById("posMemberPhone").value = posMemberOffer.phone;
+      addAudit("Sale Resumed", `${parked.id} resumed.`);
+      saveDatabase();
+      renderEverything();
+    });
+
+    document.getElementById("reprintReceipt").addEventListener("click", () => {
+      const orderId = document.getElementById("receiptReprintSelect").value;
+      const receipt = receipts.find((item) => item.orderId === orderId);
+      if (!receipt) {
+        alert("No receipt selected.");
+        return;
+      }
+      receipt.reprintedAt = new Date().toLocaleString();
+      receipt.reprintCount = Number(receipt.reprintCount || 0) + 1;
+      addAudit("Receipt Reprinted", `${orderId} reprinted. Count: ${receipt.reprintCount}.`);
+      saveDatabase();
+      printReceiptText(receipt.text);
+    });
+
+    document.getElementById("printLastReceipt").addEventListener("click", () => {
+      const receipt = receipts[0];
+      if (!receipt) {
+        alert("No receipt generated yet.");
+        return;
+      }
+      printReceiptText(receipt.text);
+    });
+
+    document.getElementById("correctPayment").addEventListener("click", () => {
+      const index = Number(document.getElementById("paymentCorrectionSelect").value);
+      const payment = paymentRecords[index];
+      if (!payment) {
+        alert("No payment selected.");
+        return;
+      }
+      if (!managerApprovalOk()) {
+        alert("Manager approval PIN is required to correct a wrong payment.");
+        return;
+      }
+      const newMethod = prompt("Correct payment method:", payment.method);
+      if (!newMethod) return;
+      const oldMethod = payment.method;
+      payment.method = newMethod;
+      payment.status = "REQUIRES_REVIEW";
+      payment.correctedAt = new Date().toLocaleString();
+      payment.correctedBy = currentRoleLabel();
+      addAudit("Wrong Payment Corrected", `${payment.order}: ${oldMethod} changed to ${newMethod}. Marked for review.`);
+      saveDatabase();
+      renderEverything();
+    });
+
+    document.getElementById("voidSale").addEventListener("click", () => {
+      const receipt = receipts[0];
+      if (!receipt) {
+        alert("No completed sale to void.");
+        return;
+      }
+      if (!managerApprovalOk()) {
+        alert("Manager approval PIN is required to void a sale.");
+        return;
+      }
+      const order = orders.find((item) => item.id === receipt.orderId);
+      if (!order || order.voided) {
+        alert("Latest sale is already voided or not found.");
+        return;
+      }
+      if (!confirm(`Void ${order.id} and restore sold stock?`)) return;
+      (order.items || []).forEach((item) => {
+        const product = productBySku(item.sku);
+        if (!product) return;
+        ensureProductInventory(product);
+        product.onHand += Number(item.qty || 0);
+        product.stock = product.onHand;
+        addStockMovement(product, Number(item.qty || 0), "POS Void Restock", `${order.id} voided by ${currentRoleLabel()}.`, order.id);
+      });
+      order.voided = true;
+      order.status = "Voided";
+      paymentRecords.unshift({ order: order.id, method: "Void Reversal", amount: -Math.abs(Number(order.total || 0)), status: "REQUIRES_REVIEW", transactionId: `VOID-${Date.now()}`, user: currentRoleLabel(), time: new Date().toLocaleString() });
+      receipt.status = "Voided";
+      addAudit("Sale Voided", `${order.id} voided and stock restored.`);
+      saveDatabase();
+      renderEverything();
     });
 
     document.getElementById("shipmentOrder").addEventListener("change", fillShipmentForm);
