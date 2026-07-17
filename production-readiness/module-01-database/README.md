@@ -51,11 +51,21 @@ No UI redesign is required. Existing screens can keep their current layout while
 ## Security
 
 - Passwords are represented only by hashes.
-- Authentication module must create those hashes with Argon2 before saving users.
+- Authentication module must create those hashes with bcrypt or Argon2id before saving users.
 - Refresh tokens are represented only by hashes.
 - Permissions are stored server-side and attached to roles.
 - Important actions are expected to write audit logs.
 - Soft-delete fields keep business history available for investigation.
+
+## Migration
+
+The initial Prisma migration is stored at:
+
+```text
+prisma/migrations/20260715000000_initial_production_schema/migration.sql
+```
+
+It was generated from the Prisma schema with `prisma migrate diff --from-empty --to-schema-datamodel`.
 
 ## Testing
 
