@@ -84,6 +84,11 @@ jobs:
               ;;
           esac
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -92,11 +97,6 @@ jobs:
           cache-dependency-path: |
             production-readiness/module-01-database/pnpm-lock.yaml
             production-readiness/module-02-api-foundation/pnpm-lock.yaml
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Install PostgreSQL client
         shell: bash
