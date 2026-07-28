@@ -38,7 +38,7 @@ async function loginDemo(page) {
   await page.selectOption("#loginDataMode", "demo");
   await page.selectOption("#loginRole", "super");
   await page.fill("#loginPin", "0000");
-  await page.getByRole("button", { name: /enter system/i }).click();
+  await page.getByRole("button", { name: /open store system/i }).click();
   await expect(page.locator("#appShell")).toBeVisible();
 }
 
@@ -87,7 +87,7 @@ test.describe("Subhakamana Store prototype QA", () => {
     await expect(page.getByRole("link", { name: /subhakamana store logo/i })).toBeVisible();
     await expect(page.locator('a[href="subhakamana-store-privacy-policy.html"]')).toBeVisible();
     await page.locator('a[href="#shop"]').first().click();
-    await expect(page.locator("#shop")).toBeVisible();
+    await expect(page.getByRole("heading", { name: /new arrivals/i })).toBeVisible();
   });
 
   test("prototype start page links to the three operator entry points", async ({ page }) => {
