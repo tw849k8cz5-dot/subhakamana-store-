@@ -46,7 +46,7 @@ test.describe("Subhakamana Store prototype QA", () => {
   test("ERP opens and demo login reaches dashboard", async ({ page }) => {
     await loginDemo(page);
     await expect(page.locator("#pageTitle")).toContainText("Dashboard");
-    await expect(page.getByText("Nepali Calendar")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Nepali Calendar" })).toBeVisible();
   });
 
   test("main ERP pages do not create document-level horizontal scroll", async ({ page }) => {
@@ -87,7 +87,8 @@ test.describe("Subhakamana Store prototype QA", () => {
     await expect(page.getByRole("link", { name: /subhakamana store logo/i })).toBeVisible();
     await expect(page.locator('a[href="subhakamana-store-privacy-policy.html"]')).toBeVisible();
     await page.locator('a[href="#shop"]').first().click();
-    await expect(page.getByRole("heading", { name: /new arrivals/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /shop collection/i })).toBeVisible();
+    await expect(page.locator("#productGrid .product-card").first()).toBeVisible();
   });
 
   test("prototype start page links to the three operator entry points", async ({ page }) => {
