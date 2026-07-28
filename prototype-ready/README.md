@@ -18,6 +18,14 @@ START_HERE.html
 
 You can also open `START_HERE.html` directly in a browser.
 
+For the release handoff page, open:
+
+```text
+RELEASE_CENTER.html
+```
+
+The release center includes release notes, the grand release checklist, a demo script, developer handoff instructions, validation commands, reports, and the production boundary.
+
 ## Main Prototype Screens
 
 - `subhakamana-store-final-erp-platform.html` - Admin ERP for products, stock, orders, delivery, reports, and management.
@@ -41,6 +49,11 @@ In API mode, Product List, Add Product, Inventory View, and Receive Stock do not
 
 ## Included Documentation
 
+- `RELEASE_CENTER.html` - grand release entry point.
+- `GRAND_RELEASE_NOTES_2026-07-20.md` - release summary and included assets.
+- `GRAND_RELEASE_CHECKLIST_2026-07-20.md` - final prototype-release checklist.
+- `GRAND_RELEASE_DEMO_SCRIPT_2026-07-20.md` - presenter script.
+- `GRAND_RELEASE_HANDOFF_2026-07-20.md` - developer and GitHub handoff.
 - `docs/` - user manuals and local use guides.
 - `reports/` - progress, technical, hosting, framework, and overall system reports.
 - `diagrams/` - UML use case diagram files.

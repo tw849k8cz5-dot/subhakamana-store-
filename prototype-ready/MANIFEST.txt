@@ -1,14 +1,21 @@
-Subhakamana Store Prototype Ready Package
-Generated: 2026-07-17
+Subhakamana Store Grand Release Single Folder
+Grand release package date: 2026-07-21
+Source refresh: 2026-07-20
 
 Files:
 .github/workflows/playwright-qa.yml
 .github/workflows/postgresql-validation.yml
 GITHUB_READY_README.md
 GITHUB_SYSTEM_REPORT.md
+GRAND_RELEASE_CHECKLIST_2026-07-20.md
+GRAND_RELEASE_DEMO_SCRIPT_2026-07-20.md
+GRAND_RELEASE_HANDOFF_2026-07-20.md
+GRAND_RELEASE_NOTES_2026-07-20.md
 OPEN_PROTOTYPE.command
+OPEN_THIS_FIRST_GRAND_RELEASE.txt
 PLAYWRIGHT_QA_GUIDE.md
 README.md
+RELEASE_CENTER.html
 RUN_BACKEND_API_LOCAL.command
 RUN_BACKEND_OFFLINE_TESTS.command
 RUN_PLAYWRIGHT_QA.command
@@ -16,6 +23,7 @@ RUN_POSTGRESQL_VALIDATION_LOCAL.command
 RUN_STATIC_VALIDATION.command
 START_HERE.html
 STRICT_API_MODE_AND_POSTGRES_CI_STATUS_2026-07-17.md
+UPDATE_GITHUB_FROM_THIS_SINGLE_FOLDER.command
 assets/brand/subhakamana-store-logo.svg
 assets/products/EF2125/EF2125-001.jpg
 assets/products/EF2125/EF2125-002.jpg

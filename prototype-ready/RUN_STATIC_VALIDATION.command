@@ -1,7 +1,7 @@
 #!/bin/zsh
 set -euo pipefail
 
-PROJECT_DIR="/Users/bibekadhikari/Documents/Codex/2026-07-03/files-mentioned-by-the-user-subhakamana"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BUNDLED_NODE="/Users/bibekadhikari/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node"
 
 cd "$PROJECT_DIR"

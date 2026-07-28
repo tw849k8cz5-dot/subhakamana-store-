@@ -59,20 +59,6 @@ PostgreSQL validation with non-production databases:
 DATABASE_URL="postgresql://..." TEST_DATABASE_URL="postgresql://..." SEED_ADMIN_PASSWORD="..." ./RUN_POSTGRESQL_VALIDATION_LOCAL.command
 ```
 
-Start the local backend API after migrations and seed are valid:
-
-```bash
-DATABASE_URL="postgresql://..." ./RUN_BACKEND_API_LOCAL.command
-```
-
-Then open the ERP login screen, choose **API Mode**, and use:
-
-```text
-http://localhost:4000/api/v1
-```
-
-In API mode, Product List, Add Product, Inventory View, and Receive Stock use the backend. They do not silently fall back to local demo records.
-
 ## GitHub Actions
 
 Included workflows:
@@ -98,3 +84,4 @@ See:
 outputs/reports/subhakamana-store-full-system-report-2026-07-17.md
 outputs/reports/subhakamana-store-full-system-report-2026-07-17.pdf
 ```
+
