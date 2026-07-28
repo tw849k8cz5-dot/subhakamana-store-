@@ -14,8 +14,8 @@ function fileUrl(relativePath) {
       .replace("outputs/", "");
     const candidates = [
       primary,
-      path.join(projectRoot, packageRelative),
       path.join(projectRoot, "prototype-ready", packageRelative),
+      path.join(projectRoot, packageRelative),
       path.join(projectRoot, "outputs", "SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17", packageRelative)
     ];
     return pathToFileURL(requireExists(...candidates)).toString();
@@ -84,7 +84,7 @@ test.describe("Subhakamana Store prototype QA", () => {
 
   test("customer website opens with shop and privacy policy link", async ({ page }) => {
     await page.goto(ecommerceUrl);
-    await expect(page.getByText("Tradition You Can Wear")).toBeVisible();
+    await expect(page.getByRole("link", { name: /subhakamana store logo/i })).toBeVisible();
     await expect(page.locator('a[href="subhakamana-store-privacy-policy.html"]')).toBeVisible();
     await page.locator('a[href="#shop"]').first().click();
     await expect(page.locator("#shop")).toBeVisible();
