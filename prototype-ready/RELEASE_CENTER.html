@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subhakamana Store Grand Release Center</title>
+  <style>
+    :root {
+      --primary: #C05A26;
+      --ink: #34231A;
+      --gold: #DCB13D;
+      --muted: #7A6255;
+      --line: #E9C687;
+      --page: #FAFAF3;
+      --panel: #FFFFFF;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      padding: 28px;
+    }
+    main { max-width: 1080px; margin: 0 auto; }
+    .hero {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 16px 44px rgba(52, 35, 26, 0.08);
+    }
+    .lockup { display: flex; gap: 16px; align-items: center; }
+    .logo {
+      width: 84px;
+      height: 84px;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 6px;
+      background: white;
+    }
+    h1, h2, p { margin-top: 0; }
+    h1 { color: var(--primary); font-size: clamp(28px, 4vw, 42px); line-height: 1.1; margin-bottom: 8px; }
+    h2 { font-size: 20px; margin-bottom: 8px; }
+    p { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 13px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-weight: 800;
+    }
+    a.secondary {
+      background: white;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    .status {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .status div {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: white;
+    }
+    .status strong { display: block; color: var(--primary); margin-bottom: 4px; }
+    @media (max-width: 760px) {
+      body { padding: 16px; }
+      .grid, .status { grid-template-columns: 1fr; }
+      .lockup { align-items: flex-start; }
+      .actions a { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="lockup">
+        <img class="logo" src="assets/brand/subhakamana-store-logo.svg" alt="Subhakamana Store logo" />
+        <div>
+          <h1>Grand Release Center</h1>
+          <p>Subhakamana Store Management System release package for demonstration, GitHub sharing, developer handoff, and production planning.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="status" aria-label="Release status">
+      <div><strong>ERP</strong><p>Ready for prototype demonstration.</p></div>
+      <div><strong>POS</strong><p>Ready for cashier workflow review.</p></div>
+      <div><strong>Website</strong><p>Ready for customer storefront review.</p></div>
+      <div><strong>Backend</strong><p>Foundation included for next engineering phase.</p></div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Open The Platform</h2>
+        <p>Start with the release home page or open each platform directly.</p>
+        <div class="actions">
+          <a href="START_HERE.html">Start Here</a>
+          <a class="secondary" href="subhakamana-store-final-erp-platform.html#dashboard">Admin ERP</a>
+          <a class="secondary" href="subhakamana-store-physical-pos.html">Cashier POS</a>
+          <a class="secondary" href="subhakamana-store-ecommerce.html#home">Customer Website</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Release Documents</h2>
+        <p>Use these for presentation, checklist review, and handoff.</p>
+        <div class="actions">
+          <a href="GRAND_RELEASE_NOTES_2026-07-20.md">Release Notes</a>
+          <a class="secondary" href="GRAND_RELEASE_CHECKLIST_2026-07-20.md">Release Checklist</a>
+          <a class="secondary" href="GRAND_RELEASE_DEMO_SCRIPT_2026-07-20.md">Demo Script</a>
+          <a class="secondary" href="GRAND_RELEASE_HANDOFF_2026-07-20.md">Developer Handoff</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Reports</h2>
+        <p>Open the formal project and technical reports for submission or stakeholder review.</p>
+        <div class="actions">
+          <a href="reports/subhakamana-store-full-system-report-2026-07-17.pdf">Full System PDF</a>
+          <a class="secondary" href="reports/subhakamana-store-management-system-project-report-2026-07-17.pdf">Project Report PDF</a>
+          <a class="secondary" href="reports/subhakamana-hosting-requirements-report.pdf">Hosting PDF</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Production Readiness</h2>
+        <p>Review the backend, database, security, API, CI, and migration plan.</p>
+        <div class="actions">
+          <a href="production-readiness/README.md">Production Index</a>
+          <a class="secondary" href="production-readiness/01-system-architecture.md">Architecture</a>
+          <a class="secondary" href="production-readiness/03-api-contract.md">API Contract</a>
+          <a class="secondary" href="production-readiness/18-remaining-production-work-and-validation-status.md">Remaining Work</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Validation</h2>
+        <p>Use these command files from the package folder when local dependencies are available.</p>
+        <div class="actions">
+          <a href="RUN_STATIC_VALIDATION.command">Static Validation</a>
+          <a class="secondary" href="RUN_PLAYWRIGHT_QA.command">Browser QA</a>
+          <a class="secondary" href="RUN_BACKEND_OFFLINE_TESTS.command">Backend Tests</a>
+          <a class="secondary" href="RUN_POSTGRESQL_VALIDATION_LOCAL.command">PostgreSQL Validation</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Production Boundary</h2>
+        <p>This is a polished prototype and backend foundation. Live production use still requires hosted backend deployment, payment verification, courier production integration, storage, monitoring, backups, and security review.</p>
+        <div class="actions">
+          <a href="production-readiness/18-remaining-production-work-and-validation-status.md">Read Boundary</a>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

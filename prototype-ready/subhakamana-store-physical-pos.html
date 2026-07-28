@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subhakamana Store Physical POS</title>
+  <style>
+    :root {
+      --primary: #C05A26;
+      --primary-dark: #8A3B1C;
+      --gold: #DCB13D;
+      --violet: #955494;
+      --ink: #34231A;
+      --muted: #7A6255;
+      --line: #E9C687;
+      --panel: #FFFFFF;
+      --page: #FAFAF3;
+      --ok: #16803c;
+      --warn: #b7791f;
+      --bad: #b91c1c;
+      --shadow: 0 16px 42px rgba(43, 39, 37, 0.09);
+      --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --sans: Inter, Arial, sans-serif;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      border-radius: var(--radius);
+      min-height: 42px;
+      padding: 10px 14px;
+      background: var(--primary);
+      color: white;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    button:hover { background: var(--primary-dark); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    button.secondary {
+      background: white;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    button.gold {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 9px 11px;
+      background: white;
+      color: var(--ink);
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 18px;
+      background: linear-gradient(90deg, var(--primary-dark), var(--ink));
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: white;
+      padding: 4px;
+      flex: 0 0 auto;
+    }
+
+    .brand strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(20px, 3vw, 28px);
+      line-height: 1.05;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+
+    .brand span {
+      display: block;
+      color: rgba(255, 248, 240, 0.78);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .top-actions a, .top-actions button {
+      min-height: 38px;
+      padding: 8px 11px;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      font-weight: 850;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.8fr);
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .panel, .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 14px;
+    }
+
+    .panel h2, .panel h3 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      line-height: 1.18;
+    }
+
+    .scanner {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px;
+      background: color-mix(in srgb, var(--gold) 8%, white);
+    }
+
+    .kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .kpi strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 20px;
+      color: var(--primary-dark);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .product-card {
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .product-card h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.22;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 850;
+      background: color-mix(in srgb, var(--gold) 18%, white);
+      color: var(--ink);
+    }
+
+    .badge.ok { background: #dcfce7; color: #166534; }
+    .badge.warn { background: #fef3c7; color: #92400e; }
+    .badge.bad { background: #fee2e2; color: #991b1b; }
+
+    .cart {
+      position: sticky;
+      top: 86px;
+      align-self: start;
+      display: grid;
+      gap: 12px;
+    }
+
+    .cart-lines {
+      display: grid;
+      gap: 9px;
+      max-height: 35vh;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .cart-line {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px;
+      background: white;
+    }
+
+    .qty-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 7px;
+    }
+
+    .qty-row button {
+      min-width: 32px;
+      min-height: 30px;
+      padding: 0;
+    }
+
+    .manual-price {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+      margin-top: 8px;
+    }
+
+    .manual-price input {
+      min-height: 36px;
+      padding: 7px 9px;
+    }
+
+    .line-adjustment {
+      color: var(--primary-dark);
+      font-weight: 850;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .totals {
+      display: grid;
+      gap: 7px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .grand {
+      font-size: 21px;
+      color: var(--primary-dark);
+      font-weight: 900;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .member-list {
+      display: grid;
+      gap: 8px;
+      max-height: 190px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .member-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: white;
+      padding: 10px;
+    }
+
+    .notice {
+      border: 1px solid color-mix(in srgb, var(--gold) 55%, var(--line));
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--gold) 11%, white);
+      color: var(--ink);
+      padding: 10px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .receipt {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      place-items: center;
+      background: rgba(43, 39, 37, 0.55);
+      padding: 16px;
+    }
+
+    .receipt.open { display: grid; }
+
+    .receipt-card {
+      width: min(420px, 100%);
+      background: white;
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.24);
+    }
+
+    .receipt-lines {
+      border-top: 1px dashed var(--line);
+      border-bottom: 1px dashed var(--line);
+      padding: 10px 0;
+      margin: 10px 0;
+      display: grid;
+      gap: 7px;
+    }
+
+    .receipt-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .empty-state {
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      color: var(--muted);
+      text-align: center;
+      background: color-mix(in srgb, var(--gold) 5%, white);
+    }
+
+    @media print {
+      body > .app { display: none; }
+      .receipt { display: block; position: static; background: white; padding: 0; }
+      .receipt-card { box-shadow: none; width: 100%; }
+      .receipt-actions { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; }
+      .cart { position: static; }
+      .scanner, .checkout-grid, .kpis, .member-card { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .top-actions { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="open-subhakamana-store-system.html">
+        <img src="assets/brand/subhakamana-store-logo.svg" alt="Subhakamana Store logo" />
+        <span>
+          <strong>Subhakamana Store POS</strong>
+          <span>Physical store billing counter</span>
+        </span>
+      </a>
+      <div class="top-actions">
+        <a href="open-subhakamana-store-system.html">System Home</a>
+        <a href="subhakamana-store-final-erp-platform.html#dashboard">Admin ERP</a>
+        <a href="subhakamana-store-final-erp-platform.html#orders">Orders</a>
+        <button type="button" id="resetPos">Reset POS Cart</button>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="panel">
+          <h2>Fast Billing</h2>
+          <div class="scanner">
+            <label>Scan Barcode / Type SKU / Search Product
+              <input id="scanInput" autocomplete="off" inputmode="text" enterkeyhint="enter" placeholder="Scan barcode or type product name" autofocus />
+            </label>
+            <button type="button" id="scanButton">Add Item</button>
+            <button class="secondary" type="button" id="focusScanner">Focus Scanner</button>
+          </div>
+          <p class="notice" id="statusNotice">Ready for counter sale. Use a USB barcode scanner like a keyboard, then press Enter.</p>
+          <div class="kpis">
+            <div class="kpi"><span>Today Sales</span><strong id="kpiSales">NPR 0</strong></div>
+            <div class="kpi"><span>Today Bills</span><strong id="kpiBills">0</strong></div>
+            <div class="kpi"><span>Cart Items</span><strong id="kpiCartItems">0</strong></div>
+            <div class="kpi"><span>Low Stock</span><strong id="kpiLowStock">0</strong></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;">
+          <h2>Quick Products</h2>
+          <label>Filter Products
+            <input id="productFilter" type="search" placeholder="Search name, SKU, barcode, or category" />
+          </label>
+          <div class="product-grid" id="productGrid"></div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;">
+          <h2>Recent Physical Store Bills</h2>
+          <div id="recentBills"></div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;">
+          <h2>Members</h2>
+          <p class="subtle">Add a member by phone number so staff can quickly apply member, friends/family, or staff discounts during checkout.</p>
+          <div class="checkout-grid">
+            <label>Phone Number
+              <input id="newMemberPhone" inputmode="tel" placeholder="98XXXXXXXX" />
+            </label>
+            <label>Member Name
+              <input id="newMemberName" placeholder="Customer name" />
+            </label>
+            <label>Member Type
+              <select id="newMemberType">
+                <option value="member">Member - 5%</option>
+                <option value="friends">Friends & Family - 10%</option>
+                <option value="staff">Staff - 15%</option>
+              </select>
+            </label>
+            <label>City / Notes
+              <input id="newMemberNotes" placeholder="Kathmandu, size preference, etc." />
+            </label>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+            <button type="button" id="saveMember">Add / Update Member</button>
+            <button class="secondary" type="button" id="useMemberPhone">Use Phone In Current Bill</button>
+          </div>
+          <div style="margin-top:12px;" class="member-list" id="memberList"></div>
+        </div>
+      </section>
+
+      <aside class="cart">
+        <div class="panel">
+          <h2>Current Bill</h2>
+          <div class="checkout-grid">
+            <label>Customer
+              <input id="customerName" value="Walk-in Customer" />
+            </label>
+            <label>Member / Friends & Family Phone
+              <input id="memberPhone" inputmode="tel" placeholder="98XXXXXXXX" />
+            </label>
+            <label>Discount Type
+              <select id="discountType">
+                <option value="">No Discount</option>
+                <option value="member">Member - 5%</option>
+                <option value="friends">Friends & Family - 10%</option>
+                <option value="staff">Staff - 15%</option>
+              </select>
+            </label>
+            <label>Payment Method
+              <select id="paymentMethod">
+                <option>Cash</option>
+                <option>Bank QR Payment</option>
+                <option>eSewa</option>
+                <option>Khalti</option>
+                <option>Bank Transfer</option>
+              </select>
+            </label>
+            <label>Checkout Adjustment
+              <input id="checkoutAdjustment" type="number" step="1" value="0" placeholder="Enter final bill adjustment" />
+            </label>
+            <label>Adjustment Reason
+              <input id="checkoutAdjustmentReason" placeholder="Bargain, rounding, owner approved" />
+            </label>
+          </div>
+          <p class="notice">For bargaining, use the manual selling price inside each cart item or enter a checkout adjustment for the whole bill. Positive adjustment reduces the total; negative adjustment adds a charge.</p>
+          <div class="cart-lines" id="cartLines"></div>
+          <div class="totals">
+            <div class="total-row"><span>Subtotal</span><strong id="subtotalText">NPR 0</strong></div>
+            <div class="total-row"><span>Discount</span><strong id="discountText">NPR 0</strong></div>
+            <div class="total-row grand"><span>Total</span><strong id="totalText">NPR 0</strong></div>
+          </div>
+          <div style="display:grid;gap:8px;margin-top:12px;">
+            <button type="button" id="completeSale">Complete Physical Store Sale</button>
+            <button class="secondary" type="button" id="clearCart">Clear Cart</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <section class="receipt" id="receiptModal" aria-label="Receipt preview">
+    <div class="receipt-card">
+      <h2>Subhakamana Store</h2>
+      <p class="subtle">Physical store receipt</p>
+      <p><strong id="receiptBill">Bill: -</strong><br><span id="receiptTime" class="subtle"></span></p>
+      <div class="receipt-lines" id="receiptLines"></div>
+      <div class="receipt-line grand"><span>Total</span><strong id="receiptTotal">NPR 0</strong></div>
+      <p class="subtle" id="receiptMeta"></p>
+      <div class="receipt-actions" style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+        <button type="button" onclick="window.print()">Print Receipt</button>
+        <button class="secondary" type="button" id="closeReceipt">Close</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const DB_KEY = "subhakamanaStoreErpLocalDbV1";
+    const DATA_SCHEMA_VERSION = 3;
+
+    const defaultProducts = [
+      { id: 1, name: "Red Banarasi Saree", category: "Saree", brand: "Subhakamana", variant: "M / Red / Silk", sku: "SAR-RED-M", barcode: "890100001", cost: 5200, price: 8200, stock: 7, reorder: 3 },
+      { id: 2, name: "Blue Printed Kurta", category: "Kurta", brand: "Subhakamana", variant: "L / Blue / Cotton", sku: "KUR-BLU-L", barcode: "890100002", cost: 900, price: 1650, stock: 4, reorder: 5 },
+      { id: 3, name: "Golden Silk Blouse", category: "Blouse", brand: "Heritage", variant: "S / Gold / Silk", sku: "BLO-GOL-S", barcode: "890100003", cost: 620, price: 1150, stock: 18, reorder: 4 },
+      { id: 4, name: "Maroon Net Dupatta", category: "Dupatta", brand: "Heritage", variant: "Free / Maroon / Net", sku: "DUP-MAR-F", barcode: "890100004", cost: 380, price: 750, stock: 0, reorder: 6 },
+      { id: 5, name: "Emerald Festival Kurta Set", category: "Kurta", brand: "Subhakamana", variant: "M / Emerald / Rayon", sku: "KUR-EMR-M", barcode: "890100005", cost: 1350, price: 2450, stock: 9, reorder: 4 },
+      { id: 6, name: "Ivory Embroidered Saree", category: "Saree", brand: "Subhakamana", variant: "Free / Ivory / Georgette", sku: "SAR-IVR-F", barcode: "890100006", cost: 4100, price: 6900, stock: 5, reorder: 2 },
+      { id: 7, name: "Mustard Cotton Kurta", category: "Kurta", brand: "Subhakamana", variant: "XL / Mustard / Cotton", sku: "KUR-MUS-XL", barcode: "890100007", cost: 780, price: 1450, stock: 16, reorder: 5 },
+      { id: 8, name: "Royal Violet Party Saree", category: "Saree", brand: "Subhakamana", variant: "Free / Violet / Chiffon", sku: "SAR-VIO-F", barcode: "890100008", cost: 3200, price: 5600, stock: 6, reorder: 3 }
+    ];
+
+    const defaultOrders = [
+      { id: "#SL-1001", channel: "Online", customer: "Anita Shrestha", total: 2450, payment: "Paid", status: "Packed", delivery: "Not Created" },
+      { id: "#SL-1002", channel: "POS", customer: "Rita Gurung", total: 1500, payment: "Cash", status: "Completed", delivery: "Store Pickup" }
+    ];
+
+    const defaultCustomers = [
+      { name: "Anita Shrestha", phone: "98XXXXXX21", city: "Kathmandu", orders: 3, spend: 12400, memberType: "member", createdBy: "Demo" },
+      { name: "Rita Gurung", phone: "98XXXXXX45", city: "Pokhara", orders: 1, spend: 1500, memberType: "friends", createdBy: "Demo" }
+    ];
+
+    let products = [];
+    let customers = [];
+    let orders = [];
+    let paymentRecords = [];
+    let stockMovements = [];
+    let auditLog = [];
+    let posCart = [];
+    let lastReceipt = null;
+
+    function money(value) {
+      return `NPR ${Number(value || 0).toLocaleString("en-NP")}`;
+    }
+
+    function todayText() {
+      return new Date().toLocaleDateString();
+    }
+
+    function ensureProductInventory(product) {
+      product.stock = Number(product.stock ?? product.onHand ?? 0);
+      product.onHand = Number(product.onHand ?? product.stock ?? 0);
+      product.reserved = Number(product.reserved || 0);
+      product.committed = Number(product.committed || 0);
+      product.damaged = Number(product.damaged || 0);
+      product.returned = Number(product.returned || 0);
+      product.inTransit = Number(product.inTransit || 0);
+      product.reorder = Number(product.reorder || 0);
+    }
+
+    function availableStock(product) {
+      ensureProductInventory(product);
+      return Math.max(0, Number(product.onHand || 0) - Number(product.reserved || 0) - Number(product.committed || 0));
+    }
+
+    function stockStatus(product) {
+      const available = availableStock(product);
+      if (available <= 0) return "Out of Stock";
+      if (available <= Number(product.reorder || 0)) return "Low Stock";
+      return "In Stock";
+    }
+
+    function badgeClass(status) {
+      if (["In Stock", "Completed", "PAID", "VERIFIED"].includes(status)) return "ok";
+      if (["Low Stock", "Pending", "AWAITING_PAYMENT"].includes(status)) return "warn";
+      if (["Out of Stock", "FAILED"].includes(status)) return "bad";
+      return "";
+    }
+
+    function normalizePhone(phone) {
+      return String(phone || "").replace(/\D/g, "");
+    }
+
+    function memberRates(type) {
+      return { member: 0.05, friends: 0.10, staff: 0.15 }[type] || 0;
+    }
+
+    function memberLabel(type) {
+      return { member: "Member", friends: "Friends & Family", staff: "Staff" }[type] || "Member";
+    }
+
+    function findMemberByPhone(phone) {
+      const normalized = normalizePhone(phone);
+      if (!normalized) return null;
+      return customers.find((customer) => normalizePhone(customer.phone) === normalized) || null;
+    }
+
+    function loadDatabase() {
+      const fallback = { dataSchemaVersion: DATA_SCHEMA_VERSION, products: defaultProducts, customers: defaultCustomers, orders: defaultOrders, paymentRecords: [], stockMovements: [], auditLog: [] };
+      try {
+        const saved = JSON.parse(localStorage.getItem(DB_KEY) || "null") || fallback;
+        products = Array.isArray(saved.products) && saved.products.length ? saved.products : defaultProducts.map((item) => ({ ...item }));
+        customers = Array.isArray(saved.customers) ? saved.customers : defaultCustomers.map((item) => ({ ...item }));
+        orders = Array.isArray(saved.orders) ? saved.orders : defaultOrders.map((item) => ({ ...item }));
+        paymentRecords = Array.isArray(saved.paymentRecords) ? saved.paymentRecords : [];
+        stockMovements = Array.isArray(saved.stockMovements) ? saved.stockMovements : [];
+        auditLog = Array.isArray(saved.auditLog) ? saved.auditLog : [];
+      } catch (error) {
+        products = defaultProducts.map((item) => ({ ...item }));
+        customers = defaultCustomers.map((item) => ({ ...item }));
+        orders = defaultOrders.map((item) => ({ ...item }));
+        paymentRecords = [];
+        stockMovements = [];
+        auditLog = [];
+      }
+      products.forEach(ensureProductInventory);
+    }
+
+    function saveDatabase() {
+      products.forEach(ensureProductInventory);
+      const existing = JSON.parse(localStorage.getItem(DB_KEY) || "{}");
+      localStorage.setItem(DB_KEY, JSON.stringify({
+        ...existing,
+        dataSchemaVersion: DATA_SCHEMA_VERSION,
+        products,
+        customers,
+        orders,
+        paymentRecords,
+        stockMovements,
+        auditLog
+      }));
+    }
+
+    function findProduct(query) {
+      const lower = String(query || "").trim().toLowerCase();
+      if (!lower) return null;
+      return products.find((product) => [product.sku, product.barcode, product.name].some((field) => String(field || "").toLowerCase() === lower))
+        || products.find((product) => `${product.name} ${product.sku} ${product.barcode} ${product.category}`.toLowerCase().includes(lower));
+    }
+
+    function currentTotals() {
+      const listSubtotal = posCart.reduce((sum, line) => sum + Number(line.listPrice ?? line.price ?? 0) * Number(line.qty || 0), 0);
+      const manualSubtotal = posCart.reduce((sum, line) => sum + Number(line.sellPrice ?? line.price ?? 0) * Number(line.qty || 0), 0);
+      const phone = document.getElementById("memberPhone").value.trim();
+      const savedMember = findMemberByPhone(phone);
+      const type = document.getElementById("discountType").value || savedMember?.memberType || "";
+      const rate = phone ? memberRates(type) : 0;
+      const memberDiscount = Math.round(manualSubtotal * rate);
+      const bargainDiscount = Math.max(0, listSubtotal - manualSubtotal);
+      const checkoutAdjustment = Number(document.getElementById("checkoutAdjustment")?.value || 0);
+      const checkoutDiscount = Math.max(0, checkoutAdjustment);
+      const checkoutCharge = Math.max(0, -checkoutAdjustment);
+      const discount = bargainDiscount + memberDiscount + checkoutDiscount;
+      return { subtotal: listSubtotal, manualSubtotal, bargainDiscount, memberDiscount, checkoutAdjustment, checkoutDiscount, checkoutCharge, discount, total: Math.max(0, manualSubtotal - memberDiscount - checkoutDiscount + checkoutCharge), rate, type };
+    }
+
+    function addToCart(query) {
+      const product = findProduct(query);
+      if (!product) {
+        setNotice("Product not found. Try product name, SKU, or barcode.");
+        return;
+      }
+      const available = availableStock(product);
+      if (available <= 0) {
+        setNotice(`${product.name} is out of stock.`);
+        return;
+      }
+      const line = posCart.find((item) => item.sku === product.sku);
+      if (line) {
+        if (line.qty >= available) {
+          setNotice(`${product.name} cannot exceed available stock (${available}).`);
+          return;
+        }
+        line.qty += 1;
+      } else {
+        posCart.push({ sku: product.sku, barcode: product.barcode, name: product.name, listPrice: product.price, sellPrice: product.price, price: product.price, qty: 1 });
+      }
+      setNotice(`${product.name} added to bill.`);
+      document.getElementById("scanInput").value = "";
+      renderAll();
+      focusScanner();
+    }
+
+    function changeQty(sku, delta) {
+      const line = posCart.find((item) => item.sku === sku);
+      const product = products.find((item) => item.sku === sku);
+      if (!line || !product) return;
+      const next = line.qty + delta;
+      if (next <= 0) posCart = posCart.filter((item) => item.sku !== sku);
+      else if (next <= availableStock(product)) line.qty = next;
+      else setNotice(`Only ${availableStock(product)} available for ${product.name}.`);
+      renderAll();
+      focusScanner();
+    }
+
+    function setManualPrice(sku, value) {
+      const line = posCart.find((item) => item.sku === sku);
+      if (!line) return;
+      const manualPrice = Math.max(0, Number(value || 0));
+      line.sellPrice = manualPrice;
+      line.price = manualPrice;
+      line.manualPrice = manualPrice !== Number(line.listPrice || 0);
+      renderCart();
+    }
+
+    function clearCart() {
+      posCart = [];
+      renderAll();
+      setNotice("Cart cleared.");
+      focusScanner();
+    }
+
+    function saveMember() {
+      const phone = document.getElementById("newMemberPhone").value.trim();
+      const normalized = normalizePhone(phone);
+      const name = document.getElementById("newMemberName").value.trim() || `Member ${normalized.slice(-4)}`;
+      const memberType = document.getElementById("newMemberType").value;
+      const notes = document.getElementById("newMemberNotes").value.trim();
+      if (normalized.length < 7) {
+        setNotice("Enter a valid member phone number before saving.");
+        return;
+      }
+      const existing = findMemberByPhone(phone);
+      if (existing) {
+        existing.name = name;
+        existing.phone = phone;
+        existing.memberType = memberType;
+        existing.city = notes || existing.city || "Physical Store";
+        existing.notes = notes;
+        existing.createdBy = existing.createdBy || "Physical POS";
+        setNotice(`${name} member details updated.`);
+      } else {
+        customers.push({
+          name,
+          phone,
+          city: notes || "Physical Store",
+          notes,
+          orders: 0,
+          spend: 0,
+          memberType,
+          createdBy: "Physical POS"
+        });
+        setNotice(`${name} added as ${memberLabel(memberType)} member.`);
+      }
+      auditLog.unshift({
+        time: new Date().toLocaleString(),
+        user: "Physical POS",
+        action: "Member Saved",
+        details: `${name} (${phone}) saved as ${memberLabel(memberType)}.`
+      });
+      saveDatabase();
+      renderAll();
+    }
+
+    function useMemberInBill(phone) {
+      const member = findMemberByPhone(phone || document.getElementById("newMemberPhone").value);
+      if (!member) {
+        setNotice("No saved member found for that phone number.");
+        return;
+      }
+      document.getElementById("customerName").value = member.name;
+      document.getElementById("memberPhone").value = member.phone;
+      document.getElementById("discountType").value = member.memberType || "member";
+      setNotice(`${member.name} loaded for checkout with ${memberLabel(member.memberType)} discount.`);
+      renderCart();
+      focusScanner();
+    }
+
+    function lookupCheckoutMember() {
+      const phone = document.getElementById("memberPhone").value.trim();
+      const member = findMemberByPhone(phone);
+      if (!member) {
+        renderCart();
+        return;
+      }
+      document.getElementById("customerName").value = member.name;
+      document.getElementById("discountType").value = member.memberType || "member";
+      setNotice(`${member.name} found. ${memberLabel(member.memberType)} discount ready.`);
+      renderCart();
+    }
+
+    function completeSale() {
+      if (!posCart.length) {
+        setNotice("Add products before completing a sale.");
+        return;
+      }
+      const unavailable = posCart.find((line) => {
+        const product = products.find((item) => item.sku === line.sku);
+        return !product || availableStock(product) < line.qty;
+      });
+      if (unavailable) {
+        setNotice(`${unavailable.name} no longer has enough available stock.`);
+        return;
+      }
+      const totals = currentTotals();
+      const billNumber = `POS-${new Date().toISOString().slice(2,10).replaceAll("-", "")}-${String(orders.length + 1).padStart(4, "0")}`;
+      const paymentMethod = document.getElementById("paymentMethod").value;
+      const customer = document.getElementById("customerName").value.trim() || "Walk-in Customer";
+      const memberPhone = document.getElementById("memberPhone").value.trim();
+      const member = findMemberByPhone(memberPhone);
+      const adjustmentReason = document.getElementById("checkoutAdjustmentReason").value.trim();
+      const lines = posCart.map((line) => ({ ...line, price: Number(line.sellPrice ?? line.price ?? 0), listedPrice: Number(line.listPrice ?? line.price ?? 0), manualAdjustment: Math.max(0, Number(line.listPrice ?? line.price ?? 0) - Number(line.sellPrice ?? line.price ?? 0)) }));
+      lines.forEach((line) => {
+        const product = products.find((item) => item.sku === line.sku);
+        product.stock = Math.max(0, Number(product.stock || 0) - line.qty);
+        product.onHand = Math.max(0, Number(product.onHand || 0) - line.qty);
+        stockMovements.unshift({
+          time: new Date().toLocaleString(),
+          user: "Physical POS",
+          product: product.name,
+          sku: product.sku,
+          quantity: -Math.abs(line.qty),
+          type: "POS Sale",
+          reason: "Physical store sale",
+          reference: billNumber
+        });
+      });
+      const paidStatus = ["Bank QR Payment", "eSewa", "Khalti", "Bank Transfer"].includes(paymentMethod) ? "VERIFIED" : "PAID";
+      orders.push({
+        id: billNumber,
+        billNumber,
+        channel: "Physical POS",
+        customer,
+        total: totals.total,
+        subtotal: totals.subtotal,
+        discount: totals.discount,
+        bargainDiscount: totals.bargainDiscount,
+        memberDiscount: totals.memberDiscount,
+        checkoutAdjustment: totals.checkoutAdjustment,
+        checkoutAdjustmentReason: adjustmentReason,
+        memberPhone,
+        memberType: totals.type,
+        payment: paymentMethod,
+        paymentStatus: paidStatus,
+        status: "Completed",
+        delivery: "Store Pickup",
+        items: lines,
+        createdBy: "Physical POS"
+      });
+      paymentRecords.unshift({
+        order: billNumber,
+        method: paymentMethod,
+        amount: totals.total,
+        status: paidStatus,
+        transactionId: `PHY-${Date.now()}`,
+        user: "Physical POS",
+        time: new Date().toLocaleString()
+      });
+      auditLog.unshift({
+        time: new Date().toLocaleString(),
+        user: "Physical POS",
+        action: "Physical Store Sale Completed",
+        details: `${billNumber} total ${money(totals.total)} paid by ${paymentMethod}. Manual bargain discount ${money(totals.bargainDiscount)}; member discount ${money(totals.memberDiscount)}; checkout adjustment ${money(totals.checkoutAdjustment)}${adjustmentReason ? ` (${adjustmentReason})` : ""}.`
+      });
+      if (member) {
+        member.orders = Number(member.orders || 0) + 1;
+        member.spend = Number(member.spend || 0) + totals.total;
+        member.lastVisit = new Date().toLocaleString();
+      } else if (normalizePhone(memberPhone).length >= 7) {
+        customers.push({
+          name: customer,
+          phone: memberPhone,
+          city: "Physical Store",
+          orders: 1,
+          spend: totals.total,
+          memberType: totals.type || "member",
+          createdBy: "Physical POS",
+          lastVisit: new Date().toLocaleString()
+        });
+      }
+      lastReceipt = { billNumber, customer, paymentMethod, totals, lines, adjustmentReason, time: new Date().toLocaleString() };
+      posCart = [];
+      saveDatabase();
+      renderAll();
+      showReceipt();
+      setNotice(`${billNumber} completed and saved to local ERP data.`);
+    }
+
+    function setNotice(message) {
+      document.getElementById("statusNotice").textContent = message;
+    }
+
+    function focusScanner() {
+      setTimeout(() => document.getElementById("scanInput").focus(), 0);
+    }
+
+    function renderProducts() {
+      const query = document.getElementById("productFilter").value.toLowerCase();
+      const rows = products.filter((product) => `${product.name} ${product.sku} ${product.barcode} ${product.category}`.toLowerCase().includes(query));
+      document.getElementById("productGrid").innerHTML = rows.map((product) => {
+        const status = stockStatus(product);
+        const available = availableStock(product);
+        return `<article class="card product-card">
+          <div><h3>${product.name}</h3><p class="subtle">${product.variant || product.category}<br>${product.sku} | ${product.barcode}</p></div>
+          <div><strong>${money(product.price)}</strong> <span class="badge ${badgeClass(status)}">${status}: ${available}</span></div>
+          <button type="button" ${available <= 0 ? "disabled" : ""} data-add="${product.sku}">Add</button>
+        </article>`;
+      }).join("") || `<div class="empty-state">No product matched this search.</div>`;
+      document.querySelectorAll("[data-add]").forEach((button) => button.addEventListener("click", () => addToCart(button.dataset.add)));
+    }
+
+    function renderCart() {
+      document.getElementById("cartLines").innerHTML = posCart.map((line) => {
+        const listPrice = Number(line.listPrice ?? line.price ?? 0);
+        const sellPrice = Number(line.sellPrice ?? line.price ?? 0);
+        const lineBargain = Math.max(0, (listPrice - sellPrice) * Number(line.qty || 0));
+        return `<div class="cart-line">
+        <div>
+          <strong>${line.name}</strong>
+          <div class="subtle">${line.sku} | Listed ${money(listPrice)} each</div>
+          <div class="qty-row">
+            <button class="secondary" type="button" data-qty="${line.sku}" data-delta="-1">-</button>
+            <strong>${line.qty}</strong>
+            <button class="secondary" type="button" data-qty="${line.sku}" data-delta="1">+</button>
+          </div>
+          <div class="manual-price">
+            <label>Manual selling price
+              <input type="number" min="0" step="1" value="${sellPrice}" data-manual-price="${line.sku}" aria-label="Manual selling price for ${line.name}" />
+            </label>
+            <span class="badge ${lineBargain > 0 ? "warn" : "ok"}">${lineBargain > 0 ? `Bargain ${money(lineBargain)}` : "Listed"}</span>
+          </div>
+          ${lineBargain > 0 ? `<div class="line-adjustment">Customer agreed price: ${money(sellPrice)} each</div>` : ""}
+        </div>
+        <strong>${money(line.qty * sellPrice)}</strong>
+      </div>`;
+      }).join("") || `<div class="empty-state">Scan or add products to start a physical store bill.</div>`;
+      document.querySelectorAll("[data-qty]").forEach((button) => button.addEventListener("click", () => changeQty(button.dataset.qty, Number(button.dataset.delta))));
+      document.querySelectorAll("[data-manual-price]").forEach((input) => input.addEventListener("change", () => setManualPrice(input.dataset.manualPrice, input.value)));
+      const totals = currentTotals();
+      document.getElementById("subtotalText").textContent = `${money(totals.subtotal)} listed / ${money(totals.manualSubtotal)} agreed`;
+      document.getElementById("discountText").textContent = `${money(totals.discount)} total (${money(totals.bargainDiscount)} item, ${money(totals.memberDiscount)} member, ${money(totals.checkoutDiscount)} checkout${totals.checkoutCharge ? `, +${money(totals.checkoutCharge)} charge` : ""})`;
+      document.getElementById("totalText").textContent = money(totals.total);
+      document.getElementById("kpiCartItems").textContent = posCart.reduce((sum, line) => sum + line.qty, 0);
+    }
+
+    function renderKpis() {
+      const today = todayText();
+      const todayPayments = paymentRecords.filter((payment) => payment.user === "Physical POS" && String(payment.time || "").includes(today));
+      document.getElementById("kpiSales").textContent = money(todayPayments.reduce((sum, payment) => sum + Number(payment.amount || 0), 0));
+      document.getElementById("kpiBills").textContent = todayPayments.length;
+      document.getElementById("kpiLowStock").textContent = products.filter((product) => stockStatus(product) === "Low Stock" || stockStatus(product) === "Out of Stock").length;
+    }
+
+    function renderRecentBills() {
+      const recent = orders.filter((order) => order.channel === "Physical POS").slice(-8).reverse();
+      document.getElementById("recentBills").innerHTML = recent.map((order) => `<div class="cart-line">
+        <div><strong>${order.billNumber || order.id}</strong><div class="subtle">${order.customer} | ${order.payment} | ${order.status}</div></div>
+        <strong>${money(order.total)}</strong>
+      </div>`).join("") || `<div class="empty-state">No physical store bills yet.</div>`;
+    }
+
+    function renderMembers() {
+      const memberRows = customers
+        .filter((customer) => customer.phone)
+        .slice()
+        .sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+      document.getElementById("memberList").innerHTML = memberRows.map((customer) => {
+        const type = customer.memberType || "member";
+        return `<div class="member-card">
+          <div>
+            <strong>${customer.name}</strong>
+            <div class="subtle">${customer.phone} | ${memberLabel(type)} | ${Number(customer.orders || 0)} orders | ${money(customer.spend || 0)}</div>
+          </div>
+          <button type="button" class="secondary" data-use-member="${customer.phone}">Use</button>
+        </div>`;
+      }).join("") || `<div class="empty-state">No saved members yet. Add the first member using phone number.</div>`;
+      document.querySelectorAll("[data-use-member]").forEach((button) => button.addEventListener("click", () => useMemberInBill(button.dataset.useMember)));
+    }
+
+    function showReceipt() {
+      if (!lastReceipt) return;
+      document.getElementById("receiptBill").textContent = `Bill: ${lastReceipt.billNumber}`;
+      document.getElementById("receiptTime").textContent = lastReceipt.time;
+      document.getElementById("receiptLines").innerHTML = lastReceipt.lines.map((line) => {
+        const listed = Number(line.listedPrice ?? line.listPrice ?? line.price ?? 0);
+        const sold = Number(line.price ?? line.sellPrice ?? 0);
+        const note = sold < listed ? `<br><span class="subtle">Listed ${money(listed)} | Agreed ${money(sold)}</span>` : "";
+        return `<div class="receipt-line"><span>${line.qty} x ${line.name}${note}</span><strong>${money(line.qty * sold)}</strong></div>`;
+      }).join("");
+      document.getElementById("receiptTotal").textContent = money(lastReceipt.totals.total);
+      document.getElementById("receiptMeta").textContent = `${lastReceipt.customer} | ${lastReceipt.paymentMethod} | Item bargain ${money(lastReceipt.totals.bargainDiscount)} | Member ${money(lastReceipt.totals.memberDiscount)} | Checkout adjustment ${money(lastReceipt.totals.checkoutAdjustment)}${lastReceipt.adjustmentReason ? ` (${lastReceipt.adjustmentReason})` : ""}`;
+      document.getElementById("receiptModal").classList.add("open");
+    }
+
+    function renderAll() {
+      renderProducts();
+      renderCart();
+      renderKpis();
+      renderRecentBills();
+      renderMembers();
+    }
+
+    document.getElementById("scanButton").addEventListener("click", () => addToCart(document.getElementById("scanInput").value));
+    document.getElementById("scanInput").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        addToCart(event.currentTarget.value);
+      }
+    });
+    document.getElementById("productFilter").addEventListener("input", renderProducts);
+    ["memberPhone", "discountType", "paymentMethod", "checkoutAdjustment", "checkoutAdjustmentReason"].forEach((id) => document.getElementById(id).addEventListener("input", renderCart));
+    document.getElementById("memberPhone").addEventListener("change", lookupCheckoutMember);
+    document.getElementById("saveMember").addEventListener("click", saveMember);
+    document.getElementById("useMemberPhone").addEventListener("click", () => useMemberInBill());
+    document.getElementById("clearCart").addEventListener("click", clearCart);
+    document.getElementById("resetPos").addEventListener("click", clearCart);
+    document.getElementById("focusScanner").addEventListener("click", focusScanner);
+    document.getElementById("completeSale").addEventListener("click", completeSale);
+    document.getElementById("closeReceipt").addEventListener("click", () => {
+      document.getElementById("receiptModal").classList.remove("open");
+      focusScanner();
+    });
+
+    loadDatabase();
+    renderAll();
+    focusScanner();
+  </script>
+</body>
+</html>

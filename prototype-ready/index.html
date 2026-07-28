@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open Subhakamana Store System</title>
+  <style>
+    :root {
+      --primary: #C05A26;
+      --navy: #34231A;
+      --gold: #DCB13D;
+      --violet: #955494;
+      --muted: #7A6255;
+      --line: #E9C687;
+      --panel: #FFFFFF;
+      --page: #FAFAF3;
+      --ok: #16a34a;
+      --text-xs: 12px;
+      --text-base: 14px;
+      --text-md: 16px;
+      --text-lg: 18px;
+      --text-xl: 22px;
+      --text-2xl: 34px;
+      --leading-tight: 1.16;
+      --leading-normal: 1.45;
+      --leading-relaxed: 1.6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page);
+      color: var(--navy);
+      font-family: Inter, Arial, sans-serif;
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    main {
+      width: min(980px, 100%);
+    }
+
+    .header {
+      margin-bottom: 20px;
+    }
+
+    .header-lockup {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .header-logo {
+      width: clamp(72px, 12vw, 104px);
+      height: clamp(72px, 12vw, 104px);
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 7px;
+      box-shadow: 0 12px 34px rgba(43, 39, 37, 0.08);
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      color: var(--primary);
+      font-size: var(--text-2xl);
+      line-height: var(--leading-tight);
+      margin: 0 0 10px;
+      letter-spacing: 0;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .status {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .status div {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .status strong {
+      color: var(--ok);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(23, 32, 51, 0.08);
+    }
+
+    .card strong {
+      display: block;
+      font-size: var(--text-lg);
+      line-height: var(--leading-tight);
+      margin-bottom: 8px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      border-radius: 8px;
+      padding: 9px 13px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      text-align: center;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    a.secondary {
+      background: white;
+      color: var(--navy);
+      border: 1px solid var(--line);
+    }
+
+    a:hover {
+      filter: brightness(0.96);
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--line));
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--gold) 12%, white);
+    }
+
+    @media (max-width: 720px) {
+      :root {
+        --text-base: 14px;
+        --text-lg: 17px;
+        --text-xl: 20px;
+        --text-2xl: 28px;
+      }
+      .grid, .status { grid-template-columns: 1fr; }
+      .header-lockup { align-items: flex-start; }
+      .actions a { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="header">
+      <div class="header-lockup">
+        <img class="header-logo" src="assets/brand/subhakamana-store-logo.svg" alt="Subhakamana Store logo" />
+        <h1>Subhakamana Store Management System</h1>
+      </div>
+      <p>One local home page for the Admin ERP, Cashier POS, Customer Website, manuals, reports, and running files.</p>
+    </section>
+
+    <section class="status" aria-label="Integrated system status">
+      <div><strong>Admin ERP</strong><p>Full management system for stock, sales, products, and reports.</p></div>
+      <div><strong>Cashier POS</strong><p>Fast billing screen with fewer distractions for counter sales.</p></div>
+      <div><strong>Website</strong><p>Customer storefront connected to the same product workflow concept.</p></div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <strong>Grand Release Center</strong>
+        <p>Open the release notes, final checklist, demo script, developer handoff, validation commands, reports, and production boundary from one place.</p>
+        <div class="actions">
+          <a href="RELEASE_CENTER.html">Open Release Center</a>
+          <a class="secondary" href="GRAND_RELEASE_NOTES_2026-07-20.md">Release Notes</a>
+          <a class="secondary" href="GRAND_RELEASE_CHECKLIST_2026-07-20.md">Checklist</a>
+          <a class="secondary" href="GRAND_RELEASE_DEMO_SCRIPT_2026-07-20.md">Demo Script</a>
+          <a class="secondary" href="GRAND_RELEASE_HANDOFF_2026-07-20.md">Handoff</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>Admin ERP</strong>
+        <p>Full management system for dashboard, product entry, inventory, orders, delivery, suppliers, reports, settings, and documentation.</p>
+        <div class="actions">
+          <a href="subhakamana-store-final-erp-platform.html#dashboard">Open Admin ERP</a>
+          <a class="secondary" href="subhakamana-store-final-erp-platform.html#manual">Built-in Manual</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>Cashier POS</strong>
+        <p>Open the fast billing workspace for barcode search, cart, default customer checkout, payment selection, bill creation, and stock reduction.</p>
+        <div class="actions">
+          <a href="subhakamana-store-physical-pos.html">Open Physical Store POS</a>
+          <a class="secondary" href="subhakamana-store-final-erp-platform.html?mode=pos#pos">ERP POS Mode</a>
+          <a class="secondary" href="subhakamana-store-final-erp-platform.html?mode=pos#orders">View Sales Orders</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>Customer Website</strong>
+        <p>Open the online storefront with homepage, products, details, cart, checkout, and order confirmation synchronized with the ERP concept.</p>
+        <div class="actions">
+          <a href="subhakamana-store-ecommerce.html#home">Open Customer Website</a>
+          <a class="secondary" href="subhakamana-store-ecommerce.html#shop">Shop Products</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>Simple Overview</strong>
+        <p>Use this first if you want a simple explanation of what the system does for Subhakamana Store.</p>
+        <div class="actions">
+          <a href="subhakamana-store-simple-overview.html">Open Overview</a>
+          <a class="secondary" href="docs/subhakamana-store-simple-blueprint.md">Simple Blueprint</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>Manuals</strong>
+        <p>Read staff instructions, local-use steps, and the plain-language store system blueprint.</p>
+        <div class="actions">
+          <a href="docs/subhakamana-store-erp-user-manual.md">User Manual</a>
+          <a class="secondary" href="docs/subhakamana-physical-pos-guide.md">Physical POS Guide</a>
+          <a class="secondary" href="docs/subhakamana-local-use-guide.md">Local Guide</a>
+          <a class="secondary" href="docs/subhakamana-store-overview-local-use-guide.md">Overview Guide</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>Run Files</strong>
+        <p>Use these if you want to start a local server manually from a command file.</p>
+        <div class="actions">
+          <a href="OPEN_PROTOTYPE.command">Start Everything</a>
+          <a class="secondary" href="run-subhakamana-local.command">Run Store System</a>
+          <a class="secondary" href="run-subhakamana-overview-local.command">Run Overview</a>
+          <a class="secondary" href="RUN_PLAYWRIGHT_QA.command">Run Browser QA</a>
+          <a class="secondary" href="RUN_BACKEND_OFFLINE_TESTS.command">Run Backend Offline Tests</a>
+          <a class="secondary" href="RUN_POSTGRESQL_VALIDATION_LOCAL.command">Run PostgreSQL Validation</a>
+          <a class="secondary" href="PLAYWRIGHT_QA_GUIDE.md">QA Guide</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>Final Report</strong>
+        <p>Open the current full system report, GitHub handoff notes, and polished project summaries for the Subhakamana Store ERP and e-commerce system.</p>
+        <div class="actions">
+          <a href="reports/subhakamana-store-full-system-report-2026-07-17.pdf">Full System PDF</a>
+          <a class="secondary" href="reports/subhakamana-store-full-system-report-2026-07-17.md">Full System Markdown</a>
+          <a class="secondary" href="GITHUB_SYSTEM_REPORT.md">GitHub Handoff</a>
+          <a class="secondary" href="GITHUB_READY_README.md">GitHub README</a>
+          <a class="secondary" href="reports/subhakamana-store-final-erp-ecommerce-report.pdf">Final ERP PDF</a>
+          <a class="secondary" href="reports/subhakamana-store-overall-system-report.pdf">Overall System PDF</a>
+          <a class="secondary" href="reports/subhakamana-store-final-erp-ecommerce-report.md">Open Markdown</a>
+          <a class="secondary" href="reports/subhakamana-project-summary-report-polished.md">Project Summary</a>
+          <a class="secondary" href="reports/subhakamana-full-audit-preservation-report.md">Audit Report</a>
+          <a class="secondary" href="reports/subhakamana-project-from-day-1-detailed-report.md">Day 1 Report</a>
+          <a class="secondary" href="reports/subhakamana-complete-work-summary-report.md">Work Summary</a>
+          <a class="secondary" href="reports/subhakamana-frameworks-and-technology-report.md">Frameworks Report</a>
+          <a class="secondary" href="reports/subhakamana-hosting-requirements-report.pdf">Hosting PDF</a>
+          <a class="secondary" href="reports/subhakamana-hosting-requirements-report.md">Hosting Report</a>
+          <a class="secondary" href="reports/subhakamana-payment-cart-stock-upgrade-report.md">Payment & Stock Upgrade</a>
+          <a class="secondary" href="reports/subhakamana-erp-ux-declutter-change-report.md">ERP UX Declutter</a>
+          <a class="secondary" href="reports/subhakamana-section-functionality-check-report.md">Section Function Check</a>
+          <a class="secondary" href="reports/subhakamana-system-manager-check-report.md">System Manager Check</a>
+          <a class="secondary" href="reports/subhakamana-qa-test-report.md">QA Report</a>
+          <a class="secondary" href="reports/subhakamana-maximum-reliability-qa-report.md">Reliability QA Report</a>
+          <a class="secondary" href="reports/subhakamana-authenticity-test-report.md">Authenticity Report</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>Production Readiness</strong>
+        <p>Open the architecture, database schema, Prisma database module, API contract, security plan, testing plan, and migration plan for converting this prototype into a production system.</p>
+        <div class="actions">
+          <a href="production-readiness/README.md">Open Index</a>
+          <a class="secondary" href="production-readiness/01-system-architecture.md">Architecture</a>
+          <a class="secondary" href="production-readiness/07-module-01-database-implementation.md">Module 1 Database</a>
+          <a class="secondary" href="production-readiness/09-module-02-api-foundation-implementation.md">Module 2 API</a>
+          <a class="secondary" href="production-readiness/17-postgresql-ci-sprint-status.md">PostgreSQL CI Status</a>
+          <a class="secondary" href="production-readiness/18-remaining-production-work-and-validation-status.md">Remaining Work</a>
+          <a class="secondary" href="production-readiness/19-pos-cashier-hardening-implementation-status.md">POS Hardening</a>
+          <a class="secondary" href="production-readiness/20-master-project-completion-initial-audit-2026-07-17.md">Completion Audit</a>
+          <a class="secondary" href="production-readiness/02-database-schema.sql">Database Schema</a>
+          <a class="secondary" href="production-readiness/03-api-contract.md">API Contract</a>
+          <a class="secondary" href="production-readiness/06-migration-plan.md">Migration Plan</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>UML & Use Case</strong>
+        <p>Open the UML use case diagram and plain-language explanation for Admin and Customer workflows.</p>
+        <div class="actions">
+          <a href="diagrams/subhakamana-use-case-diagram.svg">Open Diagram</a>
+          <a class="secondary" href="diagrams/subhakamana-use-case-layman-report.md">Layman Report</a>
+          <a class="secondary" href="diagrams/subhakamana-use-case-diagram.mmd">Mermaid File</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <strong>All Files</strong>
+        <p>Open the overview resources page to reach every related file from inside the Subhakamana overview.</p>
+        <div class="actions">
+          <a href="subhakamana-store-simple-overview.html#resources">Open Resources</a>
+          <a class="secondary" href="subhakamana-store-final-erp-platform.html#dashboard">Dashboard</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="note">
+      <p><strong>Tip:</strong> For the smoothest use, double-click <strong>OPEN_PROTOTYPE.command</strong>. It starts one local server and opens this home page at <strong>localhost:8088</strong>.</p>
+    </section>
+  </main>
+</body>
+</html>

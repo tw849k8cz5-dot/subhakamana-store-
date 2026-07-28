@@ -1,0 +1,17 @@
+{
+  "name": "subhakamana-store-module-02-api-foundation",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend API foundation for Subhakamana Store production migration.",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/*.test.js",
+    "verify": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "prisma": "^5.22.0"
+  }
+}

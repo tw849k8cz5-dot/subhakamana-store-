@@ -1,0 +1,58 @@
+name: Playwright QA
+
+on:
+  push:
+    branches:
+      - main
+      - prototype-ready-package-2026-07-17
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  playwright-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+          cache-dependency-path: |
+            package.json
+            outputs/SUBHAKAMANA_STORE_PROTOTYPE_READY_2026-07-17/package.json
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Static JavaScript validation
+        run: pnpm validate:static
+
+      - name: Dependency vulnerability check
+        run: pnpm audit --audit-level high
+
+      - name: Install Chromium browser
+        run: pnpm exec playwright install chromium
+
+      - name: Run Chromium Playwright QA
+        run: pnpm exec playwright test --project=chromium --reporter=html
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          if-no-files-found: ignore

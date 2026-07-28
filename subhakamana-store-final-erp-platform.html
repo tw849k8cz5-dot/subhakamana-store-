@@ -236,6 +236,82 @@
       min-width: min(260px, 42vw);
     }
 
+    .workflow-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin: 0 0 14px;
+    }
+
+    .workflow-tile {
+      display: grid;
+      gap: 4px;
+      min-height: 74px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--ink);
+      text-decoration: none;
+      box-shadow: var(--shadow);
+    }
+
+    .workflow-tile:hover {
+      border-color: var(--gold);
+      transform: translateY(-1px);
+    }
+
+    .workflow-tile strong {
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .workflow-tile span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .workflow-tile.primary {
+      background: color-mix(in srgb, var(--primary) 9%, var(--panel));
+      border-color: color-mix(in srgb, var(--primary) 34%, var(--line));
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .compact-action {
+      min-height: 34px;
+      padding: 7px 10px;
+      white-space: nowrap;
+    }
+
+    .optional-checkout {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--ivory) 54%, var(--panel));
+    }
+
+    .optional-checkout summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 10px 12px;
+      color: var(--primary);
+      font-weight: 850;
+    }
+
+    .optional-checkout summary::-webkit-details-marker { display: none; }
+
+    .optional-checkout-content {
+      display: grid;
+      gap: 12px;
+      padding: 0 12px 12px;
+    }
+
     body[data-system-mode="pos"] .global-search,
     body[data-system-mode="pos"] #notificationButton,
     body[data-system-mode="pos"] #exportReport,
@@ -1852,7 +1928,7 @@
           <p class="subtle" id="pageDescription">Simple store system for billing, stock, orders, delivery, and website products.</p>
         </div>
         <div class="topbar-utility">
-          <input class="global-search" id="globalSearch" type="search" placeholder="Search product, SKU, bill, customer" aria-label="Global search" />
+          <input class="global-search" id="globalSearch" type="search" placeholder="Find anything: product, bill, payment, customer" aria-label="Global search" />
           <button class="secondary" type="button" id="openCommandPalette">Ctrl K</button>
           <button class="icon-button" type="button" id="notificationButton" aria-label="Notifications">!</button>
           <details class="user-menu" id="userMenu">
@@ -1891,9 +1967,18 @@
           </div>
         </div>
 
+        <div class="workflow-strip" aria-label="Fast daily workflow shortcuts">
+          <a class="workflow-tile primary" href="#pos" data-launch="pos"><strong>New physical sale</strong><span>Scan product, take payment, reduce stock.</span></a>
+          <a class="workflow-tile" href="#stockentry" data-launch="stockentry"><strong>Receive stock</strong><span>Choose product, enter quantity, save.</span></a>
+          <a class="workflow-tile" href="#inventory" data-launch="inventory"><strong>Find / check stock</strong><span>One search by name, SKU, or barcode.</span></a>
+          <a class="workflow-tile" href="#payments" data-launch="payments"><strong>Verify payment</strong><span>Review pending QR, wallet, and bank records.</span></a>
+          <a class="workflow-tile" href="#orders" data-launch="orders"><strong>Dispatch order</strong><span>Send packed online order to delivery queue.</span></a>
+          <a class="workflow-tile" href="#controls" data-launch="controls"><strong>Process return</strong><span>Bill lookup, select item, choose refund.</span></a>
+        </div>
+
         <div class="plain-guide">
           <strong>Simple daily routine for Subhakamana Store</strong>
-          <p>Start with Needs Attention, check low stock, open Billing Counter for walk-in sales, prepare Customer Orders for online sales, and use Shop Reports before closing the day.</p>
+          <p>Start with Needs Attention, use the fast shortcut for the work in front of you, and keep reports for end-of-day checking.</p>
         </div>
 
         <div class="grid four-col">
@@ -1980,7 +2065,7 @@
       <section class="page" id="inventoryPage" data-title="Stock List" data-description="Check product quantity, barcode, photo status, and items that need restocking.">
         <div class="plain-guide">
           <strong>Use this page to check what is available in the shop.</strong>
-          <p>Search by product name, SKU, or barcode. Open View Details when you need to check stock, photo use, damaged pieces, returned pieces, or reorder level.</p>
+          <p>One search checks stock by product name, SKU, or barcode. Open Details when you need photo use, damaged pieces, returned pieces, or reorder level.</p>
         </div>
         <div class="bridge-strip" aria-label="Inventory page bridges">
           <strong>Next Actions:</strong>
@@ -2167,7 +2252,7 @@
       <section class="page" id="posPage" data-title="Billing Counter" data-description="Scan products, adjust price, take payment, print receipt, and reduce stock.">
         <div class="plain-guide">
           <strong>Use this page at the physical billing counter.</strong>
-          <p>Scan the barcode or search the product, adjust the selling price if the customer bargains, choose payment, and complete the sale. Stock will reduce automatically.</p>
+          <p>Scan or search, confirm price, take payment, and complete the sale. Optional member discounts stay tucked away until needed.</p>
         </div>
         <div class="bridge-strip" aria-label="POS page bridges">
           <strong>After Sale:</strong>
@@ -2198,22 +2283,27 @@
             <div class="total-line"><span>Total</span><span id="cartTotal">NPR 0</span></div>
             <div class="form" style="margin-top:14px;">
               <label>Customer<select id="posCustomer"></select></label>
-              <div class="form-row">
-                <label>Member Phone<input id="posMemberPhone" inputmode="tel" pattern="^(97|98)[0-9]{8}$" placeholder="98XXXXXXXX" /></label>
-                <label>Member Type<select id="posMemberType"><option>Friends & Family</option><option>Store Member</option><option>Festival Offer</option></select></label>
-              </div>
-              <div class="platform-actions">
-                <button class="secondary" type="button" id="applyPosMemberDiscount">Apply Member Discount</button>
-                <button class="secondary" type="button" id="clearPosMemberDiscount">Clear Discount</button>
-              </div>
-              <p class="notice" id="posMemberNotice">Default checkout uses Walk-in Customer. Members, friends, and family can enter a phone number for a prototype discount.</p>
+              <details class="optional-checkout">
+                <summary>Member / friends & family discount</summary>
+                <div class="optional-checkout-content">
+                  <div class="form-row">
+                    <label>Member Phone<input id="posMemberPhone" inputmode="tel" pattern="^(97|98)[0-9]{8}$" placeholder="98XXXXXXXX" /></label>
+                    <label>Member Type<select id="posMemberType"><option>Friends & Family</option><option>Store Member</option><option>Festival Offer</option></select></label>
+                  </div>
+                  <div class="platform-actions">
+                    <button class="secondary" type="button" id="applyPosMemberDiscount">Apply Member Discount</button>
+                    <button class="secondary" type="button" id="clearPosMemberDiscount">Clear Discount</button>
+                  </div>
+                  <p class="notice" id="posMemberNotice">Default checkout uses Walk-in Customer. Members, friends, and family can enter a phone number for a prototype discount.</p>
+                </div>
+              </details>
               <label>Payment Method<select id="posPayment"><option>Cash</option><option>Bank QR Payment</option><option>eSewa</option><option>Khalti</option><option>Bank Transfer</option><option>Cash on Delivery</option></select></label>
               <div class="notice" id="posQrPanel">Select Bank QR Payment, eSewa, Khalti, or Bank Transfer to show simulated QR verification status.</div>
               <div class="platform-actions">
                 <button class="secondary" type="button" id="simulatePosPaymentVerified">Simulate Payment Verified</button>
                 <button class="secondary" type="button" id="simulatePosManualOverride">Manual Override</button>
               </div>
-              <button type="button" id="completeSale">Complete Sale</button>
+              <button type="button" id="completeSale">Complete Sale & Reduce Stock</button>
             </div>
           </div>
         </div>
@@ -2232,7 +2322,7 @@
           <a class="button-link secondary" href="#reports" data-launch="reports">Order Reports</a>
         </div>
         <div class="table-wrap">
-          <table><thead><tr><th>Order Number</th><th>Customer</th><th>Amount</th><th>Payment</th><th>Delivery Status</th><th>Tracking Number</th><th>Details</th></tr></thead><tbody id="orderRows"></tbody></table>
+          <table><thead><tr><th>Order Number</th><th>Customer</th><th>Amount</th><th>Payment</th><th>Delivery Status</th><th>Tracking Number</th><th>Action</th></tr></thead><tbody id="orderRows"></tbody></table>
         </div>
       </section>
 
@@ -2443,7 +2533,7 @@
           </div>
         </details>
         <div class="table-wrap" style="margin-top:16px;">
-          <table><thead><tr><th>Time</th><th>Bill / Order</th><th>Method</th><th>Amount</th><th>Transaction</th><th>Status</th><th>User</th></tr></thead><tbody id="paymentCenterRows"></tbody></table>
+          <table><thead><tr><th>Time</th><th>Bill / Order</th><th>Method</th><th>Amount</th><th>Transaction</th><th>Status</th><th>User</th><th>Action</th></tr></thead><tbody id="paymentCenterRows"></tbody></table>
         </div>
         <div class="notice" style="margin-top:16px;"><strong>Demo notice:</strong> QR and wallet verification here is simulated. Real production must verify provider webhooks, amount, merchant, currency, bill reference, and duplicate transaction IDs on the backend.</div>
       </section>
@@ -2519,6 +2609,14 @@
           <div class="panel">
             <h2>Return / Exchange / Refund Request</h2>
             <form class="form" id="returnForm">
+              <div class="form-row">
+                <label>Bill Lookup<input id="returnBillLookup" placeholder="#SL-1001 or #POS-1003" /></label>
+                <label>Matched Bill<input id="returnBillMatched" readonly placeholder="No bill selected" /></label>
+              </div>
+              <div class="platform-actions">
+                <button class="secondary" type="button" id="lookupReturnBill">Lookup Bill</button>
+              </div>
+              <p class="notice" id="returnBillNotice">Step 1: find bill. Step 2: select item. Step 3: choose refund or exchange.</p>
               <div class="form-row">
                 <label>Order<select id="returnOrder"></select></label>
                 <label>Product / Variant<select id="returnProduct"></select></label>
@@ -2924,6 +3022,8 @@
 
     const DB_KEY = "subhakamanaStoreErpLocalDbV1";
     const SESSION_KEY = "subhakamanaStoreErpSessionV1";
+    const API_BASE_KEY = "subhakamanaStoreBackendApiBase";
+    const DEFAULT_API_BASE = "http://localhost:4000/api/v1";
     const DATA_SCHEMA_VERSION = 5;
     const paymentStatusVocabulary = ["CREATED", "PENDING", "AWAITING_PAYMENT", "VERIFYING", "VERIFIED", "PAID", "FAILED", "EXPIRED", "CANCELLED", "REFUNDED", "REQUIRES_REVIEW"];
     const posModePages = ["pos", "orders", "payments"];
@@ -3091,6 +3191,64 @@
       });
       const snapshot = { dataSchemaVersion: DATA_SCHEMA_VERSION, products, customers, suppliers, orders, shipments, cart, paymentRecords, auditLog, stockMovements, returns, stockCounts, cashierShifts, quickStockEntries, ncmSettings, ncmApiLogs, ncmWebhookLogs };
       localStorage.setItem(DB_KEY, JSON.stringify(snapshot));
+    }
+
+    function backendApiBase() {
+      return localStorage.getItem(API_BASE_KEY) || DEFAULT_API_BASE;
+    }
+
+    async function backendRequest(path, options = {}) {
+      const response = await fetch(`${backendApiBase()}${path}`, {
+        headers: { "content-type": "application/json", ...(options.headers || {}) },
+        credentials: "include",
+        ...options
+      });
+      const payload = await response.json();
+      if (!response.ok || payload.ok === false) {
+        throw new Error(payload?.error?.message || `Backend request failed: ${path}`);
+      }
+      return payload.data;
+    }
+
+    function upsertLocalProduct(product) {
+      const normalized = ensureProductInventory({ ...product });
+      ensureProductPhotoUse(normalized);
+      const index = products.findIndex((item) => item.sku === normalized.sku || item.barcode === normalized.barcode || item.id === normalized.id);
+      if (index >= 0) products[index] = { ...products[index], ...normalized };
+      else products.push(normalized);
+      return normalized;
+    }
+
+    async function syncCatalogFromBackend() {
+      try {
+        const [{ products: backendProducts }, { inventory }] = await Promise.all([
+          backendRequest("/products"),
+          backendRequest("/inventory")
+        ]);
+        if (Array.isArray(backendProducts)) {
+          replaceArray(products, backendProducts.map((product) => ensureProductPhotoUse(ensureProductInventory(product))));
+        }
+        if (Array.isArray(inventory)) {
+          inventory.forEach((row) => upsertLocalProduct(row));
+        }
+        addAudit("Backend Sync", "Product List and Inventory View loaded from Backend API.");
+        saveDatabase();
+        renderEverything();
+      } catch (error) {
+        addAudit("Backend Fallback", `Backend API unavailable for Product List / Inventory View. Local demo data used. ${error.message}`);
+      }
+    }
+
+    async function createProductThroughBackend(product) {
+      const data = await backendRequest("/products", { method: "POST", body: JSON.stringify(product) });
+      return data.product;
+    }
+
+    async function receiveStockThroughBackend({ sku, quantity, cost, reference, supplier }) {
+      return backendRequest("/inventory/receive-stock", {
+        method: "POST",
+        body: JSON.stringify({ sku, quantity, cost, reference, supplier })
+      });
     }
 
     function addAudit(action, details) {
@@ -3261,6 +3419,7 @@
       renderDemoProductImages();
       fillShipmentForm();
       showPage(initialPageForMode());
+      syncCatalogFromBackend();
     }
 
     function sourceBadge(record) {
@@ -3429,9 +3588,55 @@
           <td>${product.onHand}</td>
           <td>${money(product.price)}</td>
           <td><span class="badge ${badgeClass(statusText)}">${statusText}</span></td>
-          <td><button class="secondary" type="button" data-inventory-detail="${product.id}">View Details</button></td>
+          <td><div class="row-actions"><button class="secondary compact-action" type="button" data-inventory-detail="${product.id}">Details</button><button class="secondary compact-action" type="button" data-duplicate-product="${product.id}">Duplicate</button></div></td>
         </tr>`;
       }).join("") || `<tr><td colspan="6"><span class="subtle">No inventory items match the current search or filters. Inventory levels look healthy for this search.</span></td></tr>`;
+    }
+
+    function setProductEntryStep(step) {
+      document.getElementById("productForm").dataset.step = step;
+      document.querySelectorAll("[data-product-step-tab]").forEach((tab) => tab.classList.toggle("active", tab.dataset.productStepTab === step));
+    }
+
+    function duplicateProduct(productId) {
+      const product = products.find((item) => item.id === Number(productId));
+      if (!product) return;
+      const [size = "", color = ""] = String(product.variant || "").split("/").map((part) => part.trim());
+      const copiedSize = ["S", "M", "L", "XL"].includes(size) ? size : "M";
+      showPage("products");
+      setProductEntryStep("basic");
+      selectedProductPhotos = Array.isArray(product.images) ? product.images.map((image) => ({ ...image })) : [];
+      document.getElementById("newProductName").value = `${product.name} Copy`;
+      document.getElementById("newProductSku").value = "";
+      document.getElementById("newProductBarcode").value = "";
+      document.getElementById("newProductCategory").value = product.category || "Kurta";
+      document.getElementById("newProductSubcategory").value = product.subcategory || product.category || "";
+      document.getElementById("newProductBrand").value = product.brand || "Subhakamana";
+      document.getElementById("newProductCost").value = product.cost || 0;
+      document.getElementById("newProductPrice").value = product.price || 0;
+      document.getElementById("newProductOriginalPrice").value = product.originalPrice || product.price || 0;
+      document.getElementById("newProductDiscount").value = product.discount || 0;
+      document.getElementById("newProductStock").value = 0;
+      document.getElementById("newProductReorder").value = product.reorder || 3;
+      document.getElementById("newProductStockStatus").value = "In Stock";
+      document.getElementById("newProductSize").value = copiedSize;
+      document.getElementById("newProductColor").value = color || "";
+      document.getElementById("newProductVariantSku").value = "";
+      document.getElementById("newProductVariantStock").value = 0;
+      document.getElementById("newProductSupplier").value = product.supplier || suppliers[0]?.name || "";
+      document.getElementById("newProductDescription").value = product.description || `${product.name} style copied for quick editing. Update color, size, SKU, barcode, stock, and photo before publishing.`;
+      document.getElementById("newProductShowWebsite").checked = !!product.showOnWebsite;
+      document.getElementById("newProductNewArrival").checked = true;
+      document.getElementById("newProductFeatured").checked = false;
+      document.getElementById("newProductReadyForPhotoshoot").checked = !!product.readyForPhotoshoot;
+      document.getElementById("newProductWebsitePhotoExclusive").checked = !!product.websitePhotoExclusive;
+      document.getElementById("labelName").textContent = `${product.name} Copy`;
+      document.getElementById("labelMeta").textContent = `Copied from ${product.sku}. Enter new SKU/barcode or let the system generate them.`;
+      document.getElementById("websitePreviewName").textContent = `${product.name} Copy`;
+      document.getElementById("websitePreviewMeta").textContent = `${product.category} | ${money(product.price || 0)} | Duplicate draft`;
+      updateProductPhotoPreview(selectedProductPhotos, `Similar product copied from ${product.name}. Edit only what changed, then save.`);
+      addAudit("Duplicate Product Started", `${product.name} copied into product entry for fast similar-product onboarding.`);
+      document.getElementById("newProductName").focus();
     }
 
     function openInventoryDrawer(productId) {
@@ -3474,6 +3679,7 @@
         <div class="platform-actions">
           <button class="secondary" type="button" onclick="adjustStock(${product.id}, 1);openInventoryDrawer(${product.id})">Increase Stock</button>
           <button class="secondary" type="button" onclick="adjustStock(${product.id}, -1);openInventoryDrawer(${product.id})">Decrease Stock</button>
+          <button class="secondary" type="button" data-duplicate-product="${product.id}">Duplicate & Edit</button>
         </div>
       `;
       document.getElementById("inventoryDetailDrawer").classList.add("open");
@@ -3656,11 +3862,15 @@
 
       const paymentReviewCount = paymentRecords.filter((payment) => ["Pending", "AWAITING_PAYMENT", "FAILED", "REQUIRES_REVIEW", "Pending Verification"].includes(payment.status)).length;
       const pendingOrders = orders.filter((o) => !["Completed", "Delivered"].includes(o.status)).length;
-      document.getElementById("dashboardNotifications").textContent = lowStockProducts.length + pendingOrders + paymentReviewCount;
+      const pendingShipments = shipments.filter((shipment) => !["Delivered", "Returned"].includes(packageStatus(shipment))).length;
+      const returnReviewCount = returns.filter((item) => !["Closed", "Refunded", "Rejected", "Restocked", "Exchanged"].includes(item.status)).length;
+      document.getElementById("dashboardNotifications").textContent = lowStockProducts.length + pendingOrders + paymentReviewCount + pendingShipments + returnReviewCount;
       const attentionItems = [
         ...lowStockProducts.slice(0, 4).map((p) => `<div class="attention-item"><strong>${p.name} needs restocking</strong><span class="subtle">${p.sku} - ${p.stock} left</span></div>`),
         pendingOrders ? `<div class="attention-item"><strong>${pendingOrders} orders need processing</strong><span class="subtle">Open Orders to pack, deliver, or complete them.</span></div>` : "",
-        paymentReviewCount ? `<div class="attention-item"><strong>${paymentReviewCount} payments need review</strong><span class="subtle">Open Payments to verify or reconcile.</span></div>` : ""
+        paymentReviewCount ? `<div class="attention-item"><strong>${paymentReviewCount} payments need review</strong><span class="subtle">Open Payments to verify or reconcile.</span></div>` : "",
+        pendingShipments ? `<div class="attention-item"><strong>${pendingShipments} delivery records are active</strong><span class="subtle">Open Delivery to check pickup, transit, and courier status.</span></div>` : "",
+        returnReviewCount ? `<div class="attention-item"><strong>${returnReviewCount} returns need checking</strong><span class="subtle">Open Returns / Counts to inspect and refund correctly.</span></div>` : ""
       ].filter(Boolean);
       document.getElementById("lowStockList").innerHTML = attentionItems.join("") || "<p class='subtle'>No urgent alerts. You're all caught up.</p>";
       document.getElementById("recentOrders").innerHTML = orders.slice(-5).reverse().map((o) => `<div class="activity-item"><strong>${o.id} - ${money(o.total)}</strong><span class="subtle">${o.customer} - ${o.status} - ${o.channel}</span></div>`).join("") || "<p class='subtle'>No recent order activity yet.</p>";
@@ -3669,7 +3879,8 @@
       document.getElementById("posProductRows").innerHTML = products.map((p) => `<tr><td><div class="inventory-product-cell">${productThumb(p, "small")}<div><strong>${p.name}</strong><br>${sourceBadge(p)}</div></div></td><td>${p.barcode}<br><span class="subtle">${p.sku}</span></td><td>${availableStock(p)}</td><td><button class="secondary" onclick="scanToCart('${p.sku}')" ${availableStock(p) <= 0 ? "disabled" : ""}>Add</button></td></tr>`).join("");
       document.getElementById("orderRows").innerHTML = orders.map((o) => {
         const shipment = shipments.find((s) => s.order === o.id);
-        return `<tr><td>${o.id}</td><td>${o.customer}</td><td>${money(o.total)}</td><td><span class="badge ${badgeClass(o.payment)}">${o.payment}</span></td><td><span class="badge ${badgeClass(o.delivery)}">${o.delivery}</span></td><td>${shipment?.tracking || "Not Created"}</td><td><button class="secondary" type="button" data-order-detail="${o.id}">View Details</button></td></tr>`;
+        const canDispatch = o.channel === "Online" && !shipment && !["Completed", "Delivered"].includes(o.status);
+        return `<tr><td>${o.id}</td><td>${o.customer}</td><td>${money(o.total)}</td><td><span class="badge ${badgeClass(o.payment)}">${o.payment}</span></td><td><span class="badge ${badgeClass(o.delivery)}">${o.delivery}</span></td><td>${shipment?.tracking || "Not Created"}</td><td><div class="row-actions"><button class="secondary compact-action" type="button" data-dispatch-order="${o.id}" ${canDispatch ? "" : "disabled"}>${shipment ? "Dispatched" : "Dispatch"}</button><button class="secondary compact-action" type="button" data-order-detail="${o.id}">Details</button></div></td></tr>`;
       }).join("");
       document.getElementById("supplierRows").innerHTML = suppliers.map((s, index) => `<tr><td>${s.name}<br>${sourceBadge(s)}</td><td>${s.contact}</td><td>${money(s.outstanding)}</td><td>${s.last}</td><td><span class="badge ${badgeClass(s.status)}">${s.status}</span></td><td><button class="secondary compact-action" type="button" data-supplier-detail="${index}">Details</button></td></tr>`).join("");
       document.getElementById("customerRows").innerHTML = customers.map((c, index) => `<tr><td>${c.name}<br>${sourceBadge(c)}</td><td>${c.phone}</td><td>${c.city}</td><td>${c.orders}</td><td>${money(c.spend)}</td><td><button class="secondary compact-action" type="button" data-customer-detail="${index}">Details</button></td></tr>`).join("");
@@ -3791,7 +4002,11 @@
       document.getElementById("paymentCenterBankQr").textContent = money(bankQr);
       document.getElementById("paymentCenterWallets").textContent = money(wallets);
       document.getElementById("paymentCenterRisk").textContent = money(risk);
-      document.getElementById("paymentCenterRows").innerHTML = rows.map((payment) => `<tr><td>${payment.time || "-"}</td><td>${payment.order || "-"}</td><td>${payment.method || "-"}</td><td>${money(payment.amount || 0)}</td><td>${payment.transactionId || "-"}</td><td><span class="badge ${badgeClass(payment.status)}">${payment.status}</span></td><td>${payment.user || "-"}</td></tr>`).join("") || "<tr><td colspan='7'><span class='subtle'>No matching payment transactions.</span></td></tr>";
+      document.getElementById("paymentCenterRows").innerHTML = rows.map((payment) => {
+        const index = paymentRecords.indexOf(payment);
+        const needsVerify = !paymentStatusIsPaid(payment.status);
+        return `<tr><td>${payment.time || "-"}</td><td>${payment.order || "-"}</td><td>${payment.method || "-"}</td><td>${money(payment.amount || 0)}</td><td>${payment.transactionId || "-"}</td><td><span class="badge ${badgeClass(payment.status)}">${payment.status}</span></td><td>${payment.user || "-"}</td><td><button class="secondary compact-action" type="button" data-verify-payment="${index}" ${needsVerify ? "" : "disabled"}>${needsVerify ? "Verify" : "Verified"}</button></td></tr>`;
+      }).join("") || "<tr><td colspan='8'><span class='subtle'>No matching payment transactions.</span></td></tr>";
     }
 
     function renderQuickStockEntries() {
@@ -4016,6 +4231,88 @@
       return order?.billNumber || order?.id || "No bill selected";
     }
 
+    function dispatchOrder(orderId) {
+      const order = orders.find((item) => item.id === orderId);
+      if (!order) return;
+      const existingIndex = shipments.findIndex((item) => item.order === order.id);
+      if (existingIndex >= 0) {
+        showPage("delivery");
+        openShipmentDrawer(existingIndex);
+        return;
+      }
+      const customer = customers.find((item) => item.name === order.customer) || {};
+      const tracking = "NCM-" + new Date().toISOString().slice(2, 10).replace(/-/g, "") + "-" + order.id.replace(/\D/g, "").slice(-4);
+      const shipment = {
+        tracking,
+        order: order.id,
+        billNumber: billNumberFor(order),
+        products: orderProductSummary(order),
+        courier: "Nepal Can Move",
+        customer: order.customer || "Customer",
+        phone: order.customerPhone || customer.phone || "98XXXXXXXX",
+        city: order.city || customer.city || "Kathmandu",
+        address: order.address || customer.address || "Address pending",
+        cod: order.payment === "COD" || order.payment === "Cash on Delivery" ? Number(order.total || 0) : 0,
+        status: "Pickup Requested",
+        ncmPickupStatus: "Pickup Requested",
+        createdBy: currentRoleLabel(),
+        history: [{ time: new Date().toLocaleString(), status: "Pickup Requested", note: "One-action dispatch created from order queue." }]
+      };
+      prepareNcmShipment(shipment);
+      shipments.unshift(shipment);
+      order.status = "Dispatched";
+      order.delivery = packageStatus(shipment);
+      addAudit("Order Dispatched", `${order.id} sent to delivery queue with tracking ${shipment.tracking}.`);
+      saveDatabase();
+      renderEverything();
+      showPage("delivery");
+      openShipmentDrawer(0);
+    }
+
+    function verifyPaymentRecord(index) {
+      const payment = paymentRecords[Number(index)];
+      if (!payment) return;
+      payment.status = "VERIFIED";
+      payment.verifiedBy = currentRoleLabel();
+      payment.verifiedAt = new Date().toLocaleString();
+      const order = orders.find((item) => item.id === payment.order);
+      if (order) {
+        order.paymentStatus = "VERIFIED";
+        order.payment = payment.method || order.payment;
+      }
+      addAudit("Payment Verified", `${payment.order || "Payment"} verified from Payment Center by ${currentRoleLabel()}.`);
+      saveDatabase();
+      renderEverything();
+      showPage("payments");
+    }
+
+    function prefillReturnFromOrder(orderId) {
+      const order = orders.find((item) => item.id === orderId);
+      if (!order) return;
+      const matchedProduct = products.find((product) => orderProductSummary(order).toLowerCase().includes(product.name.toLowerCase())) || products[0];
+      document.getElementById("returnBillMatched").value = billNumberFor(order);
+      document.getElementById("returnBillLookup").value = billNumberFor(order);
+      document.getElementById("returnPrice").value = Number(order.total || matchedProduct?.price || 0);
+      if (matchedProduct) document.getElementById("returnProduct").value = matchedProduct.sku;
+      document.getElementById("returnNotes").value = `Return started from ${billNumberFor(order)}. Check item condition before restocking or refunding.`;
+      document.getElementById("returnBillNotice").textContent = `${billNumberFor(order)} selected. Now choose the item, quantity, and refund/exchange method.`;
+    }
+
+    function lookupReturnBill() {
+      const query = document.getElementById("returnBillLookup").value.trim().toLowerCase();
+      const order = orders.find((item) => {
+        const bill = billNumberFor(item).toLowerCase();
+        return bill === query || item.id.toLowerCase() === query || bill.includes(query) || item.id.toLowerCase().includes(query);
+      });
+      if (!order) {
+        document.getElementById("returnBillMatched").value = "";
+        document.getElementById("returnBillNotice").textContent = "No bill found. Check the bill number and try again.";
+        return;
+      }
+      document.getElementById("returnOrder").value = order.id;
+      prefillReturnFromOrder(order.id);
+    }
+
     function fillShipmentForm() {
       const order = orders.find((o) => o.id === document.getElementById("shipmentOrder").value);
       const customer = customers.find((c) => c.name === order?.customer) || customers[0];
@@ -4066,6 +4363,14 @@
     }
 
     function buildCommandItems() {
+      const actionItems = [
+        { label: "New physical sale", meta: "Open POS scanner now", keywords: "sale pos billing scan counter", run: () => showPage("pos") },
+        { label: "Receive stock", meta: "Open 3-step stock receiving", keywords: "receive stock supplier purchase", run: () => showPage("stockentry") },
+        { label: "Find / check stock", meta: "Open inventory search", keywords: "find product check stock inventory sku barcode", run: () => showPage("inventory") },
+        { label: "Verify payment", meta: "Open one-screen payment center", keywords: "verify payment qr esewa khalti bank cash", run: () => showPage("payments") },
+        { label: "Process return", meta: "Bill lookup, item, refund", keywords: "return exchange refund bill", run: () => showPage("controls") },
+        { label: "Dispatch order", meta: "Open order queue", keywords: "dispatch delivery courier ncm order", run: () => showPage("orders") }
+      ].map((item) => ({ type: "Action", ...item }));
       const pageItems = Object.entries(pageLabels).map(([page, label]) => ({
         type: "Page",
         label,
@@ -4135,7 +4440,7 @@
           openPurchaseDrawer(index);
         }
       }));
-      return [...productItems, ...orderItems, ...shipmentItems, ...customerItems, ...supplierItems, ...purchaseItems, ...pageItems];
+      return [...actionItems, ...productItems, ...orderItems, ...shipmentItems, ...customerItems, ...supplierItems, ...purchaseItems, ...pageItems];
     }
 
     function renderCommandResults(query = "") {
@@ -4195,10 +4500,29 @@
         openInventoryDrawer(inventoryDetail.dataset.inventoryDetail);
         return;
       }
+      const duplicateButton = event.target.closest("[data-duplicate-product]");
+      if (duplicateButton) {
+        event.preventDefault();
+        closeInventoryDrawer();
+        duplicateProduct(duplicateButton.dataset.duplicateProduct);
+        return;
+      }
       const orderDetail = event.target.closest("[data-order-detail]");
       if (orderDetail) {
         event.preventDefault();
         openOrderDrawer(orderDetail.dataset.orderDetail);
+        return;
+      }
+      const dispatchButton = event.target.closest("[data-dispatch-order]");
+      if (dispatchButton) {
+        event.preventDefault();
+        dispatchOrder(dispatchButton.dataset.dispatchOrder);
+        return;
+      }
+      const paymentButton = event.target.closest("[data-verify-payment]");
+      if (paymentButton) {
+        event.preventDefault();
+        verifyPaymentRecord(paymentButton.dataset.verifyPayment);
         return;
       }
       const shipmentDetail = event.target.closest("[data-shipment-detail]");
@@ -4311,7 +4635,7 @@
       renderInventory();
     });
 
-    document.getElementById("productForm").addEventListener("submit", (event) => {
+    document.getElementById("productForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!event.currentTarget.reportValidity()) return;
       const action = event.submitter?.value === "draft" ? "Draft" : "Published";
@@ -4363,13 +4687,21 @@
         images: selectedProductPhotos,
         mainImage: selectedProductPhotos[0]?.src || ""
       };
-      products.push(createdProduct);
+      let savedProduct = createdProduct;
+      try {
+        savedProduct = await createProductThroughBackend(createdProduct);
+        upsertLocalProduct(savedProduct);
+        addAudit("Product API", `${name} saved through Backend API with SKU ${savedProduct.sku}.`);
+      } catch (error) {
+        products.push(createdProduct);
+        addAudit("Product API Fallback", `${name} saved locally because Backend API was unavailable. ${error.message}`);
+      }
       document.getElementById("labelName").textContent = name;
-      document.getElementById("labelMeta").textContent = `SKU: ${sku} | Barcode ${barcode} | Size ${size} | Color ${color} | ${action}`;
+      document.getElementById("labelMeta").textContent = `SKU: ${savedProduct.sku || sku} | Barcode ${savedProduct.barcode || barcode} | Size ${size} | Color ${color} | ${action}`;
       document.getElementById("websitePreviewName").textContent = name;
       document.getElementById("websitePreviewMeta").textContent = `${document.getElementById("newProductCategory").value} | ${money(Number(document.getElementById("newProductPrice").value))} | ${action} | ${createdProduct.readyForPhotoshoot ? "Ready for Photoshoot" : "Inventory Reference"}`;
       addAudit("Product Created", `${name} saved as ${action} with SKU ${sku} and barcode ${barcode}.`);
-      if (stock > 0) addStockMovement(createdProduct, stock, "Opening Stock", "Product entry opening stock.", sku);
+      if (stock > 0) addStockMovement(savedProduct, stock, "Opening Stock", "Product entry opening stock.", savedProduct.sku || sku);
       saveDatabase();
       renderEverything();
       showPage("inventory");
@@ -4429,7 +4761,7 @@
     document.getElementById("applyPosMemberDiscount").addEventListener("click", applyPosMemberDiscount);
     document.getElementById("clearPosMemberDiscount").addEventListener("click", clearPosMemberDiscount);
 
-    document.getElementById("receiveStockForm").addEventListener("submit", (event) => {
+    document.getElementById("receiveStockForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!event.currentTarget.reportValidity()) return;
       const product = products.find((p) => p.sku === document.getElementById("receiveProduct").value);
@@ -4437,16 +4769,47 @@
       const cost = Number(document.getElementById("receiveCost").value);
       const reference = document.getElementById("receiveReference").value.trim();
       if (!product || qty <= 0 || cost < 0 || !reference) return;
-      ensureProductInventory(product);
-      product.onHand += qty;
-      product.stock = product.onHand;
-      product.cost = cost;
-      addStockMovement(product, qty, "Purchase Received", `${qty} received from ${document.getElementById("receiveSupplier").value}.`, reference);
-      addAudit("Purchase Received", `${reference}: ${qty} units received for ${product.name}.`);
+      let receivedProduct = product;
+      try {
+        const result = await receiveStockThroughBackend({
+          sku: product.sku,
+          quantity: qty,
+          cost,
+          reference,
+          supplier: document.getElementById("receiveSupplier").value
+        });
+        receivedProduct = upsertLocalProduct(result.product);
+        stockMovements.unshift({
+          time: new Date().toLocaleString(),
+          user: currentRoleLabel(),
+          product: receivedProduct.name,
+          sku: receivedProduct.sku,
+          quantity: qty,
+          type: result.movement?.type || "Purchase Received",
+          reason: result.movement?.reason || `${qty} received from ${document.getElementById("receiveSupplier").value}.`,
+          reference
+        });
+        addAudit("Receive Stock API", `${reference}: ${qty} units received for ${receivedProduct.name} through Backend API.`);
+      } catch (error) {
+        ensureProductInventory(product);
+        product.onHand += qty;
+        product.stock = product.onHand;
+        product.cost = cost;
+        addStockMovement(product, qty, "Purchase Received", `${qty} received from ${document.getElementById("receiveSupplier").value}.`, reference);
+        addAudit("Receive Stock API Fallback", `${reference}: ${qty} units received locally because Backend API was unavailable. ${error.message}`);
+      }
       saveDatabase();
       renderEverything();
       showPage("inventory");
     });
+
+    document.getElementById("lookupReturnBill").addEventListener("click", lookupReturnBill);
+    document.getElementById("returnBillLookup").addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      lookupReturnBill();
+    });
+    document.getElementById("returnOrder").addEventListener("change", (event) => prefillReturnFromOrder(event.target.value));
 
     document.getElementById("returnForm").addEventListener("submit", (event) => {
       event.preventDefault();

@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subhakamana Store | Nepali Fashion</title>
+  <style>
+    :root {
+      --primary: #C05A26;
+      --primary-dark: #8A3B1C;
+      --ink: #34231A;
+      --muted: #7A6255;
+      --gold: #DCB13D;
+      --violet: #955494;
+      --cream: #FAFAF3;
+      --rose: #F6E1D1;
+      --panel: #FFFFFF;
+      --line: #E9C687;
+      --ok: #16803c;
+      --shadow: 0 18px 44px rgba(43, 39, 37, 0.09);
+      --shadow-soft: 0 28px 80px rgba(43, 39, 37, 0.13);
+      --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --sans: Inter, Arial, sans-serif;
+      --text-xs: 12px;
+      --text-sm: 13px;
+      --text-base: 14px;
+      --text-md: 16px;
+      --text-lg: 18px;
+      --text-xl: 22px;
+      --text-2xl: 30px;
+      --text-3xl: 42px;
+      --text-hero: 64px;
+      --leading-tight: 1.16;
+      --leading-normal: 1.45;
+      --leading-relaxed: 1.6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+      line-height: var(--leading-normal);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .top-strip {
+      background: linear-gradient(90deg, var(--ink), #BC6062, var(--ink));
+      color: white;
+      text-align: center;
+      padding: 7px 12px;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 248, 240, 0.72);
+      border-bottom: 1px solid rgba(232, 221, 209, 0.72);
+      backdrop-filter: blur(22px);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 20px;
+      min-width: 0;
+    }
+
+    .brand strong {
+      display: block;
+      color: var(--primary);
+      font-family: var(--serif);
+      font-size: clamp(18px, 2vw, 24px);
+      letter-spacing: 0;
+      font-weight: 700;
+      line-height: 1.05;
+      overflow-wrap: anywhere;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+      line-height: 1.35;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+      max-width: min(440px, 52vw);
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 4px;
+      flex: 0 0 auto;
+    }
+
+    .footer-logo {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      background: white;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 8px 0;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2px;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .24s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .nav-cluster {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 18px;
+      margin-left: auto;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      min-width: 42px;
+      min-height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .menu-btn { display: none; }
+
+    .cart-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      min-height: 20px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: white;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px;
+    }
+
+    .hero {
+      min-height: min(760px, calc(100vh - 38px));
+      display: grid;
+      align-items: end;
+      background:
+        linear-gradient(90deg, rgba(43, 39, 37, 0.88), rgba(73, 35, 48, 0.42), rgba(158, 63, 79, 0.12)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='760' viewBox='0 0 1400 760'%3E%3Crect width='1400' height='760' fill='%23b4232a'/%3E%3Cg opacity='.34'%3E%3Ccircle cx='1060' cy='250' r='360' fill='%23c59b35'/%3E%3Ccircle cx='1110' cy='470' r='220' fill='%23fff1f1'/%3E%3C/g%3E%3Cg fill='none' stroke='%23fff7e7' stroke-width='3' opacity='.24'%3E%3Cpath d='M820 82c150 80 256 178 318 294'/%3E%3Cpath d='M750 160c186 58 307 147 402 286'/%3E%3Cpath d='M696 248c170 34 318 112 450 256'/%3E%3C/g%3E%3Cg opacity='.42'%3E%3Cpath d='M940 130h236v500H940z' fill='%23fff7e7'/%3E%3Cpath d='M982 164h152v430H982z' fill='%23b4232a'/%3E%3Cpath d='M1014 164h88v430h-88z' fill='%23c59b35' opacity='.78'/%3E%3C/g%3E%3C/svg%3E") center/cover;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 38%;
+      background: linear-gradient(transparent, rgba(255, 248, 240, 0.96));
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: clamp(86px, 13vw, 150px) 20px 82px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 780px;
+      font-family: var(--serif);
+      font-size: clamp(48px, 8vw, 104px);
+      line-height: 0.9;
+      letter-spacing: 0;
+      margin: 18px 0 18px;
+      font-weight: 600;
+    }
+
+    .hero p {
+      max-width: 560px;
+      color: #f9ede1;
+      font-size: 18px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .hero-actions, .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .btn {
+      min-height: 44px;
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 16px;
+      background: var(--primary);
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn.secondary {
+      background: white;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .btn.gold {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 54px);
+      letter-spacing: 0;
+      font-weight: 600;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .small-note {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .qr-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(210px, 1fr));
+      gap: 16px;
+    }
+
+    .trust-card, .product-card, .panel, .qr-card, .festival-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .trust-card {
+      padding: 11px 12px;
+    }
+
+    .trust-card strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .trust-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    #trust.container {
+      padding-top: 16px;
+      padding-bottom: 14px;
+    }
+
+    .qr-card {
+      padding: 18px;
+      text-align: center;
+    }
+
+    .editorial-band {
+      padding-top: 42px;
+      padding-bottom: 42px;
+    }
+
+    .festival-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 16px;
+    }
+
+    .festival-card {
+      min-height: 360px;
+      padding: clamp(22px, 4vw, 42px);
+      display: grid;
+      align-content: end;
+      color: white;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(43, 39, 37, .08), rgba(43, 39, 37, .84)),
+        radial-gradient(circle at 80% 18%, rgba(216, 154, 29, .62), transparent 30%),
+        linear-gradient(135deg, #C05A26, #BC6062 46%, #955494);
+    }
+
+    .festival-card.compact {
+      min-height: 172px;
+      background:
+        linear-gradient(180deg, rgba(43, 39, 37, .05), rgba(43, 39, 37, .78)),
+        linear-gradient(135deg, #955494, #C05A26);
+    }
+
+    .festival-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .festival-card h3 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: .96;
+      margin: 8px 0;
+      font-weight: 600;
+    }
+
+    .festival-card p {
+      max-width: 500px;
+      color: rgba(255,255,255,.88);
+      line-height: 1.55;
+    }
+
+    .category-rail {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .category-tile {
+      min-height: 190px;
+      border: 0;
+      border-radius: 8px;
+      padding: 18px;
+      text-align: left;
+      color: white;
+      cursor: pointer;
+      display: grid;
+      align-content: end;
+      background:
+        linear-gradient(180deg, rgba(43,39,37,.08), rgba(43,39,37,.75)),
+        linear-gradient(135deg, var(--tile-a), var(--tile-b));
+      box-shadow: var(--shadow);
+      transition: transform .24s ease, box-shadow .24s ease;
+    }
+
+    .category-tile strong {
+      font-family: var(--serif);
+      font-size: 30px;
+      font-weight: 600;
+      display: block;
+    }
+
+    .category-tile:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .qr-card img {
+      width: min(220px, 100%);
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: white;
+      padding: 10px;
+      margin-bottom: 14px;
+    }
+
+    .qr-card h3 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 170px 170px;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .filters input, .filters select, .checkout-form input, .checkout-form textarea, .checkout-form select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 44px;
+      padding: 10px 12px;
+      background: white;
+      color: var(--ink);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(190px, 1fr));
+      gap: 16px;
+    }
+
+    .product-card {
+      overflow: hidden;
+      border: 0;
+      transition: transform .24s ease, box-shadow .24s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .product-image {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 900;
+      text-align: center;
+      padding: 18px;
+      background:
+        radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.38), transparent 28%),
+        linear-gradient(135deg, var(--image-a), var(--image-b));
+      transition: transform .5s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.025);
+    }
+
+    .badge-row {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: white;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .heart {
+      min-width: 34px;
+      min-height: 34px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--primary);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .heart.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .product-body {
+      padding: 14px;
+    }
+
+    .product-body h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+    }
+
+    .product-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .price-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .stock {
+      color: var(--ok);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .product-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      opacity: .08;
+      transform: translateY(8px);
+      transition: opacity .24s ease, transform .24s ease;
+    }
+
+    .product-card:hover .product-actions,
+    .product-card:focus-within .product-actions {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .detail-image {
+      min-height: 520px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 30px;
+      font-weight: 950;
+      text-align: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,.36), transparent 28%),
+        linear-gradient(135deg, var(--image-a), var(--image-b));
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 96px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .purchase-panel {
+      position: sticky;
+      top: 96px;
+    }
+
+    .detail-info h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      margin: 0 0 8px;
+    }
+
+    .option-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 18px;
+    }
+
+    .option {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-weight: 850;
+    }
+
+    .option.active {
+      border-color: var(--primary);
+      background: var(--rose);
+      color: var(--primary);
+    }
+
+    .qty {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .qty button {
+      border: 0;
+      background: white;
+      min-width: 42px;
+      min-height: 42px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .qty span {
+      min-width: 44px;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .cart-layout, .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 86px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cart-thumb {
+      width: 86px;
+      height: 104px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--image-a), var(--image-b));
+    }
+
+    .cart-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(43, 39, 37, 0.36);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+
+    .cart-drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 41;
+      width: min(420px, 100%);
+      height: 100vh;
+      background: var(--panel);
+      box-shadow: -24px 0 70px rgba(43, 39, 37, 0.22);
+      transform: translateX(104%);
+      transition: transform .24s ease;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-head, .drawer-foot {
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .drawer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .drawer-body {
+      padding: 4px 18px 18px;
+      overflow: auto;
+    }
+
+    .drawer-foot {
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+      background: var(--cream);
+    }
+
+    .mini-cart-item {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mini-cart-thumb {
+      width: 72px;
+      height: 88px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--image-a), var(--image-b));
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 60;
+      transform: translate(-50%, 140%);
+      width: min(520px, calc(100% - 28px));
+      background: var(--ink);
+      color: white;
+      border-radius: 8px;
+      padding: 14px 16px;
+      box-shadow: 0 22px 60px rgba(43, 39, 37, .28);
+      transition: transform .24s ease;
+    }
+
+    .toast.open {
+      transform: translate(-50%, 0);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .summary-row.total {
+      border-bottom: 0;
+      font-size: 20px;
+      font-weight: 950;
+    }
+
+    .checkout-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .member-box {
+      border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--line));
+      background: #fffaf0;
+      border-radius: 8px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .member-box h3 {
+      margin: 0;
+      color: var(--primary);
+    }
+
+    .payment-qr-panel {
+      border: 1px solid color-mix(in srgb, var(--violet) 26%, var(--line));
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.95), rgba(255,248,240,.9)),
+        radial-gradient(circle at 90% 0%, rgba(216,154,29,.13), transparent 34%);
+      border-radius: 8px;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .payment-qr-panel h3 {
+      margin: 0;
+      color: var(--primary);
+    }
+
+    .payment-qr-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .payment-qr-card {
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .payment-qr-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 14px 30px rgba(158, 63, 79, 0.12);
+    }
+
+    .payment-qr-card img {
+      width: min(118px, 100%);
+      aspect-ratio: 1;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      padding: 6px;
+    }
+
+    .payment-qr-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .payment-qr-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-top: 3px;
+    }
+
+    .payment-method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .payment-method-card {
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: left;
+      cursor: pointer;
+      min-height: 116px;
+    }
+
+    .payment-method-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 14px 30px rgba(158, 63, 79, 0.12);
+    }
+
+    .payment-method-card[aria-disabled="true"] {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .payment-method-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      background: color-mix(in srgb, var(--primary) 11%, white);
+      color: var(--primary);
+      font-weight: 950;
+      margin-bottom: 8px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .confirmation {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .confirmation h2 {
+      color: var(--primary);
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 52px);
+      margin-bottom: 12px;
+    }
+
+    footer {
+      background:
+        radial-gradient(circle at 16% 20%, rgba(216, 154, 29, .16), transparent 30%),
+        var(--ink);
+      color: white;
+      margin-top: 36px;
+    }
+
+    .footer-grid {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 34px 20px;
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    footer a, footer p {
+      color: #d6dee9;
+    }
+
+    footer h3 {
+      margin-top: 0;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: var(--text-hero);
+      line-height: var(--leading-tight);
+    }
+
+    .section-title h2,
+    .detail-info h2,
+    .confirmation h2 {
+      font-size: var(--text-3xl);
+      line-height: var(--leading-tight);
+    }
+
+    .festival-card h3 {
+      font-size: var(--text-2xl);
+      line-height: var(--leading-tight);
+    }
+
+    .panel h3,
+    .member-box h3,
+    .payment-qr-panel h3,
+    .qr-card h3,
+    footer h3 {
+      font-size: var(--text-lg);
+      line-height: var(--leading-tight);
+    }
+
+    .product-body h3,
+    .cart-item h3,
+    .drawer-head h3 {
+      font-size: var(--text-md);
+      line-height: var(--leading-tight);
+    }
+
+    .hero-copy p,
+    .section-title p,
+    .festival-card p,
+    .muted,
+    .small-note,
+    label,
+    footer a,
+    footer p,
+    .payment-method-card,
+    .payment-qr-card span {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+    }
+
+    .badge,
+    .top-strip,
+    .brand span,
+    .product-meta,
+    .stock-note,
+    .payment-qr-card strong,
+    .footer-links {
+      font-size: var(--text-xs);
+      line-height: var(--leading-normal);
+    }
+
+    .brand strong {
+      font-size: var(--text-xl);
+      line-height: var(--leading-tight);
+    }
+
+    .price,
+    .product-price,
+    .category-tile strong {
+      font-size: var(--text-lg);
+      line-height: var(--leading-tight);
+    }
+
+    .btn,
+    .option,
+    .payment-method-card,
+    .category-tile,
+    button {
+      line-height: var(--leading-normal);
+      white-space: normal;
+      overflow-wrap: anywhere;
+      text-align: center;
+    }
+
+    input,
+    select,
+    textarea {
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+    }
+
+    @media (max-width: 1160px) {
+      .menu-btn { display: inline-flex; }
+      .brand {
+        max-width: calc(100vw - 130px);
+      }
+      .brand strong {
+        font-size: clamp(17px, 4.2vw, 22px);
+      }
+      .nav-cluster {
+        gap: 10px;
+      }
+      .nav-links {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        top: 72px;
+        display: none;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 12px;
+      }
+      .nav-links.open { display: grid; }
+      .filters, .detail-layout, .cart-layout, .checkout-layout, .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .product-grid, .trust-grid, .qr-grid {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+      }
+      .festival-grid, .category-rail {
+        grid-template-columns: 1fr;
+      }
+      .product-actions {
+        opacity: 1;
+        transform: none;
+      }
+      .hero { min-height: 500px; }
+    }
+
+    @media (max-width: 560px) {
+      :root {
+        --text-base: 14px;
+        --text-md: 15px;
+        --text-lg: 17px;
+        --text-xl: 20px;
+        --text-2xl: 24px;
+        --text-3xl: 30px;
+        --text-hero: 42px;
+      }
+      .nav-inner { padding: 0 14px; }
+      .brand {
+        gap: 8px;
+        max-width: calc(100vw - 112px);
+      }
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+      }
+      .brand strong {
+        font-size: 17px;
+      }
+      .brand span span {
+        display: none;
+      }
+      .container { padding: 22px 14px; }
+      .product-grid, .trust-grid, .qr-grid, .info-grid, .form-row, .payment-method-grid, .payment-qr-grid {
+        grid-template-columns: 1fr;
+      }
+      .product-actions, .hero-actions, .actions {
+        display: grid;
+      }
+      .btn { width: 100%; }
+      .cart-item {
+        grid-template-columns: 72px 1fr;
+      }
+      .cart-item > .price {
+        grid-column: 2;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-strip">Cash on Delivery available inside Nepal | Easy exchange on eligible products</div>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="#home" data-route="home">
+        <img class="brand-logo" src="assets/brand/subhakamana-store-logo.svg" alt="Subhakamana Store logo" />
+        <span>
+          <strong>Subhakamana Store</strong>
+          <span>Tradition you can wear, quality you can trust.</span>
+        </span>
+      </a>
+      <div class="nav-cluster">
+        <nav class="nav-links" id="navLinks" aria-label="Store navigation">
+          <a href="#home" data-route="home">Home</a>
+          <a href="#shop" data-route="shop">New Arrivals</a>
+          <a href="#festivals">Festival Collections</a>
+          <a href="#shop" data-category="Saree">Sarees</a>
+          <a href="#shop" data-category="Kurta">Kurtas</a>
+          <a href="#shop" data-category="Festival Wear">Bridal</a>
+          <a href="#shop" data-category="Dupatta">Accessories</a>
+          <a href="#contact">About</a>
+          <a href="#trust">Why Us</a>
+          <a href="#contact">Contact</a>
+          <a href="#account" data-route="account">Account</a>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn menu-btn" id="menuButton" type="button" aria-label="Open menu">☰</button>
+          <button class="icon-btn" type="button" data-route="cart" aria-label="Open cart">🛒<span class="cart-count" id="cartCount">0</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page active" id="homePage">
+      <section class="hero">
+        <div class="hero-content">
+          <span class="eyebrow">New festive arrivals</span>
+          <h1>Celebrate Teej in Timeless Grace.</h1>
+          <p>Premium Nepali Sarees, Kurtas, Dupattas, and festival wear selected for family gatherings, blessings, weddings, and everyday elegance.</p>
+          <div class="hero-actions">
+            <button class="btn gold" type="button" data-route="shop">Shop New Arrivals</button>
+            <button class="btn secondary" type="button" data-scroll="festivals">Explore Festivals</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="container" id="trust">
+        <div class="trust-grid">
+          <div class="trust-card"><strong>Cash on Delivery</strong><p class="muted">Pay when your order arrives.</p></div>
+          <div class="trust-card"><strong>Easy Exchange</strong><p class="muted">Exchange eligible items with store support.</p></div>
+          <div class="trust-card"><strong>Fast Delivery</strong><p class="muted">Delivery support across Nepal.</p></div>
+          <div class="trust-card"><strong>Quality Checked</strong><p class="muted">Products are checked before dispatch.</p></div>
+          <div class="trust-card"><strong>Customer Support</strong><p class="muted">Friendly help for size, color, and order questions.</p></div>
+        </div>
+      </section>
+
+      <section class="container editorial-band" id="festivals">
+        <div class="section-title">
+          <div>
+            <h2>Festival Collections</h2>
+            <p class="muted">Seasonal edits inspired by Nepali celebration, family, blessings, and craft.</p>
+          </div>
+        </div>
+        <div class="festival-grid">
+          <article class="festival-card">
+            <span class="eyebrow">Teej Edit</span>
+            <h3>Celebrate Teej in Timeless Grace</h3>
+            <p>Deep red Sarees, green accents, gold details, and elegant silhouettes for temple visits, family gatherings, and joyful celebration.</p>
+            <div class="actions"><button class="btn gold" type="button" data-category="Saree">Shop Sarees</button></div>
+          </article>
+          <div class="festival-stack">
+            <article class="festival-card compact">
+              <span class="eyebrow">Dashain</span>
+              <h3>Dashain Begins at Home</h3>
+              <p>Comfortable Kurtas and refined festive pieces for blessings, tika, and family photos.</p>
+            </article>
+            <article class="festival-card compact">
+              <span class="eyebrow">Bhai Tika</span>
+              <h3>A Bond Beyond Words</h3>
+              <p>Gift-ready Dupattas and graceful pieces for sisters, brothers, and shared traditions.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="container editorial-band" id="categories">
+        <div class="section-title">
+          <div>
+            <h2>Signature Categories</h2>
+            <p class="muted">Move quickly from inspiration to the exact collection you need.</p>
+          </div>
+        </div>
+        <div class="category-rail">
+          <button class="category-tile" style="--tile-a:#C05A26;--tile-b:#DCB13D;" type="button" data-category="Saree"><span>Sarees</span><strong>Silk & Grace</strong></button>
+          <button class="category-tile" style="--tile-a:#955494;--tile-b:#C05A26;" type="button" data-category="Kurta"><span>Kurtas</span><strong>Everyday Poise</strong></button>
+          <button class="category-tile" style="--tile-a:#34231A;--tile-b:#955494;" type="button" data-category="Festival Wear"><span>Bridal</span><strong>Occasion Ready</strong></button>
+          <button class="category-tile" style="--tile-a:#DCB13D;--tile-b:#C05A26;" type="button" data-category="Dupatta"><span>Accessories</span><strong>Finishing Touch</strong></button>
+        </div>
+      </section>
+
+      <section class="container" id="featured">
+        <div class="section-title">
+          <div>
+            <h2>New Arrivals</h2>
+            <p class="muted">Fresh looks for Teej, Dashain, Tihar, weddings, and daily elegance.</p>
+          </div>
+          <button class="btn secondary" type="button" data-route="shop">View All</button>
+        </div>
+        <div class="product-grid" id="featuredGrid"></div>
+      </section>
+
+      <section class="container" id="contact">
+        <div class="section-title">
+          <div>
+            <h2>Scan to Find Us Online</h2>
+            <p class="muted">Visit our store, follow us on Instagram, or connect with us on TikTok.</p>
+          </div>
+        </div>
+        <div class="qr-grid" id="qrGrid"></div>
+      </section>
+    </section>
+
+    <section class="page" id="shopPage">
+      <section class="container">
+        <div class="section-title">
+          <div>
+            <h2>Shop Collection</h2>
+            <p class="muted">Search, filter, and sort Subhakamana Store products.</p>
+          </div>
+        </div>
+        <div class="filters">
+          <input id="searchInput" type="search" placeholder="Search by product name" />
+          <select id="categoryFilter" aria-label="Category filter">
+            <option value="All">All Categories</option>
+            <option value="Kurta">Kurta</option>
+            <option value="Saree">Saree</option>
+            <option value="Dupatta">Dupatta</option>
+            <option value="Festival Wear">Festival Wear</option>
+          </select>
+          <select id="sortSelect" aria-label="Sort products">
+            <option value="latest">Latest Arrivals</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+          </select>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+    </section>
+
+    <section class="page" id="detailPage">
+      <section class="container" id="detailContent"></section>
+    </section>
+
+    <section class="page" id="cartPage">
+      <section class="container">
+        <div class="section-title"><h2>Your Cart</h2></div>
+        <div class="cart-layout">
+          <div class="panel" id="cartItems"></div>
+          <div class="panel" id="cartSummary"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="page" id="checkoutPage">
+      <section class="container">
+        <div class="section-title"><h2>Checkout</h2></div>
+        <div class="checkout-layout">
+          <form class="panel checkout-form" id="checkoutForm">
+            <div class="member-box">
+              <h3>Customer and Member Discount</h3>
+              <p class="small-note">Default customer details are filled for quick demo checkout. Members, friends, and family can enter a phone number to apply a prototype discount.</p>
+              <div class="actions" style="margin-top:0;">
+                <button class="btn secondary" type="button" id="useDefaultCustomer">Use Default Customer</button>
+              </div>
+              <div class="form-row">
+                <label>Member Phone<input id="memberPhone" inputmode="tel" pattern="^(97|98)[0-9]{8}$" placeholder="98XXXXXXXX" /></label>
+                <label>Member Type<select id="memberType"><option>Friends & Family</option><option>Store Member</option><option>Festival Offer</option></select></label>
+              </div>
+              <div class="actions" style="margin-top:0;">
+                <button class="btn gold" type="button" id="applyMemberDiscount">Apply Discount</button>
+                <button class="btn secondary" type="button" id="clearMemberDiscount">Clear</button>
+              </div>
+              <p class="small-note" id="memberDiscountNote">No member discount applied.</p>
+            </div>
+            <div class="form-row">
+              <label>Full Name<input id="customerName" required minlength="2" autocomplete="name" value="Walk-in Customer" placeholder="Your name" /></label>
+              <label>Phone Number<input id="customerPhone" required inputmode="tel" autocomplete="tel" pattern="^(97|98)[0-9]{8}$" value="9800000000" placeholder="98XXXXXXXX" /></label>
+            </div>
+            <div class="member-box">
+              <h3>Delivery Details for Online Sale</h3>
+              <p class="small-note">These details are saved with the prototype online order so the ERP Delivery page can prepare dispatch.</p>
+              <label>Receive Order By
+                <select id="fulfillmentMode">
+                  <option>Delivery</option>
+                  <option>In-Store Pickup</option>
+                </select>
+              </label>
+              <div class="form-row">
+                <label>Delivery City<input id="deliveryCity" required value="Kathmandu" placeholder="Kathmandu" /></label>
+                <label>Preferred Courier<select id="deliveryCourier"><option>Nepal Can Move</option><option>Store Rider</option><option>Other Courier</option></select></label>
+              </div>
+              <div class="form-row">
+                <label>Delivery Type<select id="deliveryType"><option>Home Delivery</option><option>Store Pickup</option><option>Gift Delivery</option></select></label>
+                <label>COD Amount<input id="deliveryCod" type="number" min="0" value="0" /></label>
+              </div>
+              <label>Delivery Address<textarea id="customerAddress" required minlength="8" autocomplete="street-address" rows="4" placeholder="City, area, street, landmark">Store pickup / demo customer address, Nepal</textarea></label>
+              <label>Delivery Notes<textarea id="deliveryNotes" rows="3" placeholder="Landmark, preferred time, gift note, or packing instruction">Call customer before dispatch.</textarea></label>
+            </div>
+            <label>Payment Method
+              <select id="paymentMethod" required>
+                <option>Cash on Delivery</option>
+                <option>Pay at Store</option>
+                <option>Bank QR Payment</option>
+                <option>eSewa</option>
+                <option>Khalti</option>
+                <option>Bank Transfer</option>
+              </select>
+            </label>
+            <div class="payment-method-grid" id="paymentMethodCards" aria-label="Payment method selector"></div>
+            <div class="payment-qr-panel" id="paymentQrPlacements" aria-live="polite"></div>
+            <p class="small-note">This prototype records the order on screen only. eSewa, Khalti, bank transfer verification, and permanent order storage require backend integration.</p>
+            <button class="btn" type="submit">Place Order</button>
+          </form>
+          <div class="panel" id="checkoutSummary"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="page" id="accountPage">
+      <section class="container">
+        <div class="section-title">
+          <div>
+            <h2>Customer Login</h2>
+            <p class="muted">Use your phone number to prepare for member discounts, order support, and order tracking.</p>
+          </div>
+        </div>
+        <div class="checkout-layout">
+          <form class="panel checkout-form" id="customerLoginForm">
+            <h3>Customer Access</h3>
+            <label>Phone Number<input id="loginPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98XXXXXXXX" /></label>
+            <label>Order or Bill Number<input id="loginOrderNumber" type="text" placeholder="SS-BILL-1001" /></label>
+            <button class="btn" type="button" id="customerLoginButton">Continue</button>
+            <p class="small-note" id="customerLoginStatus">Prototype login only. Production will verify customer identity using a backend system.</p>
+          </form>
+
+          <div class="panel" id="track-order">
+            <div class="section-title">
+              <div>
+                <h2>Track Your Order</h2>
+                <p class="muted">Use your order number and tracking number to check packing, dispatch, transit, and delivery status.</p>
+              </div>
+            </div>
+            <div class="checkout-form">
+              <input id="trackOrderNumber" type="text" placeholder="Order number, e.g. SS-1001" aria-label="Order number" />
+              <input id="trackNumber" type="text" placeholder="Tracking number" aria-label="Tracking number" />
+              <button class="btn" type="button" id="trackButton">Check Status</button>
+            </div>
+            <p class="small-note" id="trackStatus">Prototype note: live tracking will need a backend order database and courier integration.</p>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="page" id="confirmationPage">
+      <section class="container">
+        <div class="panel confirmation">
+          <h2>Order Confirmed</h2>
+          <p class="muted" id="confirmationText">Thank you for shopping with Subhakamana Store.</p>
+          <div class="actions" style="justify-content:center;">
+            <button class="btn" type="button" data-route="account">Track Order</button>
+            <button class="btn" type="button" data-route="shop">Continue Shopping</button>
+            <button class="btn secondary" type="button" data-route="home">Back Home</button>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="footer-grid">
+      <div>
+        <img class="footer-logo" src="assets/brand/subhakamana-store-logo.svg" alt="Subhakamana Store logo" />
+        <h3>Subhakamana Store</h3>
+        <p>Tradition you can wear, quality you can trust.</p>
+        <p>Serving elegant Nepali fashion for everyday and festive moments.</p>
+      </div>
+      <div>
+        <h3>Useful Links</h3>
+        <div class="footer-links">
+          <a href="#shop" data-route="shop">Shop</a>
+          <a href="#cart" data-route="cart">Cart</a>
+          <a href="#checkout" data-route="checkout">Checkout</a>
+          <a href="#account" data-route="account">Customer Login</a>
+          <a href="#track-order">Track Order</a>
+          <a href="#contact">Contact Us</a>
+          <a href="subhakamana-store-privacy-policy.html">Privacy Policy</a>
+          <a href="subhakamana-store-final-erp-platform.html#dashboard">Admin System</a>
+          <a href="START_HERE.html">System Home</a>
+        </div>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <div class="footer-links">
+          <span>Phone: 98XXXXXXXX</span>
+          <span>Location: Nepal</span>
+          <span>Support: Store counter and phone</span>
+        </div>
+      </div>
+      <div>
+        <h3>Payments</h3>
+        <div class="footer-links">
+          <a href="#checkout" data-route="checkout">Cash on Delivery</a>
+          <a href="#checkout" data-route="checkout">eSewa</a>
+          <a href="#checkout" data-route="checkout">Khalti</a>
+          <a href="#checkout" data-route="checkout">Bank Transfer</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cart-drawer-backdrop" id="cartDrawerBackdrop"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Mini cart" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <h3 style="margin:0;">Added to Cart</h3>
+        <p class="small-note" id="cartDrawerNote">Review your latest item.</p>
+      </div>
+      <button class="btn secondary" type="button" id="closeCartDrawer">Close</button>
+    </div>
+    <div class="drawer-body" id="cartDrawerItems"></div>
+    <div class="drawer-foot" id="cartDrawerSummary"></div>
+  </aside>
+  <div class="toast" id="paymentToast" role="status" aria-live="polite"></div>
+
+  <script>
+    const money = (value) => "NPR " + Number(value).toLocaleString("en-US");
+
+    const contactLinks = {
+      maps: "https://share.google/UzvdmPRLcQwMjSMpD",
+      instagram: "https://share.google/i0GPlpCX7Yyzu622L",
+      tiktok: "https://share.google/H8ShwFZpToawWzhGp"
+    };
+
+    const qrCards = [
+      {
+        title: "Store Location",
+        description: "Scan to find our store on Google Maps.",
+        button: "Open Map",
+        url: contactLinks.maps,
+        alt: "QR code for Subhakamana Store Google Maps location"
+      },
+      {
+        title: "Instagram",
+        description: "Scan to follow us on Instagram.",
+        button: "Follow on Instagram",
+        url: contactLinks.instagram,
+        alt: "QR code for Subhakamana Store Instagram profile"
+      },
+      {
+        title: "TikTok",
+        description: "Scan to follow us on TikTok.",
+        button: "Follow on TikTok",
+        url: contactLinks.tiktok,
+        alt: "QR code for Subhakamana Store TikTok profile"
+      }
+    ];
+
+    const CART_KEY = "subhakamanaStoreCartV1";
+    const paymentStatusVocabulary = ["CREATED", "PENDING", "AWAITING_PAYMENT", "VERIFYING", "VERIFIED", "PAID", "FAILED", "EXPIRED", "CANCELLED", "REFUNDED", "REQUIRES_REVIEW"];
+    const paymentMethods = [
+      {
+        id: "cod",
+        name: "Cash on Delivery",
+        icon: "COD",
+        enabled: true,
+        requiresQr: false,
+        description: "Pay when your order arrives."
+      },
+      {
+        id: "pay_store",
+        name: "Pay at Store",
+        icon: "POS",
+        enabled: true,
+        requiresQr: false,
+        description: "Pay while collecting from the store."
+      },
+      {
+        id: "bank_qr",
+        name: "Bank QR Payment",
+        icon: "QR",
+        enabled: true,
+        requiresQr: true,
+        description: "Scan dynamic demo QR for this bill."
+      },
+      {
+        id: "esewa",
+        method: "eSewa",
+        label: "eSewa",
+        name: "eSewa",
+        icon: "e",
+        enabled: true,
+        requiresQr: true,
+        description: "Pay using eSewa merchant QR.",
+        detail: "Scan eSewa merchant QR",
+        qrText: "Subhakamana Store eSewa merchant QR placement"
+      },
+      {
+        id: "khalti",
+        method: "Khalti",
+        label: "Khalti",
+        name: "Khalti",
+        icon: "K",
+        enabled: true,
+        requiresQr: true,
+        description: "Pay using Khalti merchant QR.",
+        detail: "Scan Khalti merchant QR",
+        qrText: "Subhakamana Store Khalti merchant QR placement"
+      },
+      {
+        id: "bank_transfer",
+        method: "Bank Transfer",
+        label: "Bank Transfer",
+        name: "Bank Transfer",
+        icon: "BT",
+        enabled: true,
+        requiresQr: true,
+        description: "Transfer to store bank account.",
+        detail: "Scan bank account QR",
+        qrText: "Subhakamana Store bank transfer QR placement"
+      }
+    ];
+
+    const products = [
+      { id: 1, name: "Red Banarasi Saree", category: "Saree", price: 8200, badge: "Best Seller", stock: 7, latest: 4, material: "Silk blend", sizes: ["Free"], colors: ["Red", "Gold"], description: "A graceful Banarasi Saree for weddings, festivals, and special family events.", a: "#b4232a", b: "#c59b35" },
+      { id: 2, name: "Blue Printed Kurta Set", category: "Kurta", price: 1650, badge: "New", stock: 14, latest: 6, material: "Soft cotton", sizes: ["S", "M", "L", "XL"], colors: ["Blue", "White"], description: "A comfortable printed Kurta set for daily wear and casual gatherings.", a: "#1f5eff", b: "#8cc7ff" },
+      { id: 3, name: "Golden Silk Blouse", category: "Festival Wear", price: 1150, badge: "In Stock", stock: 18, latest: 3, material: "Silk blend", sizes: ["S", "M", "L"], colors: ["Gold"], description: "A polished blouse designed to pair beautifully with festive Sarees.", a: "#c59b35", b: "#7c2d12" },
+      { id: 4, name: "Maroon Net Dupatta", category: "Dupatta", price: 750, badge: "New", stock: 11, latest: 5, material: "Net fabric", sizes: ["Free"], colors: ["Maroon"], description: "A lightweight Dupatta that adds rich color to Kurta and festival outfits.", a: "#7f1d1d", b: "#fca5a5" },
+      { id: 5, name: "Emerald Festival Kurta", category: "Kurta", price: 2450, badge: "Best Seller", stock: 9, latest: 2, material: "Rayon blend", sizes: ["M", "L", "XL"], colors: ["Emerald", "Gold"], description: "An elegant Kurta with festive color and a comfortable fit.", a: "#047857", b: "#c59b35" },
+      { id: 6, name: "Ivory Embroidered Saree", category: "Saree", price: 6900, badge: "In Stock", stock: 5, latest: 1, material: "Georgette", sizes: ["Free"], colors: ["Ivory", "Gold"], description: "A soft embroidered Saree with a refined look for formal occasions.", a: "#f8efe0", b: "#b45309" },
+      { id: 7, name: "Mustard Cotton Kurta", category: "Kurta", price: 1450, badge: "New", stock: 16, latest: 12, material: "Breathable cotton", sizes: ["S", "M", "L", "XL"], colors: ["Mustard"], description: "A bright everyday Kurta that is easy to wear and simple to style.", a: "#dcb13d", b: "#c05a26" },
+      { id: 8, name: "Royal Violet Party Saree", category: "Saree", price: 5600, badge: "New", stock: 6, latest: 11, material: "Chiffon", sizes: ["Free"], colors: ["Royal Violet"], description: "A graceful party Saree with a rich violet tone for evening programs.", a: "#955494", b: "#dcb13d" },
+      { id: 9, name: "Pink Chiffon Dupatta", category: "Dupatta", price: 650, badge: "In Stock", stock: 22, latest: 10, material: "Chiffon", sizes: ["Free"], colors: ["Pink"], description: "A soft Dupatta for pairing with light Kurta sets and festive outfits.", a: "#ec4899", b: "#f9a8d4" },
+      { id: 10, name: "Black Velvet Blouse", category: "Festival Wear", price: 1350, badge: "Best Seller", stock: 12, latest: 9, material: "Velvet", sizes: ["S", "M", "L"], colors: ["Black"], description: "A classic velvet blouse for Sarees and formal festival wear.", a: "#34231a", b: "#955494" },
+      { id: 11, name: "Teal Daily Wear Kurta", category: "Kurta", price: 1290, badge: "Low Stock", stock: 3, latest: 8, material: "Soft cotton", sizes: ["S", "M", "L"], colors: ["Teal"], description: "A simple daily Kurta for comfort, movement, and easy washing.", a: "#0f766e", b: "#99f6e4" },
+      { id: 12, name: "Golden Bridal Dupatta", category: "Dupatta", price: 1850, badge: "Festival Pick", stock: 7, latest: 7, material: "Embroidered net", sizes: ["Free"], colors: ["Gold"], description: "A festive Dupatta with golden detail for bridal and family occasions.", a: "#dcb13d", b: "#fafaf3" }
+    ];
+
+    let cart = [];
+    let wishlist = new Set();
+    let selectedProduct = products[0];
+    let selectedSize = selectedProduct.sizes[0];
+    let selectedQty = 1;
+    let memberOffer = { phone: "", type: "", rate: 0 };
+    let demoPaymentState = { status: "CREATED", transactionId: "", method: "" };
+
+    const pages = {
+      home: document.getElementById("homePage"),
+      shop: document.getElementById("shopPage"),
+      detail: document.getElementById("detailPage"),
+      cart: document.getElementById("cartPage"),
+      checkout: document.getElementById("checkoutPage"),
+      account: document.getElementById("accountPage"),
+      confirmation: document.getElementById("confirmationPage")
+    };
+
+    function showPage(name) {
+      const route = pages[name] ? name : "home";
+      Object.entries(pages).forEach(([key, page]) => page.classList.toggle("active", key === route));
+      location.hash = route;
+      document.getElementById("navLinks").classList.remove("open");
+      if (route === "cart") renderCart();
+      if (route === "checkout") renderCheckout();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function saveCart() {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    }
+
+    function loadCart() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+        cart = Array.isArray(saved) ? saved.filter((line) => products.some((product) => product.id === line.id)) : [];
+      } catch (error) {
+        cart = [];
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("paymentToast");
+      toast.textContent = message;
+      toast.classList.add("open");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("open"), 3800);
+    }
+
+    function productCard(product) {
+      const wished = wishlist.has(product.id) ? "active" : "";
+      return `<article class="product-card">
+        <div class="product-image" style="--image-a:${product.a};--image-b:${product.b};">
+          <div class="badge-row"><span class="badge">${product.badge}</span><button class="heart ${wished}" type="button" aria-label="Add ${product.name} to wishlist" data-wishlist="${product.id}">♡</button></div>
+          ${product.category}
+        </div>
+        <div class="product-body">
+          <h3>${product.name}</h3>
+          <div class="product-meta">${product.category} | ${product.material}</div>
+          <div class="price-line"><span class="price">${money(product.price)}</span><span class="stock">In Stock</span></div>
+          <div class="product-actions">
+            <button class="btn" type="button" data-add="${product.id}">Add to Cart</button>
+            <button class="btn secondary" type="button" data-detail="${product.id}">View Details</button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    function renderProducts() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const category = document.getElementById("categoryFilter").value;
+      const sort = document.getElementById("sortSelect").value;
+      let rows = products.filter((product) => product.name.toLowerCase().includes(query) && (category === "All" || product.category === category));
+      if (sort === "low") rows.sort((a, b) => a.price - b.price);
+      if (sort === "high") rows.sort((a, b) => b.price - a.price);
+      if (sort === "latest") rows.sort((a, b) => b.latest - a.latest);
+      document.getElementById("productGrid").innerHTML = rows.map(productCard).join("") || "<div class='panel'><p class='muted'>No products match your search or filters. Try another product name, category, or sort option.</p></div>";
+      document.getElementById("featuredGrid").innerHTML = products.slice(0, 4).map(productCard).join("");
+    }
+
+    function renderQrCards() {
+      document.getElementById("qrGrid").innerHTML = qrCards.map((card) => {
+        const isPlaceholder = card.url.startsWith("PASTE_");
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=12&data=${encodeURIComponent(card.url)}`;
+        return `<article class="qr-card">
+          <img src="${qrUrl}" alt="${card.alt}" loading="lazy" />
+          <h3>${card.title}</h3>
+          <p class="muted">${card.description}</p>
+          <p class="small-note">${isPlaceholder ? "Replace the placeholder link with the real store link before production use." : "Opens the official Subhakamana Store link."}</p>
+          <div class="actions" style="justify-content:center;">${isPlaceholder ? `<button class="btn secondary" type="button" disabled>Link Pending</button>` : `<a class="btn" href="${card.url}" target="_blank" rel="noopener">${card.button}</a>`}</div>
+        </article>`;
+      }).join("");
+    }
+
+    function openDetail(id) {
+      selectedProduct = products.find((product) => product.id === id) || products[0];
+      selectedSize = selectedProduct.sizes[0];
+      selectedQty = 1;
+      renderDetail();
+      showPage("detail");
+    }
+
+    function renderDetail() {
+      const related = products.filter((product) => product.category === selectedProduct.category && product.id !== selectedProduct.id).slice(0, 4);
+      document.getElementById("detailContent").innerHTML = `<div class="detail-layout">
+        <div class="detail-image" style="--image-a:${selectedProduct.a};--image-b:${selectedProduct.b};">${selectedProduct.category}</div>
+        <div class="detail-info">
+          <div class="panel purchase-panel">
+            <span class="badge">${selectedProduct.badge}</span>
+            <h2>${selectedProduct.name}</h2>
+            <p class="muted">${selectedProduct.description}</p>
+            <p class="price">${money(selectedProduct.price)}</p>
+            <h3>Size</h3>
+            <div class="option-row">${selectedProduct.sizes.map((size) => `<button class="option ${size === selectedSize ? "active" : ""}" type="button" data-size="${size}">${size}</button>`).join("")}</div>
+            <h3>Quantity</h3>
+            <div class="qty"><button type="button" data-detail-qty="-1">-</button><span>${selectedQty}</span><button type="button" data-detail-qty="1">+</button></div>
+            <div class="actions">
+              <button class="btn" type="button" data-add-detail="${selectedProduct.id}">Add to Cart</button>
+              <button class="btn gold" type="button" data-buy="${selectedProduct.id}">Buy Now</button>
+            </div>
+          </div>
+          <div class="info-grid">
+            <div class="panel"><h3>Fabric</h3><p class="muted">${selectedProduct.material}</p></div>
+            <div class="panel"><h3>Delivery</h3><p class="muted">Fast delivery support inside Nepal.</p></div>
+            <div class="panel"><h3>Exchange</h3><p class="muted">Easy exchange on eligible unused products.</p></div>
+          </div>
+          <div class="info-grid">
+            <div class="panel"><h3>Care Guide</h3><p class="muted">Store folded, avoid harsh sunlight, and follow fabric-friendly wash care.</p></div>
+            <div class="panel"><h3>Size Guide</h3><p class="muted">Choose your regular size for Kurtas. Sarees and Dupattas are free size.</p></div>
+            <div class="panel"><h3>Store Pickup</h3><p class="muted">Choose in-store pickup during checkout for counter collection.</p></div>
+          </div>
+          <div class="panel" style="margin-top:14px;"><h3>Related Products</h3><div class="product-grid">${(related.length ? related : products.slice(0, 4)).map(productCard).join("")}</div></div>
+        </div>
+      </div>`;
+    }
+
+    function addToCart(id, qty = 1) {
+      const product = products.find((item) => item.id === id);
+      if (!product) {
+        showToast("Product could not be added because it was not found.");
+        return false;
+      }
+      const size = selectedProduct.id === id ? selectedSize : product.sizes[0];
+      const color = product.colors?.[0] || "Default";
+      if (!size) {
+        showToast("Please select a size before adding this item.");
+        return false;
+      }
+      if (product.stock <= 0) {
+        showToast(`${product.name} is out of stock.`);
+        return false;
+      }
+      const line = cart.find((item) => item.id === id && item.size === size && item.color === color);
+      const currentQty = line ? line.qty : 0;
+      if (currentQty + qty > product.stock) {
+        showToast(`${product.name} has only ${product.stock} item(s) available.`);
+        return false;
+      }
+      if (line) line.qty += qty;
+      else cart.push({ id, qty, size, color });
+      saveCart();
+      renderCartCount();
+      renderCartDrawer(id);
+      openCartDrawer();
+      return true;
+    }
+
+    function updateCart(id, amount) {
+      const line = cart.find((item) => item.id === id);
+      if (!line) return;
+      line.qty += amount;
+      if (line.qty <= 0) cart = cart.filter((item) => item.id !== id);
+      saveCart();
+      renderCartCount();
+      renderCart();
+      renderCartDrawer();
+    }
+
+    function cartTotals() {
+      const subtotal = cart.reduce((sum, line) => sum + products.find((product) => product.id === line.id).price * line.qty, 0);
+      const fulfillment = document.getElementById("fulfillmentMode")?.value || "Delivery";
+      const delivery = subtotal > 0 && fulfillment === "Delivery" ? 150 : 0;
+      const discount = Math.round(subtotal * memberOffer.rate);
+      return { subtotal, delivery, discount, total: Math.max(0, subtotal - discount + delivery) };
+    }
+
+    function validNepalPhone(phone) {
+      return /^(97|98)[0-9]{8}$/.test(String(phone || "").trim());
+    }
+
+    function fillDefaultCustomer() {
+      document.getElementById("customerName").value = "Walk-in Customer";
+      document.getElementById("customerPhone").value = "9800000000";
+      document.getElementById("customerAddress").value = "Store pickup / demo customer address, Nepal";
+      document.getElementById("deliveryCity").value = "Kathmandu";
+      document.getElementById("deliveryNotes").value = "Call customer before dispatch.";
+    }
+
+    function updateFulfillmentMode() {
+      const mode = document.getElementById("fulfillmentMode").value;
+      const courier = document.getElementById("deliveryCourier");
+      const payment = document.getElementById("paymentMethod");
+      const address = document.getElementById("customerAddress");
+      const notes = document.getElementById("deliveryNotes");
+      if (mode === "In-Store Pickup") {
+        courier.value = "Store Rider";
+        if (payment.value === "Cash on Delivery") payment.value = "Pay at Store";
+        address.value = "In-store pickup at Subhakamana Store";
+        notes.value = "Customer will collect the order from the store counter.";
+      } else {
+        if (payment.value === "Pay at Store") payment.value = "Cash on Delivery";
+        if (address.value === "In-store pickup at Subhakamana Store") address.value = "Store pickup / demo customer address, Nepal";
+        if (notes.value === "Customer will collect the order from the store counter.") notes.value = "Call customer before dispatch.";
+      }
+      renderCheckout();
+    }
+
+    function applyMemberOffer() {
+      const phone = document.getElementById("memberPhone").value.trim();
+      const type = document.getElementById("memberType").value;
+      const note = document.getElementById("memberDiscountNote");
+      if (!validNepalPhone(phone)) {
+        memberOffer = { phone: "", type: "", rate: 0 };
+        note.textContent = "Enter a valid Nepali mobile number starting with 97 or 98 to apply the member discount.";
+        renderCheckout();
+        return;
+      }
+      const rate = type === "Friends & Family" ? 0.1 : type === "Festival Offer" ? 0.07 : 0.05;
+      memberOffer = { phone, type, rate };
+      note.textContent = `${type} discount applied for ${phone}: ${Math.round(rate * 100)}% off product subtotal.`;
+      renderCheckout();
+    }
+
+    function clearMemberOffer() {
+      memberOffer = { phone: "", type: "", rate: 0 };
+      document.getElementById("memberPhone").value = "";
+      document.getElementById("memberDiscountNote").textContent = "No member discount applied.";
+      renderCheckout();
+    }
+
+    function renderCartCount() {
+      document.getElementById("cartCount").textContent = cart.reduce((sum, line) => sum + line.qty, 0);
+    }
+
+    function openCartDrawer() {
+      document.getElementById("cartDrawer").classList.add("open");
+      document.getElementById("cartDrawer").setAttribute("aria-hidden", "false");
+      document.getElementById("cartDrawerBackdrop").classList.add("open");
+    }
+
+    function closeCartDrawer() {
+      document.getElementById("cartDrawer").classList.remove("open");
+      document.getElementById("cartDrawer").setAttribute("aria-hidden", "true");
+      document.getElementById("cartDrawerBackdrop").classList.remove("open");
+    }
+
+    function renderCartDrawer(latestId = null) {
+      const totals = cartTotals();
+      document.getElementById("cartDrawerNote").textContent = latestId ? "Latest item added. Choose what to do next." : "Review your selected items.";
+      document.getElementById("cartDrawerItems").innerHTML = cart.map((line) => {
+        const product = products.find((item) => item.id === line.id);
+        if (!product) return "";
+        return `<div class="mini-cart-item">
+          <div class="mini-cart-thumb" style="--image-a:${product.a};--image-b:${product.b};"></div>
+          <div>
+            <h3 style="margin:0 0 4px;">${product.name}</h3>
+            <p class="muted" style="margin:0;">Color: ${line.color || product.colors?.[0] || "Default"} | Size: ${line.size}</p>
+            <p class="muted" style="margin:4px 0;">${line.qty} x ${money(product.price)}</p>
+            <strong>${money(line.qty * product.price)}</strong>
+            <div class="actions" style="margin-top:8px;"><button class="btn secondary" type="button" data-remove="${product.id}">Remove</button></div>
+          </div>
+        </div>`;
+      }).join("") || "<p class='muted'>Your cart is empty.</p>";
+      document.getElementById("cartDrawerSummary").innerHTML = `<div class="summary-row total"><span>Subtotal</span><strong>${money(totals.subtotal)}</strong></div>
+        <div class="actions"><button class="btn secondary" type="button" data-route="shop">Continue Shopping</button><button class="btn secondary" type="button" data-route="cart">View Cart</button><button class="btn" type="button" data-route="checkout" ${cart.length ? "" : "disabled"}>Checkout</button></div>`;
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById("cartItems");
+      if (!cart.length) {
+        cartItems.innerHTML = "<p class='muted'>Your cart is empty.</p><div class='actions'><button class='btn' type='button' data-route='shop'>Shop Now</button></div>";
+      } else {
+        cartItems.innerHTML = cart.map((line) => {
+          const product = products.find((item) => item.id === line.id);
+          return `<div class="cart-item">
+            <div class="cart-thumb" style="--image-a:${product.a};--image-b:${product.b};"></div>
+            <div><h3>${product.name}</h3><p class="muted">Size: ${line.size} | ${money(product.price)}</p><div class="qty"><button type="button" data-cart-qty="${product.id}" data-amount="-1">-</button><span>${line.qty}</span><button type="button" data-cart-qty="${product.id}" data-amount="1">+</button></div><button class="btn secondary" type="button" data-remove="${product.id}" style="margin-top:8px;">Remove</button></div>
+            <strong class="price">${money(product.price * line.qty)}</strong>
+          </div>`;
+        }).join("");
+      }
+      const totals = cartTotals();
+      document.getElementById("cartSummary").innerHTML = `<h3>Order Summary</h3>
+        <div class="summary-row"><span>Subtotal</span><strong>${money(totals.subtotal)}</strong></div>
+        <div class="summary-row"><span>Member Discount</span><strong>-${money(totals.discount)}</strong></div>
+        <div class="summary-row"><span>Delivery Charge</span><strong>${money(totals.delivery)}</strong></div>
+        <div class="summary-row total"><span>Total</span><strong>${money(totals.total)}</strong></div>
+        <div class="actions"><button class="btn" type="button" data-route="checkout" ${cart.length ? "" : "disabled"}>Checkout</button></div>`;
+    }
+
+    function renderPaymentMethodCards() {
+      const selected = document.getElementById("paymentMethod").value;
+      document.getElementById("paymentMethodCards").innerHTML = paymentMethods.map((method) => `<button class="payment-method-card ${selected === method.name ? "active" : ""}" type="button" data-payment-method="${method.name}" aria-disabled="${method.enabled ? "false" : "true"}">
+        <span class="payment-method-icon">${method.icon}</span>
+        <strong>${method.name}</strong>
+        <span>${method.description}</span>
+        <span class="small-note">${method.enabled ? (selected === method.name ? "Selected" : "Available") : "Disabled"}</span>
+      </button>`).join("");
+    }
+
+    function renderCheckout() {
+      if (!cart.length) {
+        showPage("cart");
+        return;
+      }
+      const totals = cartTotals();
+      const fulfillment = document.getElementById("fulfillmentMode").value;
+      document.getElementById("deliveryCod").value = document.getElementById("paymentMethod").value === "Cash on Delivery" && fulfillment === "Delivery" ? totals.total : 0;
+      renderPaymentMethodCards();
+      renderPaymentQrPlacements(totals);
+      document.getElementById("checkoutSummary").innerHTML = `<h3>Order Summary</h3>${cart.map((line) => {
+        const product = products.find((item) => item.id === line.id);
+        return `<div class="summary-row"><span>${product.name} x ${line.qty}</span><strong>${money(product.price * line.qty)}</strong></div>`;
+      }).join("")}<div class="summary-row"><span>Receive By</span><strong>${fulfillment}</strong></div><div class="summary-row"><span>Member Discount${memberOffer.phone ? ` (${memberOffer.type})` : ""}</span><strong>-${money(totals.discount)}</strong></div><div class="summary-row"><span>Delivery</span><strong>${money(totals.delivery)}</strong></div><div class="summary-row total"><span>Total</span><strong>${money(totals.total)}</strong></div>`;
+    }
+
+    function renderPaymentQrPlacements(totals = cartTotals()) {
+      const selected = document.getElementById("paymentMethod").value;
+      const panel = document.getElementById("paymentQrPlacements");
+      const onlineMethods = paymentMethods.filter((item) => item.requiresQr).map((item) => item.name);
+      const note = onlineMethods.includes(selected)
+        ? `Selected: ${selected}. Scan the matching QR and keep the payment screenshot or reference number for store verification.`
+        : "Choose Bank QR Payment, eSewa, Khalti, or Bank Transfer to use an online payment QR. Cash on Delivery and Pay at Store do not need a QR.";
+      panel.innerHTML = `<h3>Online Payment QR Placements</h3>
+        <p class="small-note">${note}</p>
+        <div class="payment-qr-grid">${paymentMethods.filter((item) => item.requiresQr).map((item) => {
+          const qrPayload = `${item.qrText || `Subhakamana Store ${item.name} QR placement`} | Amount: ${money(totals.total)} | Ref: DEMO-${Date.now()} | Customer: ${document.getElementById("customerName").value || "Customer"}`;
+          const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=10&data=${encodeURIComponent(qrPayload)}`;
+          return `<div class="payment-qr-card ${selected === item.name ? "active" : ""}">
+            <img src="${qrUrl}" alt="${item.name} payment QR placement for Subhakamana Store" loading="lazy" />
+            <strong>${item.name}</strong>
+            <span>${item.detail || item.description}</span>
+            <span>${selected === item.name ? `Amount: ${money(totals.total)} | ${demoPaymentState.status}` : "Available if selected"}</span>
+          </div>`;
+        }).join("")}</div>
+        <div class="actions" style="margin-top:0;">${onlineMethods.includes(selected) ? `<button class="btn gold" type="button" id="simulatePaymentVerify">Simulate Payment Verified</button><button class="btn secondary" type="button" id="simulatePaymentFail">Simulate Failed</button>` : ""}</div>
+        <p class="small-note">Demo QR placements only. Real verification requires bank/eSewa/Khalti backend API or webhook confirmation.</p>`;
+    }
+
+    function saveOnlineOrderForDelivery(totals, orderItems) {
+      const dbKey = "subhakamanaStoreErpLocalDbV1";
+      const saved = JSON.parse(localStorage.getItem(dbKey) || "{}");
+      const orders = Array.isArray(saved.orders) ? saved.orders : [];
+      const customers = Array.isArray(saved.customers) ? saved.customers : [];
+      const paymentRecords = Array.isArray(saved.paymentRecords) ? saved.paymentRecords : [];
+      const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("customerPhone").value.trim();
+      const city = document.getElementById("deliveryCity").value.trim();
+      const address = document.getElementById("customerAddress").value.trim();
+      const method = document.getElementById("paymentMethod").value;
+      const fulfillment = document.getElementById("fulfillmentMode").value;
+      const orderId = "#WEB-" + String(1000 + orders.length);
+      const billNumber = "SS-BILL-" + String(1000 + orders.length);
+      const productSummary = orderItems.map((item) => `${item.name}${item.size ? ` (${item.size})` : ""} x ${item.qty}`).join("; ");
+      const transactionId = demoPaymentState.transactionId || `DEMO-${Date.now()}`;
+      orders.push({
+        id: orderId,
+        billNumber,
+        channel: "Online",
+        productSummary,
+        customer: name,
+        customerPhone: phone,
+        customerCity: city,
+        customerAddress: address,
+        deliveryCourier: document.getElementById("deliveryCourier").value,
+        fulfillmentMode: fulfillment,
+        deliveryType: fulfillment === "In-Store Pickup" ? "Store Pickup" : document.getElementById("deliveryType").value,
+        deliveryNotes: document.getElementById("deliveryNotes").value.trim(),
+        codAmount: Number(document.getElementById("deliveryCod").value || 0),
+        total: totals.total,
+        subtotal: totals.subtotal,
+        discount: totals.discount,
+        memberPhone: memberOffer.phone,
+        memberType: memberOffer.type,
+        items: orderItems,
+        payment: method,
+        paymentStatus: ["Cash on Delivery", "Pay at Store"].includes(method) ? "Pending" : demoPaymentState.status === "VERIFIED" ? "Verified" : "Pending Verification",
+        paymentReference: transactionId,
+        status: "Online Checkout",
+        delivery: fulfillment === "In-Store Pickup" ? "Store Pickup" : "Not Created",
+        createdBy: "Website Checkout"
+      });
+      paymentRecords.unshift({
+        order: billNumber,
+        method,
+        amount: totals.total,
+        status: ["Cash on Delivery", "Pay at Store"].includes(method) ? "Pending" : demoPaymentState.status === "VERIFIED" ? "VERIFIED" : "AWAITING_PAYMENT",
+        transactionId,
+        user: "Website Checkout",
+        time: new Date().toLocaleString()
+      });
+      const existingCustomer = customers.find((customer) => customer.phone === phone);
+      if (existingCustomer) {
+        existingCustomer.name = name;
+        existingCustomer.city = city;
+        existingCustomer.address = address;
+        existingCustomer.orders = Number(existingCustomer.orders || 0) + 1;
+        existingCustomer.spend = Number(existingCustomer.spend || 0) + totals.total;
+      } else {
+        customers.push({ name, phone, city, orders: 1, spend: totals.total, address, createdBy: "Website Checkout" });
+      }
+      saved.orders = orders;
+      saved.customers = customers;
+      saved.paymentRecords = paymentRecords.slice(0, 120);
+      localStorage.setItem(dbKey, JSON.stringify(saved));
+      return billNumber;
+    }
+
+    document.addEventListener("click", (event) => {
+      const homeAnchor = event.target.closest("a[href^='#']");
+      if (homeAnchor && ["trust", "contact", "featured", "festivals", "categories"].includes(homeAnchor.getAttribute("href").slice(1))) {
+        event.preventDefault();
+        const targetId = homeAnchor.getAttribute("href").slice(1);
+        showPage("home");
+        setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" }), 0);
+        return;
+      }
+      if (homeAnchor && homeAnchor.getAttribute("href") === "#track-order") {
+        event.preventDefault();
+        showPage("account");
+        setTimeout(() => document.getElementById("track-order")?.scrollIntoView({ behavior: "smooth" }), 0);
+        return;
+      }
+      const categoryShortcut = event.target.closest("[data-category]")?.dataset.category;
+      if (categoryShortcut) {
+        event.preventDefault();
+        showPage("shop");
+        document.getElementById("categoryFilter").value = categoryShortcut;
+        document.getElementById("sortSelect").value = "latest";
+        renderProducts();
+        return;
+      }
+      const route = event.target.closest("[data-route]")?.dataset.route;
+      if (route) {
+        closeCartDrawer();
+        showPage(route);
+      }
+      const scrollTarget = event.target.closest("[data-scroll]")?.dataset.scroll;
+      if (scrollTarget) {
+        showPage("home");
+        setTimeout(() => document.getElementById(scrollTarget)?.scrollIntoView({ behavior: "smooth" }), 0);
+      }
+      const detail = event.target.closest("[data-detail]")?.dataset.detail;
+      if (detail) openDetail(Number(detail));
+      const add = event.target.closest("[data-add]")?.dataset.add;
+      if (add) addToCart(Number(add));
+      const addDetail = event.target.closest("[data-add-detail]")?.dataset.addDetail;
+      if (addDetail) addToCart(Number(addDetail), selectedQty);
+      const buy = event.target.closest("[data-buy]")?.dataset.buy;
+      if (buy) { if (addToCart(Number(buy), selectedQty)) showPage("checkout"); }
+      const wish = event.target.closest("[data-wishlist]")?.dataset.wishlist;
+      if (wish) {
+        const id = Number(wish);
+        wishlist.has(id) ? wishlist.delete(id) : wishlist.add(id);
+        renderProducts();
+      }
+      const size = event.target.closest("[data-size]")?.dataset.size;
+      if (size) { selectedSize = size; renderDetail(); }
+      const detailQty = event.target.closest("[data-detail-qty]")?.dataset.detailQty;
+      if (detailQty) { selectedQty = Math.max(1, selectedQty + Number(detailQty)); renderDetail(); }
+      const cartQty = event.target.closest("[data-cart-qty]");
+      if (cartQty) updateCart(Number(cartQty.dataset.cartQty), Number(cartQty.dataset.amount));
+      const remove = event.target.closest("[data-remove]")?.dataset.remove;
+      if (remove) { cart = cart.filter((item) => item.id !== Number(remove)); saveCart(); renderCartCount(); renderCart(); renderCartDrawer(); }
+      const paymentChoice = event.target.closest("[data-payment-method]")?.dataset.paymentMethod;
+      if (paymentChoice) {
+        const method = paymentMethods.find((item) => item.name === paymentChoice);
+        if (!method?.enabled) return;
+        document.getElementById("paymentMethod").value = paymentChoice;
+        demoPaymentState = { status: method.requiresQr ? "AWAITING_PAYMENT" : "CREATED", transactionId: "", method: paymentChoice };
+        renderCheckout();
+      }
+      if (event.target.closest("#simulatePaymentVerify")) {
+        const method = document.getElementById("paymentMethod").value;
+        demoPaymentState = { status: "VERIFIED", transactionId: `QR-${Math.floor(10000000 + Math.random() * 89999999)}`, method };
+        renderCheckout();
+        showToast(`PAYMENT RECEIVED | ${method} | ${demoPaymentState.transactionId}`);
+      }
+      if (event.target.closest("#simulatePaymentFail")) {
+        const method = document.getElementById("paymentMethod").value;
+        demoPaymentState = { status: "FAILED", transactionId: `FAIL-${Math.floor(100000 + Math.random() * 899999)}`, method };
+        renderCheckout();
+        showToast(`Payment marked FAILED in demo for ${method}.`);
+      }
+    });
+
+    document.getElementById("menuButton").addEventListener("click", () => document.getElementById("navLinks").classList.toggle("open"));
+    document.getElementById("closeCartDrawer").addEventListener("click", closeCartDrawer);
+    document.getElementById("cartDrawerBackdrop").addEventListener("click", closeCartDrawer);
+    ["searchInput", "categoryFilter", "sortSelect"].forEach((id) => document.getElementById(id).addEventListener("input", renderProducts));
+    document.getElementById("trackButton").addEventListener("click", () => {
+      const order = document.getElementById("trackOrderNumber").value.trim();
+      const tracking = document.getElementById("trackNumber").value.trim();
+      const status = document.getElementById("trackStatus");
+      if (!order && !tracking) {
+        status.textContent = "Please enter an order number or tracking number. Live tracking will be connected in the production backend.";
+        return;
+      }
+      status.textContent = `Prototype status for ${order || tracking}: order received, packing pending. Real courier updates require backend and delivery integration.`;
+    });
+    document.getElementById("customerLoginButton").addEventListener("click", () => {
+      const phone = document.getElementById("loginPhone").value.trim();
+      const order = document.getElementById("loginOrderNumber").value.trim();
+      const status = document.getElementById("customerLoginStatus");
+      if (!phone && !order) {
+        status.textContent = "Enter a phone number or bill number to continue in the prototype customer area.";
+        return;
+      }
+      if (order) document.getElementById("trackOrderNumber").value = order;
+      status.textContent = "Customer area ready. You can now check order status below.";
+      document.getElementById("track-order").scrollIntoView({ behavior: "smooth" });
+    });
+    document.getElementById("checkoutForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!event.currentTarget.reportValidity()) return;
+      const totals = cartTotals();
+      const orderItems = cart.map((line) => {
+        const product = products.find((item) => item.id === line.id);
+        return { name: product.name, category: product.category, size: line.size, qty: line.qty, price: product.price };
+      });
+      const billNumber = saveOnlineOrderForDelivery(totals, orderItems);
+      const name = document.getElementById("customerName").value.trim();
+      const method = document.getElementById("paymentMethod").value;
+      const fulfillment = document.getElementById("fulfillmentMode").value;
+      const discountText = totals.discount > 0 ? ` A ${memberOffer.type} discount of ${money(totals.discount)} was applied for member phone ${memberOffer.phone}.` : "";
+      document.getElementById("confirmationText").textContent = `Thank you, ${name}. Your bill number is ${billNumber}. Total is ${money(totals.total)} with ${method}. Receive by: ${fulfillment}.${discountText} The ERP Delivery page can now use this bill number to prepare dispatch or store pickup.`;
+      cart = [];
+      saveCart();
+      memberOffer = { phone: "", type: "", rate: 0 };
+      demoPaymentState = { status: "CREATED", transactionId: "", method: "" };
+      renderCartCount();
+      renderCartDrawer();
+      showPage("confirmation");
+    });
+
+    document.getElementById("useDefaultCustomer").addEventListener("click", fillDefaultCustomer);
+    document.getElementById("applyMemberDiscount").addEventListener("click", applyMemberOffer);
+    document.getElementById("clearMemberDiscount").addEventListener("click", clearMemberOffer);
+    document.getElementById("paymentMethod").addEventListener("change", () => {
+      const method = document.getElementById("paymentMethod").value;
+      const config = paymentMethods.find((item) => item.name === method);
+      demoPaymentState = { status: config?.requiresQr ? "AWAITING_PAYMENT" : "CREATED", transactionId: "", method };
+      if (pages.checkout.classList.contains("active") && cart.length) renderCheckout();
+    });
+    document.getElementById("fulfillmentMode").addEventListener("change", updateFulfillmentMode);
+
+    loadCart();
+    renderProducts();
+    renderQrCards();
+    renderCartCount();
+    renderCartDrawer();
+    const initialHash = location.hash;
+    const homeHashes = ["#trust", "#contact", "#featured", "#festivals", "#categories"];
+    const initialRoute = initialHash === "#track-order" ? "account" : homeHashes.includes(initialHash) ? "home" : initialHash.replace("#", "") || "home";
+    showPage(initialRoute);
+    if (initialHash === "#track-order") {
+      setTimeout(() => document.getElementById("track-order")?.scrollIntoView({ behavior: "smooth" }), 0);
+    } else if (homeHashes.includes(initialHash)) {
+      setTimeout(() => document.getElementById(initialHash.slice(1))?.scrollIntoView({ behavior: "smooth" }), 0);
+    }
+  </script>
+</body>
+</html>

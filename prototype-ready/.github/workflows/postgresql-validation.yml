@@ -1,0 +1,248 @@
+name: PostgreSQL Validation
+
+on:
+  push:
+    branches:
+      - main
+      - prototype-ready-package-2026-07-17
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  module-postgresql-validation:
+    name: Module 1 + Module 2 PostgreSQL validation
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: subhakamana_ci
+          POSTGRES_PASSWORD: ${{ secrets.CI_POSTGRES_PASSWORD }}
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U subhakamana_ci -d postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      CI_POSTGRES_HOST: 127.0.0.1
+      CI_POSTGRES_PORT: "5432"
+      CI_POSTGRES_USER: subhakamana_ci
+      CI_POSTGRES_PASSWORD: ${{ secrets.CI_POSTGRES_PASSWORD }}
+      SEED_ADMIN_EMAIL: admin-ci@subhakamanastore.local
+      SEED_ADMIN_NAME: Subhakamana Store CI Admin
+      SEED_ADMIN_PASSWORD: ${{ secrets.CI_SEED_ADMIN_PASSWORD }}
+      SESSION_SECRET: ${{ secrets.CI_SESSION_SECRET }}
+      ALLOWED_ORIGINS: http://localhost:4000
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate CI secrets and non-production target
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required=(
+            CI_POSTGRES_PASSWORD
+            SEED_ADMIN_PASSWORD
+            SESSION_SECRET
+          )
+
+          for name in "${required[@]}"; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::$name is required. Store it as an encrypted GitHub Actions secret."
+              exit 1
+            fi
+          done
+
+          if [ "${#SESSION_SECRET}" -lt 32 ]; then
+            echo "::error::CI_SESSION_SECRET must be at least 32 characters."
+            exit 1
+          fi
+
+          if [ "${#SEED_ADMIN_PASSWORD}" -lt 8 ]; then
+            echo "::error::CI_SEED_ADMIN_PASSWORD must be at least 8 characters."
+            exit 1
+          fi
+
+          case "${CI_POSTGRES_HOST}" in
+            127.0.0.1|localhost) ;;
+            *)
+              echo "::error::CI PostgreSQL host must be local to the temporary CI service, never production."
+              exit 1
+              ;;
+          esac
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+          cache-dependency-path: |
+            production-readiness/module-01-database/pnpm-lock.yaml
+            production-readiness/module-02-api-foundation/pnpm-lock.yaml
+
+      - name: Install PostgreSQL client
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Create temporary CI databases
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DEV_DB="subhakamana_ci_dev_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}"
+          TEST_DB="subhakamana_ci_test_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}"
+
+          if [[ "${DEV_DB}" == *prod* || "${TEST_DB}" == *prod* || "${DEV_DB}" == *production* || "${TEST_DB}" == *production* ]]; then
+            echo "::error::Refusing to create production-like CI database names."
+            exit 1
+          fi
+
+          export PGPASSWORD="${CI_POSTGRES_PASSWORD}"
+          createdb \
+            --host="${CI_POSTGRES_HOST}" \
+            --port="${CI_POSTGRES_PORT}" \
+            --username="${CI_POSTGRES_USER}" \
+            "${DEV_DB}"
+          createdb \
+            --host="${CI_POSTGRES_HOST}" \
+            --port="${CI_POSTGRES_PORT}" \
+            --username="${CI_POSTGRES_USER}" \
+            "${TEST_DB}"
+
+          {
+            echo "DEV_DB=${DEV_DB}"
+            echo "TEST_DB=${TEST_DB}"
+            echo "DATABASE_URL=postgresql://${CI_POSTGRES_USER}:${CI_POSTGRES_PASSWORD}@${CI_POSTGRES_HOST}:${CI_POSTGRES_PORT}/${DEV_DB}?schema=public"
+            echo "TEST_DATABASE_URL=postgresql://${CI_POSTGRES_USER}:${CI_POSTGRES_PASSWORD}@${CI_POSTGRES_HOST}:${CI_POSTGRES_PORT}/${TEST_DB}?schema=public"
+            echo "PSQL_DATABASE_URL=postgresql://${CI_POSTGRES_USER}:${CI_POSTGRES_PASSWORD}@${CI_POSTGRES_HOST}:${CI_POSTGRES_PORT}/${DEV_DB}"
+            echo "PSQL_TEST_DATABASE_URL=postgresql://${CI_POSTGRES_USER}:${CI_POSTGRES_PASSWORD}@${CI_POSTGRES_HOST}:${CI_POSTGRES_PORT}/${TEST_DB}"
+          } >> "$GITHUB_ENV"
+
+      - name: Install Module 1 dependencies
+        working-directory: production-readiness/module-01-database
+        run: pnpm install --frozen-lockfile
+
+      - name: Module 1 dependency vulnerability check
+        working-directory: production-readiness/module-01-database
+        run: pnpm audit --audit-level high
+
+      - name: Generate Prisma Client
+        working-directory: production-readiness/module-01-database
+        run: pnpm db:generate
+
+      - name: Validate Prisma schema
+        working-directory: production-readiness/module-01-database
+        run: pnpm exec prisma validate
+
+      - name: Apply migrations to empty development database
+        working-directory: production-readiness/module-01-database
+        run: pnpm db:deploy
+
+      - name: Apply migrations to empty test database
+        working-directory: production-readiness/module-01-database
+        env:
+          DATABASE_URL: ${{ env.TEST_DATABASE_URL }}
+        run: pnpm db:deploy
+
+      - name: Run hardened seed on development database
+        working-directory: production-readiness/module-01-database
+        run: pnpm db:seed
+
+      - name: Verify seeded roles, permissions, mappings, and administrator
+        working-directory: production-readiness/module-01-database
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          export PGPASSWORD="${CI_POSTGRES_PASSWORD}"
+
+          ROLE_COUNT="$(psql "$PSQL_DATABASE_URL" -Atc "select count(*) from \"Role\" where name = 'Owner';")"
+          PERMISSION_COUNT="$(psql "$PSQL_DATABASE_URL" -Atc "select count(*) from \"Permission\";")"
+          MAPPING_COUNT="$(psql "$PSQL_DATABASE_URL" -Atc "select count(*) from \"RolePermission\" rp join \"Role\" r on r.id = rp.\"roleId\" where r.name = 'Owner';")"
+          ADMIN_COUNT="$(psql "$PSQL_DATABASE_URL" -Atc "select count(*) from \"User\" where email = '${SEED_ADMIN_EMAIL}' and \"passwordHash\" is not null;")"
+
+          test "$ROLE_COUNT" = "1"
+          test "$PERMISSION_COUNT" -ge "8"
+          test "$MAPPING_COUNT" -ge "8"
+          test "$ADMIN_COUNT" = "1"
+
+      - name: Install Module 2 dependencies
+        working-directory: production-readiness/module-02-api-foundation
+        run: pnpm install --frozen-lockfile
+
+      - name: Module 2 dependency vulnerability check
+        working-directory: production-readiness/module-02-api-foundation
+        run: pnpm audit --audit-level high
+
+      - name: Generate Prisma Client for Module 2 test runtime
+        working-directory: production-readiness/module-02-api-foundation
+        run: pnpm exec prisma generate --schema ../module-01-database/prisma/schema.prisma
+
+      - name: Run gated PostgreSQL integration test
+        working-directory: production-readiness/module-02-api-foundation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test test/postgres-integration.test.js 2>&1 | tee /tmp/postgres-integration-test.log
+          if grep -Eq "skipped [1-9]|# SKIP" /tmp/postgres-integration-test.log; then
+            echo "::error::PostgreSQL integration test was skipped. TEST_DATABASE_URL must execute against the temporary CI database."
+            exit 1
+          fi
+
+      - name: Run all Module 1 checks
+        working-directory: production-readiness/module-01-database
+        run: pnpm verify
+
+      - name: Run all Module 2 tests
+        working-directory: production-readiness/module-02-api-foundation
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm verify 2>&1 | tee /tmp/module-02-test.log
+          if grep -Eq "skipped [1-9]|# SKIP" /tmp/module-02-test.log; then
+            echo "::error::Module 2 test suite reported skipped tests during PostgreSQL CI validation."
+            exit 1
+          fi
+
+      - name: Drop temporary CI databases
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -n "${CI_POSTGRES_PASSWORD:-}" ]; then
+            export PGPASSWORD="${CI_POSTGRES_PASSWORD}"
+          fi
+
+          for db in "${DEV_DB:-}" "${TEST_DB:-}"; do
+            if [ -n "$db" ]; then
+              dropdb \
+                --if-exists \
+                --force \
+                --host="${CI_POSTGRES_HOST}" \
+                --port="${CI_POSTGRES_PORT}" \
+                --username="${CI_POSTGRES_USER}" \
+                "$db" || true
+            fi
+          done

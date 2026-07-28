@@ -1,0 +1,24 @@
+SUBHAKAMANA STORE MANAGEMENT SYSTEM
+GRAND RELEASE SINGLE FOLDER
+
+Open first:
+START_HERE.html
+
+Best local launch:
+OPEN_PROTOTYPE.command
+
+Release hub:
+RELEASE_CENTER.html
+
+Main platform files:
+subhakamana-store-final-erp-platform.html
+subhakamana-store-physical-pos.html
+subhakamana-store-ecommerce.html
+
+Release documents:
+GRAND_RELEASE_NOTES_2026-07-20.md
+GRAND_RELEASE_CHECKLIST_2026-07-20.md
+GRAND_RELEASE_DEMO_SCRIPT_2026-07-20.md
+GRAND_RELEASE_HANDOFF_2026-07-20.md
+
+This folder contains the customer website, Admin ERP, Cashier POS, documentation, reports, UML files, production-readiness backend foundation, QA scripts, and local launch files in one place.

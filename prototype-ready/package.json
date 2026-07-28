@@ -1,0 +1,15 @@
+{
+  "name": "subhakamana-store-prototype-qa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate:static": "node scripts/validate-static.mjs",
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium --reporter=html",
+    "show-report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.0"
+  }
+}
